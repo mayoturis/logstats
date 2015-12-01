@@ -1,0 +1,26 @@
+.next-step {
+  color: #2ecc71;
+  font-size: 35px;
+  float: right;
+  text-decoration: underline;
+}
+nav li.active {
+  font-weight: bold;
+  color: #2ecc71;
+}
+table.database-setup tr {
+  display: none;
+}
+table.database-setup tr[data-databases~='mysql'] {
+  display: table-row;
+}
+table.database-setup td {
+  vertical-align: middle !important;
+}
+
+.grey-info {
+  font-size: 12px;
+  color: grey;
+}
+
+/*# sourceMappingURL=app.css.map */

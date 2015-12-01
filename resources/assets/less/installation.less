@@ -1,0 +1,41 @@
+@import "variables.less";
+
+.step {
+  color: @mainColor;
+  font-size: 35px;
+  text-decoration: underline;
+}
+
+.next {
+  float: right;
+}
+
+.previos {
+  float: left;
+}
+
+nav li.active {
+  font-weight: bold;
+  color: @mainColor;
+}
+
+table.database-setup {
+  tr {
+	&[data-databases] {
+	  display:none;
+	}
+
+	&[data-databases~='mysql'] {
+	  display:table-row;
+	}
+  }
+
+  td {
+	vertical-align: middle !important;
+	width: 50%;
+  }
+}
+
+.select2-container {
+  width: 300px;
+}

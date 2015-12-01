@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Logstats
+        psr4_prefix: Logstats
+        src_path: app
