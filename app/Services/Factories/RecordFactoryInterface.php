@@ -10,5 +10,5 @@ interface RecordFactoryInterface {
 	 * @param Project $project
 	 * @return Record
 	 */
-	public function make($message, Project $project);
+	public function make($level, $message, $timestamp, Project $project, array $context = []);
 }

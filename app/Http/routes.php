@@ -1,5 +1,7 @@
 <?php
 
+use Logstats\Entities\Project;
+
 Route::any('installation/{step}', ['as' => 'installation',
 								   'middleware' => 'correct_installation_step',
 								   'uses' => 'InstallationController@index']);
@@ -23,3 +25,13 @@ Route::get('s', function(\Logstats\Repositories\Contracts\ProjectRepository $rep
 	dd($repo->findById(4));
 });
 
+Route::get('g', function(\Logstats\Services\Entities\RecordServiceInterface $r) {
+	$project = new Project('project', 'projectc5f0a13220');
+	$project->setId(1);
+	$r->createRecord('alert', 'ahoj', time(), $project, [
+		'nieco' => 5,
+		'no' => 5,
+		'gaguľa' => 4.4,
+		'nulik' => 'ohodo'
+	]);
+});

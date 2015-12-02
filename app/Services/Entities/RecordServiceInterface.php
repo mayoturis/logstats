@@ -3,7 +3,7 @@
 use Logstats\Entities\Project;
 use Logstats\Entities\Record;
 
-interface RecordServiceInteraface {
+interface RecordServiceInterface {
 
 	/**
 	 * @param string $level

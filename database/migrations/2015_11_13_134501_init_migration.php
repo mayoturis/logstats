@@ -52,9 +52,11 @@ class InitMigration extends Migration
 		Schema::create('property_types', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('property_name');
+			$table->string('type');
 			$table->unsignedInteger('message_id');
 			$table->foreign('message_id', 'property_types_message_id' . $this->generateRandomSuffix())->references('id')->on('messages');
 		});
+
 
 		Schema::create('levels', function(Blueprint $table) {
 			$table->string('name');
@@ -77,6 +79,14 @@ class InitMigration extends Migration
 			$table->foreign('message_id', 'records_message_id'. $this->generateRandomSuffix())->references('id')->on('messages');
 		});
 
+		Schema::create('properties', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->string('value_string')->nullable();
+			$table->decimal('value_number', 20, 5)->nullable();
+			$table->unsignedInteger('record_id');
+			$table->foreign('record_id', 'properties_record_id' . $this->generateRandomSuffix())->references('id')->on('records');
+		});
 		Schema::create('emails', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('email');

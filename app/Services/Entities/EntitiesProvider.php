@@ -27,6 +27,7 @@ class EntitiesProvider extends ServiceProvider
 	{
 		$this->registerUserService();
 		$this->registerProjectService();
+		$this->registerRecordService();
 	}
 
 	private function registerUserService() {
@@ -41,6 +42,13 @@ class EntitiesProvider extends ServiceProvider
 		$this->app->bind(
 			ProjectServiceInterface::class,
 			ProjectService::class
+		);
+	}
+
+	private function registerRecordService() {
+		$this->app->bind(
+			RecordServiceInterface::class,
+			RecordService::class
 		);
 	}
 }
