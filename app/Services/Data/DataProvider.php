@@ -14,5 +14,10 @@ class DataProvider extends ServiceProvider {
 			DataServiceInterface::class,
 			DataService::class
 		);
+
+		$this->app->bind(
+			CurrentProjectProviderInterface::class,
+			SessionCurrentProjectProvider::class
+		);
 	}
 }

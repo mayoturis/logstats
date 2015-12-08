@@ -3,6 +3,7 @@
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Collection;
 use Logstats\ValueObjects\Role;
+use Logstats\ValueObjects\RoleTypes;
 
 class User implements Authenticatable {
 
@@ -31,21 +32,23 @@ class User implements Authenticatable {
 	 */
 	private $email;
 	/**
-	 * @var Collection of Role
+	 * @var Role
 	 */
-	private $roles = [];
+	private $role;
 
 	/**
 	 * @param string $name
 	 * @param string $password
 	 * @param string $email
 	 * @param string $remember_token
+	 * @param Role|null $role
 	 */
-	public function __construct($name, $password, $email, $remember_token) {
+	public function __construct($name, $password, $email, $remember_token, Role $role = null) {
 		$this->name = $name;
 		$this->password = $password;
 		$this->remember_token = $remember_token;
 		$this->email = $email;
+		$this->role = $role;
 	}
 
 	/**
@@ -154,16 +157,36 @@ class User implements Authenticatable {
 	}
 
 	/**
-	 * @return Collection of Role
+	 * @return Role
 	 */
-	public function getRoles() {
-		return $this->roles;
+	public function getRole() {
+		return $this->role;
 	}
 
 	/**
-	 * @param Collection of Role $roles
+	 * @param Role $roles
 	 */
-	public function setRoles(Collection $roles) {
-		$this->roles = $roles;
+	public function setRole(Role $role) {
+		$this->role = $role;
+	}
+
+	public function isGeneralVisitor() {
+		return $this->isRole(RoleTypes::VISITOR);
+	}
+
+	public function isGeneralDataManager() {
+		return $this->isRole(RoleTypes::DATAMANAGER);
+	}
+
+	public function isGeneralAdmin() {
+		return $this->isRole(RoleTypes::ADMIN);
+	}
+
+	private function isRole($role) {
+		if (is_null($this->role)) {
+			return false;
+		}
+
+		return in_array($role, $this->role->allSubRoles());
 	}
 }

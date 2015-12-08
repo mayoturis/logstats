@@ -39,10 +39,10 @@ class EntityUserProvider implements UserProvider {
 	 * @return \Illuminate\Contracts\Auth\Authenticatable|null
 	 */
 	public function retrieveByToken($identifier, $token) {
-		return $this->repository->findBy([
+		return $this->repository->findFirstBy([
 			'id' => $identifier,
 			'remember_token' => $token
-		])->first();
+		]);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class EntityUserProvider implements UserProvider {
 	 */
 	public function retrieveByCredentials(array $credentials) {
 		unset($credentials['password']);
-		return $this->repository->findBy($credentials)->first();;
+		return $this->repository->findFirstBy($credentials);
 	}
 
 	/**

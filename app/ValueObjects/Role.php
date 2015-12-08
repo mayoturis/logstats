@@ -25,4 +25,7 @@ class Role {
 		return $this->name;
 	}
 
+	public function allSubRoles() {
+		return RoleTypes::allSubRoles($this->name);
+	}
 }

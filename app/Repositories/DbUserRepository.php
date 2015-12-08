@@ -35,56 +35,22 @@ class DbUserRepository extends DbBaseRepository implements UserRepository{
 	}
 
 	/**
+	 * Find user by condtitions
+	 *
+	 * @param array $conditions
+	 * @return array of User
+	 */
+	public function findBy(array $conditions) {
+		$rawUsers = $this->findRawBy($conditions);
+		return $this->rawUsersToArrayOfUsers($rawUsers);
+	}
+
+	/**
 	 * @param int $id
 	 * @return \Logstats\Entities\User
 	 */
 	public function findById($id) {
-		$rawUser = \DB::table($this->table)
-			->where('id',$id)
-			->first();
-		$user = $this->userFactory->makeFromStd($rawUser);
-		$user->setRoles($this->findRolesForUser($user));
-
-		return $user;
-	}
-
-
-	/**
-	 * Find role by its name
-	 *
-	 * @param string $name Name of the role
-	 * @return \Logstats\ValueObjects\Role
-	 */
-	public function findRoleByName($name) {
-		$rawRole = \DB::table($this->roleTable)->where('name', $name)->first();
-
-		if (empty($rawRole)) {
-			return null;
-		}
-
-		return new Role($rawRole->id, $rawRole->name);
-	}
-
-	/**
-	 * Add new global role to user
-	 *
-	 * @param User $user
-	 * @param Role $role
-	 * @return void
-	 */
-	public function addRoleToUser(User $user, Role $role) {
-		$count = \DB::table($this->roleUserTable)
-			->where('user_id', $user->getId())
-			->where('role', $role->getName())->count();
-
-		if ($count > 0) { // association already exists
-			return;
-		}
-
-		\DB::table($this->roleUserTable)->insert([
-			'user_id' => $user->getId(),
-			'role' => $role->getName()
-		]);
+		return $this->findFirstBy(['id' => $id]);
 	}
 
 	/**
@@ -111,7 +77,8 @@ class DbUserRepository extends DbBaseRepository implements UserRepository{
 			'name' => $user->getName(),
 			'email' => $user->getEmail(),
 			'password' => $user->getPassword(),
-			'remember_token' => $user->getRememberToken()
+			'remember_token' => $user->getRememberToken(),
+			'role' => $user->getRole(),
 		]);
 
 		$user->setId($id);
@@ -128,23 +95,33 @@ class DbUserRepository extends DbBaseRepository implements UserRepository{
 				'name' => $user->getName(),
 				'email' => $user->getEmail(),
 				'password' => $user->getPassword(),
-				'remember_token' => $user->getRememberToken()
+				'remember_token' => $user->getRememberToken(),
+				'role' => $user->getRole(),
 			]);
 	}
 
-	/**
-	 * @param User $user
-	 * @return Collection of Role
-	 */
-	public function findRolesForUser(User $user) {
-		$rawRoles = \DB::table($this->roleUserTable)->where('user_id', $user->getId())->get(['role']);
-
-		$coll = new Collection();
-
-		foreach ($rawRoles as $rowRole) {
-			$coll->push(new Role($rowRole->role));
+	private function rawUsersToArrayOfUsers(array $rawUsers) {
+		$users = [];
+		foreach ($rawUsers as $rawUser) {
+			$users[] = $this->userFactory->makeFromStd($rawUsers);
 		}
 
-		return $coll;
+		return $users;
+	}
+
+	/**
+	 * Find first user by conditions
+	 *
+	 * @param array $conditions
+	 * @return User
+	 */
+	public function findFirstBy(array $conditions) {
+		$rawUser = $this->findFirstRawBy($conditions);
+
+		if (empty($rawUser)) {
+			return null;
+		}
+
+		return $this->userFactory->makeFromStd($rawUser);
 	}
 }

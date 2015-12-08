@@ -3,14 +3,14 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	{!! Html::style('public/css/bootstrap.min.css') !!}
+	{!! Html::script('public/libraries/jquery/jquery.min.js') !!}
+	{!! Html::style('public/libraries/bootstrap/bootstrap.min.css') !!}
+	{!! Html::script('public/libraries/bootstrap/bootstrap.min.js') !!}
+	{!! Html::script('public/libraries/select2/select2.min.js') !!}
+	{!! Html::style('public/libraries/select2/select2.css') !!}
 	{!! Html::style('public/css/main.css') !!}
-	{!! Html::style('public/css/select2/select2.css') !!}
 	{!! Html::style('public/css/installation.css') !!}
-	{!! Html::script('public/js/jquery.min.js') !!}
-	{!! Html::script('public/js/bootstrap.min.js') !!}
 	{!! Html::script('public/js/installation.js') !!}
-	{!! Html::script('public/js/select2.min.js') !!}
 	<title>Installation - @yield('title')</title>
 </head>
 <body class="installation">

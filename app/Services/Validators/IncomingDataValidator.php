@@ -4,7 +4,7 @@ class IncomingDataValidator extends AbstractValidator {
 
 	private $rootRules = [
 		'project' => 'required|exists:projects,token',
-		'messages' => 'required|array|correct_messages'
+		'messages' => 'required|array'
 	];
 
 	private $messageRules = [

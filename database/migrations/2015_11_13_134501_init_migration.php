@@ -12,7 +12,7 @@ class InitMigration extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function(Blueprint $table) {
+		Schema::create('projects', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name')->unique();
 			$table->string('token')->unique();
@@ -22,6 +22,17 @@ class InitMigration extends Migration
 		Schema::create("roles", function(Blueprint $table) {
 			$table->string('name');
 			$table->primary('name');
+		});
+
+		Schema::create('users', function (Blueprint $table) {
+			$table->increments('id');
+			$table->string('name')->unique();
+			$table->string('email')->nullable();
+			$table->string('password', 60);
+			$table->string('role')->nullable()->default(null);
+			$table->rememberToken();
+			$table->foreign('role', 'role_id'. $this->generateRandomSuffix())->references('name')->on('roles');
+			// $table->timestamps();
 		});
 
 		Schema::create('project_role_user', function(Blueprint $table) {
@@ -34,14 +45,6 @@ class InitMigration extends Migration
 			$table->foreign('role', 'project_role_user_role' . $this->generateRandomSuffix())->references('name')->on('roles');
 		});
 
-		Schema::create('role_user', function(Blueprint $table) {
-			$table->increments('id');
-			$table->unsignedInteger('user_id');
-			$table->string('role');
-			$table->foreign('user_id', 'role_user_user_id'. $this->generateRandomSuffix())->references('id')->on('users');
-			$table->foreign('role', 'role_user_role'. $this->generateRandomSuffix())->references('name')->on('roles');
-		});
-
 		Schema::create('messages', function(Blueprint $table) {
 			$table->increments('id');
 			$table->text('message');
@@ -52,7 +55,7 @@ class InitMigration extends Migration
 		Schema::create('property_types', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('property_name');
-			$table->string('type');
+			$table->string('type')->nullable();
 			$table->unsignedInteger('message_id');
 			$table->foreign('message_id', 'property_types_message_id' . $this->generateRandomSuffix())->references('id')->on('messages');
 		});
@@ -84,6 +87,7 @@ class InitMigration extends Migration
 			$table->string('name');
 			$table->string('value_string')->nullable();
 			$table->decimal('value_number', 20, 5)->nullable();
+			$table->tinyInteger('value_boolean', false, true)->nullable();
 			$table->unsignedInteger('record_id');
 			$table->foreign('record_id', 'properties_record_id' . $this->generateRandomSuffix())->references('id')->on('records');
 		});
@@ -110,8 +114,8 @@ class InitMigration extends Migration
      */
     public function down()
     {
-        Schema::drop('project_role_user');
-        Schema::drop('role_user');
+		Schema::drop('users');
+		Schema::drop('project_role_user');
 		Schema::drop('roles');
         Schema::drop('email_send');
         Schema::drop('property_types');

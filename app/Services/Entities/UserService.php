@@ -44,6 +44,7 @@ class UserService implements UserServiceInterface{
 	 * @return User
 	 */
 	public function addRoleToUser(User $user, Role $role) {
-		$this->repository->addRoleToUser($user, $role);
+		$user->setRole($role);
+		$this->repository->save($user);
 	}
 }

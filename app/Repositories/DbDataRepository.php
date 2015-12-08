@@ -17,19 +17,19 @@ class DbDataRepository implements DataRepository {
 	 */
 	public function newRecord(Record $record) {
 		$messageId = $this->saveMessageAndGetId($record->getMessage(), $record->getProjectId());
-		$this->saveRecord($record, $messageId);
-		$properties = array_dot($record->getContext());
+		$this->insertRecord($record, $messageId);
 
+		$properties = $this->tranformConextIntoSavableProperties($record->getContext());
 		$existingPropertyTypes = $this->getExistingPropertyTypes(array_keys($properties), $messageId);
 		$allPropertyTypes = $this->saveAndGetNonexistingPropertyTypes($properties, $existingPropertyTypes, $messageId);
 		$this->saveProperties($properties, $allPropertyTypes, $record->getId());
 	}
 
 	private function saveMessageAndGetId($message, $projectId) {
-		$messageInDb = \DB::table($this->messageTable)->where('message', $message)
-							->where('project_id', $projectId)->first();
-		if (!empty($messageInDb)) {
-			return $messageInDb->id;
+		$messageIdRaw = \DB::table($this->messageTable)->where('message', $message)
+							->where('project_id', $projectId)->first(['id']);
+		if (!empty($messageIdRaw)) {
+			return $messageIdRaw->id;
 		}
 
 		$id = \DB::table($this->messageTable)->insertGetId([
@@ -40,7 +40,7 @@ class DbDataRepository implements DataRepository {
 		return $id;
 	}
 
-	private function saveRecord(Record $record, $messageId) {
+	private function insertRecord(Record $record, $messageId) {
 		$gmtDate = $this->dateInGMT($record->getDate());
 		$id = \DB::table($this->recordTable)->insertGetId([
 			'date' => $gmtDate,
@@ -97,6 +97,7 @@ class DbDataRepository implements DataRepository {
 		$insertValue = ["name" => $name, "record_id" => $recordId];
 		$insertValue['value_number'] = null;
 		$insertValue['value_string'] = null;
+		$insertValue['value_boolean'] = null;
 
 		if ($type == PropertyType::NUMBER) {
 			if (is_numeric($value)) {
@@ -106,6 +107,8 @@ class DbDataRepository implements DataRepository {
 			}
 		} elseif ($type == PropertyType::STRING) {
 			$insertValue['value_string'] = (string) $value;
+		} elseif ($type == PropertyType::BOOLEAN) {
+			$insertValue['value_boolean'] = (int) $value;
 		}
 		return $insertValue;
 	}
@@ -113,7 +116,7 @@ class DbDataRepository implements DataRepository {
 	private function saveAndGetNonexistingPropertyTypes($properties, $propertyTypes, $messageId) {
 		$newPropertyTypes = [];
 		foreach ($properties as $property => $value) {
-			if (!array_key_exists($property, $propertyTypes)) {
+			if (empty($propertyTypes[$property])) {
 				$type = $this->determineNewPropertyType($value);
 				$newPropertyTypes[$property] = $type;
 				$propertyTypes[$property] = $type;
@@ -132,6 +135,10 @@ class DbDataRepository implements DataRepository {
 			return PropertyType::NUMBER;
 		}
 
+		if (is_bool($property)) {
+			return PropertyType::BOOLEAN;
+		}
+
 		return PropertyType::STRING;
 	}
 
@@ -141,20 +148,23 @@ class DbDataRepository implements DataRepository {
 
 	private function saveNewPropertyTypes($propertyTypes, $messageId) {
 		$insertValues = $this->createPropertyTypeInsertValues($propertyTypes, $messageId);
+		\DB::table($this->propertyTypesTable)->where('message_id', $messageId)->whereIn('property_name', array_keys($propertyTypes))->delete();
 		\DB::table($this->propertyTypesTable)->insert($insertValues);
 	}
 
 	private function createPropertyTypeInsertValues($propertyTypes, $messageId) {
 		$insertValues = [];
 		foreach ($propertyTypes as $propertyName => $type) {
-			if ($type !== null) {
-				$insertValues[] = [
-					'message_id' => $messageId,
-					'type' => $type,
-					'property_name' => $propertyName
-				];
-			}
+			$insertValues[] = [
+				'message_id' => $messageId,
+				'type' => $type,
+				'property_name' => $propertyName
+			];
 		}
 		return $insertValues;
+	}
+
+	private function tranformConextIntoSavableProperties($context) {
+		return array_dot($context);
 	}
 }

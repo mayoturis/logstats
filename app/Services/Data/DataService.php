@@ -3,37 +3,28 @@
 
 use Logstats\Entities\Project;
 use Logstats\Repositories\Contracts\ProjectRepository;
-use Logstats\Services\Entities\RecordServiceInteraface;
-use Logstats\Services\Factories\RecordFactoryInterface;
+use Logstats\Services\Entities\RecordServiceInterface;
 use Logstats\Services\Validators\IncomingDataValidator;
+use Logstats\Services\Validators\ValidationException;
 
 class DataService implements DataServiceInterface{
 
-	/**
-	 * @var ProjectRepository
-	 */
 	private $projectRepository;
-	/**
-	 *
-	 */
 	private $incDataValidator;
-	/**
-	 *
-	 */
 	private $recordService;
 
 
 	public function __construct(ProjectRepository $projectRepository,
 								IncomingDataValidator $incDataValidator,
-								RecordServiceInteraface $recordService) {
+								RecordServiceInterface $recordService) {
 		$this->projectRepository = $projectRepository;
 		$this->incDataValidator = $incDataValidator;
 		$this->recordService = $recordService;
 	}
 
 	public function newData(array $data) {
-		if (!$this->incDataValidator->isValidData($data)) {
-			throw new \InvalidArgumentException('Invalid data');
+		if (!$this->incDataValidator->isValidRoot($data)) {
+			throw new ValidationException($this->incDataValidator->getErrors(), 'Invalid data');
 		}
 
 		// $data['project'] is already valid here
@@ -45,7 +36,7 @@ class DataService implements DataServiceInterface{
 	}
 
 	private function newRecord($message, Project $project) {
-		if ($this->incDataValidator->isValidRecord($message)) {
+		if (!$this->incDataValidator->isValidRecord($message)) {
 			return false;
 		}
 

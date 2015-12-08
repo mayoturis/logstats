@@ -6,32 +6,28 @@ Route::any('installation/{step}', ['as' => 'installation',
 								   'middleware' => 'correct_installation_step',
 								   'uses' => 'InstallationController@index']);
 
+
 // accessible after installation
 Route::group(['middleware' => 'installed'], function() {
-	// administration part
-	Route::group(['middleware' => 'auth'], function() {
+	Route::get('auth/login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
+	Route::post('auth/login', 'AuthController@postLogin');
+	Route::get('auth/logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
+	Route::get('auth/register', 'UserController@create');
+	Route::resource('user', 'UserController');
 
+	// administration part
+	Route::group(['middleware' => ['auth', 'can_visit']], function() {
+		Route::get('/', ['as' => 'home', 'uses' => 'ProjectController@index']);
+		Route::resource('projects', 'ProjectController');
+		Route::get('how-to-send-logs', ['as' => 'how-to-send-logs', 'uses' => 'InfoController@howToSendLogs']);
+
+		Route::group(['middleware' => 'project_choosen'], function() {
+			Route::get('log', ['as' => 'log', 'uses' => 'LogController@index']);
+		});
 	});
 
 	// both URLs should be able to handle data
-	Route::get('', ['uses' => 'ArrivedDataController@dataArrived']);
-	Route::get('api', ['uses' => 'ArrivedDataController@dataArrived']);
+	Route::post('', ['uses' => 'ArrivedDataController@dataArrived']);
+	Route::post('api', ['uses' => 'ArrivedDataController@dataArrived']);
 
-});
-
-Route::get('s', function(\Logstats\Repositories\Contracts\ProjectRepository $repo, \Logstats\Services\Entities\ProjectService $serv, \Logstats\Repositories\Contracts\UserRepository $r) {
-	$user = $r->findById(1);
-	$serv->createProject('projectino', $user);
-	dd($repo->findById(4));
-});
-
-Route::get('g', function(\Logstats\Services\Entities\RecordServiceInterface $r) {
-	$project = new Project('project', 'projectc5f0a13220');
-	$project->setId(1);
-	$r->createRecord('alert', 'ahoj', time(), $project, [
-		'nieco' => 5,
-		'no' => 5,
-		'gaguľa' => 4.4,
-		'nulik' => 'ohodo'
-	]);
 });

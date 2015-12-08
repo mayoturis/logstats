@@ -32,12 +32,11 @@ class ProjectFactory implements ProjectFactoryInterface {
 	 */
 	public function makeFromStd($stdObject) {
 		$project = $this->make(
+			$stdObject->id,
 			$stdObject->name,
 			$stdObject->token,
 			$this->carbonFromGMTTime($stdObject->created_at)
 		);
-
-		$project->setId($stdObject->id);
 
 		return $project;
 	}

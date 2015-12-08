@@ -1,5 +1,5 @@
 .step {
-  color: #2ecc71;
+  color: #00A65A;
   font-size: 35px;
   text-decoration: underline;
 }
@@ -11,7 +11,7 @@
 }
 nav li.active {
   font-weight: bold;
-  color: #2ecc71;
+  color: #00A65A;
 }
 table.database-setup tr[data-databases] {
   display: none;

@@ -1,26 +1,32 @@
 <?php  namespace Logstats\Repositories; 
 
 use Carbon\Carbon;
+use Logstats\DTOs\ProjectLastRecordDTO;
 use Logstats\Services\Factories\ProjectFactoryInterface;
 use Logstats\Entities\Project;
 use Logstats\Entities\User;
 use Logstats\Repositories\Contracts\ProjectRepository;
 use Logstats\ValueObjects\Role;
+use PDO;
 
 class DbProjectRepository extends DbBaseRepository implements ProjectRepository {
 
 	private $table = 'projects';
 	private $projectRoleUserTable = 'project_role_user';
-	/**
-	 *
-	 */
+	private $recordTable = 'records';
+	private $prefix;
 	private $factory;
+	private $connection;
 
 	/**
 	 * @param ProjectFactoryInterface $factory
 	 */
 	public function __construct(ProjectFactoryInterface $factory) {
 		$this->factory = $factory;
+
+		$this->prefix = \DB::getTablePrefix();
+		$this->connection = \DB::getPdo();
+		$this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 	}
 
 	/**
@@ -100,9 +106,24 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	 * @return Project|null
 	 */
 	public function findById($id) {
-		$raw = $this->findByOne(['id' => $id]);
+		return $this->findFirstBy(['id' => $id]);
 
-		return $this->factory->makeFromStd($raw);
+	}
+
+	/**
+	 * Find first user by conditions
+	 *
+	 * @param array $conditions
+	 * @return User
+	 */
+	public function findFirstBy(array $conditions) {
+		$rawProject = $this->findFirstRawBy($conditions);
+
+		if (empty($rawProject)) {
+			return null;
+		}
+
+		return $this->factory->makeFromStd($rawProject);
 	}
 
 	/**
@@ -134,15 +155,92 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	 * @return Project
 	 */
 	public function findByToken($token) {
-		$raw = $this->findByOne(['token' => $token]);
-
-		return $this->factory->makeFromStd($raw);
+		return $this->findFirstBy(['token' => $token]);
 	}
 
 	/**
 	 * @return string Table name
 	 */
 	protected function getTable() {
-
+		return $this->table;
 	}
+
+	/**
+	 * Find projects by conditions
+	 *
+	 * @param array $conditions
+	 * @return array of Project
+	 */
+	public function findBy(array $conditions) {
+		$rawProject = $this->findRawBy($conditions);
+		return $this->rawProjectsToArrayOfProjects($rawProject);
+	}
+
+	/**
+	 * Get all projects
+	 *
+	 * @return array of Project
+	 */
+	public function findAll() {
+		return $this->findBy([]);
+	}
+
+	private function rawProjectsToArrayOfProjects($rawProjects) {
+		$projects = [];
+		foreach ($rawProjects as $rawProject) {
+			$projects[] = $this->factory->makeFromStd($rawProject);
+		}
+
+		return $projects;
+	}
+
+	/**
+	 * Return all projects and date of the latest record
+	 *
+	 * @return array
+	 */
+	public function findAllWithLatestRecord($allowedRoles = null, $userId = null) {
+		$query = 'SELECT * FROM ' . $this->prefix.$this->table . ' projects
+					LEFT JOIN (
+						SELECT project_id, date
+						FROM '. $this->prefix.$this->recordTable . '
+						ORDER BY date DESC
+						LIMIT 1
+					) r ON projects.id = project_id';
+
+		if (!is_null($allowedRoles) && !is_null($userId)) {
+			$query .= " WHERE EXISTS (" . $this->projectUserRoleExistsQuery($allowedRoles, $userId, 'projects') . ")";
+		}
+
+		$rows = $this->connection->query($query)->fetchAll();
+
+		$dtos = [];
+		foreach ($rows as $row) {
+			$project = $this->factory->makeFromStd($row);
+			$date = is_null($row->date) ? null : $this->carbonFromGMTTime($row->date);
+			$dtos[] = new ProjectLastRecordDTO($project, $date);
+		}
+
+		return $dtos;
+	}
+
+	private function projectUserRoleExistsQuery(array $allowedRoles, $userId, $projectTable = null) {
+		$projectTable = !empty($projectTable) ? $projectTable : $this->prefix.$this->table;
+		$table = $this->prefix . $this->projectRoleUserTable;
+		$query = " SELECT 1 FROM $table WHERE ";
+
+		$subQueries = [];
+		foreach ($allowedRoles as $role) {
+			$subQueries[] = " ($table.role = " . $this->q($role) . "
+						   AND $table.user_id = " . $this->q($userId, PDO::PARAM_INT) . "
+						   AND $table.project_id = $projectTable.id) ";
+		}
+		$query .= implode(' OR ', $subQueries);
+		return $query;
+	}
+
+	private function q($string, $param = PDO::PARAM_STR) {
+		return $this->connection->quote($string, $param);
+	}
+
 }

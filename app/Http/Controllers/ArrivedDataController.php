@@ -2,6 +2,7 @@
 
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Logstats\Services\Data\DataServiceInterface;
 
 class ArrivedDataController extends Controller {
@@ -20,7 +21,7 @@ class ArrivedDataController extends Controller {
 
 	public function dataArrived(Request $request) {
 		$jsonData = $request->get('data');
-		$data = json_decode($jsonData);
+		$data = json_decode($jsonData,true);
 
 		if (!is_array($data)) { // invalid data format
 			throw new \UnexpectedValueException('Data has to be array');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use InvalidArgumentException;
 use Logstats\Http\Requests;
+use Logstats\Services\Data\CurrentProjectProviderInterface;
 use Logstats\Services\Database\DatabaseConfigServiceInterface;
 use Logstats\Services\Database\DatabaseCreator;
 use Logstats\Services\Database\TableCreator;
@@ -28,68 +29,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class InstallationController extends Controller
 {
 
-	/**
-	 *
-	 */
 	private $steps;
-	/**
-	 *
-	 */
 	private $databaseConfig;
-	/**
-	 *
-	 */
 	private $tableCreator;
-	/**
-	 *
-	 */
 	private $dbCreator;
-	/**
-	 * Logstats\Services\Validators\UserValidator
-	 */
 	private $userValidator;
-	/**
-	 *
-	 */
 	private $userService;
-	/**
-	 *
-	 */
 	private $projectService;
-	/**
-	 *
-	 */
 	private $projectValidator;
-	/**
-	 *
-	 */
 	private $config;
-	/**
-	 *
-	 */
 	private $timeZoneValidator;
-	/**
-	 *
-	 */
 	private $auth;
-	/**
-	 *
-	 */
 	private $installationService;
+	private $currentProjectProvider;
 
-	/**
-	 * @param StepCollection $steps Steps of the installation
-	 * @param DatabaseConfigServiceInterface $databaseConfig
-	 * @param TableCreator $tableCreator
-	 * @param DatabaseCreator $dbCreator
-	 * @param UserValidator $userValidator
-	 * @param UserServiceInterface $userService
-	 * @param ProjectServiceInterface $projectService
-	 * @param ProjectValidator $projectValidator
-	 * @param RepositoryInterface $config
-	 * @param TimeZoneValidator $timeZoneValidator
-	 * @param InstallationServiceInterface $installationService
-	 */
+
 	public function __construct(StepCollection $steps,
 								DatabaseConfigServiceInterface $databaseConfig,
 								TableCreator $tableCreator,
@@ -101,7 +55,8 @@ class InstallationController extends Controller
 								RepositoryInterface $config,
 								TimeZoneValidator $timeZoneValidator,
 								Guard $auth,
-								InstallationServiceInterface $installationService) {
+								InstallationServiceInterface $installationService,
+								CurrentProjectProviderInterface $currentProjectProvider) {
 		$this->steps = $steps;
 		$this->databaseConfig = $databaseConfig;
 		$this->tableCreator = $tableCreator;
@@ -114,6 +69,7 @@ class InstallationController extends Controller
 		$this->timeZoneValidator = $timeZoneValidator;
 		$this->auth = $auth;
 		$this->installationService = $installationService;
+		$this->currentProjectProvider = $currentProjectProvider;
 	}
 
 	public function index(Request $request, $step = 1) {
@@ -223,7 +179,8 @@ class InstallationController extends Controller
 
 		// create project if name was provided
 		if ($this->projectValidator->isValidForCreate(["name" => $request->get('project_name')])) {
-			$this->projectService->createProject($request->get('project_name'), $user);
+			$project = $this->projectService->createProject($request->get('project_name'), $user);
+			$this->currentProjectProvider->set($project);
 		}
 
 		// set timezone

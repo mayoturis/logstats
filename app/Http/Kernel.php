@@ -33,5 +33,7 @@ class Kernel extends HttpKernel
 		// Own middleware
 		'installed' => \Logstats\Http\Middleware\InstalledMiddleware::class,
 		'correct_installation_step' => \Logstats\Http\Middleware\CorrectInstallationStepMiddleware::class,
+		'can_visit' => \Logstats\Http\Middleware\CanVisitMiddleware::class,
+		'project_choosen' => \Logstats\Http\Middleware\ProjectChoosenMiddleware::class,
     ];
 }

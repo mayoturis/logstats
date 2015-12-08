@@ -2,6 +2,7 @@
 
 
 use Logstats\Entities\User;
+use Logstats\ValueObjects\Role;
 
 class UserFactory implements StdFactory, ArrayFactory, UserFactoryInterface {
 
@@ -12,9 +13,10 @@ class UserFactory implements StdFactory, ArrayFactory, UserFactoryInterface {
 	public function makeFromStd($stdClass) {
 		$user = new User(
 			$stdClass->name,
-			$stdClass->email,
 			$stdClass->password,
-			$stdClass->remember_token
+			$stdClass->email,
+			$stdClass->remember_token,
+			$this->getRoleOrNull($stdClass->role)
 		);
 
 		$user->setId($stdClass->id);
@@ -57,5 +59,13 @@ class UserFactory implements StdFactory, ArrayFactory, UserFactoryInterface {
 		$user->setId($id);
 
 		return $user;
+	}
+
+	private function getRoleOrNull($role) {
+		if ($role === null) {
+			return null;
+		}
+
+		return new Role($role);
 	}
 }

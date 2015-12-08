@@ -1,5 +1,6 @@
 <?php
 use Logstats\Entities\User;
+use Logstats\ValueObjects\Role;
 
 class UserTest extends TestCase {
 	public function test_id_can_be_set_and_get_in_new_user() {
@@ -61,12 +62,12 @@ class UserTest extends TestCase {
 		$this->assertEquals('email', $user->getEmail());
 	}
 
-	public function test_roles_can_be_set_and_get() {
+	public function test_role_can_be_set_and_get() {
 		$user = $this->getuser();
-		$roles = $this->getCollectionMock();
-		$user->setRoles($roles);
+		$role = new Role('role');
+		$user->setRole($role);
 
-		$this->assertEquals($roles, $user->getRoles());
+		$this->assertEquals($role, $user->getRole());
 	}
 
 	private function getUser() {

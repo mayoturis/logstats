@@ -3,7 +3,7 @@
 use Logstats\Repositories\Contracts\BaseRepository;
 use Logstats\Repositories\Contracts\Entity;
 
-abstract class DbBaseRepository implements BaseRepository {
+abstract class DbBaseRepository {
 
 
 	/**
@@ -12,8 +12,9 @@ abstract class DbBaseRepository implements BaseRepository {
 	 * @param array conditions
 	 * @return StdClass
 	 */
-	public function findByOne(array $conditions) {
+	protected function findFirstRawBy(array $conditions) {
 		$query = \DB::table($this->getTable());
+		$this->addJoins($query);
 
 		foreach ($conditions as $key => $value) {
 			$query->where($key, $value);
@@ -28,14 +29,19 @@ abstract class DbBaseRepository implements BaseRepository {
 	 * @param array $conditions
 	 * @return array of StdClass
 	 */
-	public function findBy(array $conditions) {
+	protected function findRawBy(array $conditions) {
 		$query = \DB::table($this->getTable());
+		$this->addJoins($query);
 
 		foreach ($conditions as $key => $value) {
 			$query->where($key, $value);
 		}
 
 		return $query->get();
+	}
+
+	protected function addJoins($query) {
+		return $query;
 	}
 
 	/**

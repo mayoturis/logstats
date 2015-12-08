@@ -14,37 +14,24 @@ interface UserRepository {
 	public function save(User $user);
 
 	/**
-	 * @param int $id
-	 * @return \Logstats\Entities\User
-	 */
-	public function findById($id);
-
-	/**
+	 * Find users by condtitions
+	 *
 	 * @param array $conditions
-	 * @return \Illuminate\Support\Collection of \Logstats\Entities\User
+	 * @return array of User
 	 */
 	public function findBy(array $conditions);
 
 	/**
-	 * Find role by its name
+	 * Find first user by conditions
 	 *
-	 * @param string $name Name of the role
-	 * @return \Logstats\ValueObjects\Role
+	 * @param array $conditions
+	 * @return User
 	 */
-	public function findRoleByName($name);
+	public function findFirstBy(array $conditions);
 
 	/**
-	 * Add new global role to user
-	 *
-	 * @param User $user
-	 * @param Role $role
-	 * @return void
+	 * @param int $id
+	 * @return \Logstats\Entities\User
 	 */
-	public function addRoleToUser(User $user, Role $role);
-
-	/**
-	 * @param User $user
-	 * @return \Illuminate\Support\Collection of Role
-	 */
-	public function findRolesForUser(User $user);
+	public function findById($id);
 }

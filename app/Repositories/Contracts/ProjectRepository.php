@@ -32,10 +32,32 @@ interface ProjectRepository {
 	public function findById($id);
 
 	/**
+	 * Find projects by conditions
+	 *
+	 * @param array $conditions
+	 * @return array of Project
+	 */
+	public function findBy(array $conditions);
+
+	/**
 	 * Find project by its token
 	 *
 	 * @param string $token Project token
 	 * @return Project
 	 */
 	public function findByToken($token);
+
+	/**
+	 * Get all projects
+	 *
+	 * @return array of Project
+	 */
+	public function findAll();
+
+	/**
+	 * Return all projects and date of the latest record
+	 *
+	 * @return array
+	 */
+	public function findAllWithLatestRecord($allowedRoles = null, $userId = null);
 }

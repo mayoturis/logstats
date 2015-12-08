@@ -27,7 +27,8 @@ class UserServiceTest extends TestCase {
 		$user = Mockery::mock('\Logstats\Entities\User');
 		$role = Mockery::mock('\Logstats\ValueObjects\Role');
 
-		$repository->shouldReceive('addRoleToUser')->with($user, $role);
+		$user->shouldReceive('setRole')->with($role);
+		$repository->shouldReceive('save')->with($user);
 
 		$userService->addRoleToUser($user, $role);
 	}

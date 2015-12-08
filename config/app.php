@@ -158,6 +158,7 @@ return [
 		Logstats\Services\Entities\EntitiesProvider::class,
 		Logstats\Services\Factories\FactoryProvider::class,
 		Logstats\Services\Data\DataProvider::class,
+		Logstats\Providers\ViewComposerProvider::class,
 	),
 
     /*
