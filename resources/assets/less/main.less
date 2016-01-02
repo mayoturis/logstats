@@ -28,10 +28,87 @@ label {
 	background-color: @darkerMainColor;
   }
 }
+
+.inline-block {
+  display: inline-block;
+}
+
+ul.pagination li.active a {
+  background-color: @mainColor;
+  border-color: @darkerMainColor;
+
+  &:hover, &:active, &:focus {
+	background-color: @mainColor;
+	border-color: @darkerMainColor;
+  }
+}
+
+.loader {
+  display: none;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  top: 50%;
+  margin-top: -50px;
+  left: 50%;
+  margin-left: 65px;
+  background-image: url("../images/loader-ring.gif");
+  background-size: 100%;
+}
+
 .daterange {
   width: 400px;
+  overflow: hidden;
+  float: left;
 
   label {
 	margin-left: 5px;
   }
+}
+
+.down-control {
+  clear: both;
+  display:none;
+
+  #add-filter-row {
+	margin-top: 5px;
+  }
+
+  #example-filter-row {
+	display: none;
+  }
+
+  .remove-filter-row {
+	font-size: 18px;
+	color: @mainColor;
+	cursor: pointer;
+  }
+  .comparison {
+	width: 191px;
+  }
+
+  .property-name, .value {
+	width: 200px !important;
+  }
+}
+
+.graph-tooltip {
+  position: absolute;
+  color: white;
+  display: none;
+  border: 1px solid @darkerMainColor;
+  padding: 2px;
+  background-color: @mainColor;
+  opacity: 0.80;
+}
+
+.graph-checkboxes {
+  input {
+	margin-left: 10px;
+	margint-right: 2px;
+  }
+}
+
+#data-holder {
+  color: @mainColor;
 }

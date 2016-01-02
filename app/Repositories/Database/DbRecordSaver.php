@@ -1,11 +1,10 @@
-<?php  namespace Logstats\Repositories; 
+<?php  namespace Logstats\Repositories\Database; 
 
 use Carbon\Carbon;
 use Logstats\Entities\Record;
-use Logstats\Repositories\Contracts\DataRepository;
+use Logstats\Repositories\PropertyType;
 
-class DbDataRepository implements DataRepository {
-
+class DbRecordSaver {
 	private $recordTable = 'records';
 	private $messageTable = 'messages';
 	private $propertiesTable = 'properties';
@@ -27,10 +26,15 @@ class DbDataRepository implements DataRepository {
 
 	private function saveMessageAndGetId($message, $projectId) {
 		$messageIdRaw = \DB::table($this->messageTable)->where('message', $message)
-							->where('project_id', $projectId)->first(['id']);
+			->where('project_id', $projectId)->first(['id']);
 		if (!empty($messageIdRaw)) {
 			return $messageIdRaw->id;
 		}
+
+		\Log::info([
+			"message" => $message,
+			"project_id" => $projectId,
+		]);
 
 		$id = \DB::table($this->messageTable)->insertGetId([
 			"message" => $message,

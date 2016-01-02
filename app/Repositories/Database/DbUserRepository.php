@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Repositories; 
+<?php  namespace Logstats\Repositories\Database;
 
 use Illuminate\Support\Collection;
 use Logstats\Services\Factories\StdFactory;

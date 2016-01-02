@@ -1,17 +1,20 @@
 <?php  namespace Logstats\Services\Entities; 
 
-use Carbon\Carbon;
 use Logstats\Entities\Project;
 use Logstats\Entities\Record;
-use Logstats\Repositories\Contracts\DataRepository;
+use Logstats\Repositories\Contracts\RecordRepository;
+use Logstats\Services\Date\CarbonConvertorInterface;
+use Logstats\ValueObjects\RecordConditions;
 
 class RecordService implements RecordServiceInterface{
 
 
-	private $dataRepository;
+	private $recordRepository;
+	private $carbonConvertor;
 
-	public function __construct(DataRepository $dataRepository) {
-		$this->dataRepository = $dataRepository;
+	public function __construct(RecordRepository $recordRepository, CarbonConvertorInterface $carbonConvertor) {
+		$this->recordRepository = $recordRepository;
+		$this->carbonConvertor = $carbonConvertor;
 	}
 
 	/**
@@ -23,15 +26,8 @@ class RecordService implements RecordServiceInterface{
 	 * @return Record
 	 */
 	public function createRecord($level, $message, $timestamp, Project $project, array $context = []) {
-		$record = new Record($level, $message, $this->carbonFromTimestampUTC($timestamp), $project->getId(), $context);
-		$this->dataRepository->newRecord($record);
+		$record = new Record($level, $message, $this->carbonConvertor->carbonFromTimestampUTC($timestamp), $project->getId(), $context);
+		$this->recordRepository->newRecord($record);
 		return $record;
-	}
-
-	private function carbonFromTimestampUTC($timestamp) {
-		$timezone = Carbon::now()->getTimezone();
-		$carbon = Carbon::createFromTimestampUTC($timestamp);
-		$carbon->setTimezone($timezone);
-		return $carbon;
 	}
 }

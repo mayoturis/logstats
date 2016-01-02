@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', isset($_ENV['APP_DEBUG']) ? $_ENV['APP_DEBUG'] : false),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'timezone' => env('TIMEZONE', 'Europe/London'),
+    'timezone' => env('TIMEZONE', isset($_ENV['TIMEZONE']) ? $_ENV['TIMEZONE'] : 'Europe/London'),
 
 
     /*
@@ -79,7 +79,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'SomeRandomString'),
+    'key' => env('APP_KEY', isset($_ENV['APP_KEY']) ? $_ENV['APP_KEY'] : 'randomb6WOkrorkzpUeomGkoz9jkb2RG'),
 
     'cipher' => 'AES-256-CBC',
 
@@ -159,6 +159,8 @@ return [
 		Logstats\Services\Factories\FactoryProvider::class,
 		Logstats\Services\Data\DataProvider::class,
 		Logstats\Providers\ViewComposerProvider::class,
+		Logstats\Providers\ViewComposerProvider::class,
+		Logstats\Services\Date\DateProvider::class,
 	),
 
     /*

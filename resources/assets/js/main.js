@@ -1,30 +1,56 @@
 $(document).ready(function() {
+	var timezone = $("#data-holder").attr("data-timezone");
+	var currentTimestamp = Date.now();
+	$('.daterange input[name=from]').val(moment.tz(currentTimestamp,timezone).subtract(1, 'hour').unix());
+	$('.daterange input[name=to]').val(moment.tz(currentTimestamp,timezone).unix());
 	$('div#daterange').daterangepicker({
 		"timePicker": true,
 		"timePicker24Hour": true,
-		"startDate": moment().subtract(1, 'hour'),
-		"endDate": moment(),
+		"startDate": moment.tz(currentTimestamp,timezone).subtract(1, 'hour'),
+		"endDate": moment.tz(currentTimestamp,timezone),
+		"opens" : "left",
 		ranges: {
-			'Today': [moment().startOf('day'), moment()],
-			'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-			'Last 20 Minutes': [moment().subtract(20, 'minutes'), moment()],
-			'Last Hour': [moment().subtract(1, 'hours'), moment()],
-			'Last 7 Days': [moment().subtract(7, 'days'), moment()],
-			'Last 14 Days': [moment().subtract(14, 'days'), moment()],
-			'Last 30 Days': [moment().subtract(30, 'days'), moment()],
-			'This Month': [moment().startOf('month'), moment()]
+			'Today': [moment.tz(currentTimestamp,timezone).startOf('day'), moment.tz(currentTimestamp,timezone)],
+			'Yesterday': [moment.tz(currentTimestamp,timezone).subtract(1, 'days').startOf('day'), moment.tz(currentTimestamp,timezone).subtract(1, 'days').endOf('day')],
+			'Last 20 Minutes': [moment.tz(currentTimestamp,timezone).subtract(20, 'minutes'), moment.tz(currentTimestamp,timezone)],
+			'Last Hour': [moment.tz(currentTimestamp,timezone).subtract(1, 'hours'), moment.tz(currentTimestamp,timezone)],
+			'Last 7 Days': [moment.tz(currentTimestamp,timezone).subtract(7, 'days'), moment.tz(currentTimestamp,timezone)],
+			'Last 14 Days': [moment.tz(currentTimestamp,timezone).subtract(14, 'days'), moment.tz(currentTimestamp,timezone)],
+			'Last 30 Days': [moment.tz(currentTimestamp,timezone).subtract(30, 'days'), moment.tz(currentTimestamp,timezone)],
+			'This Month': [moment.tz(currentTimestamp,timezone).startOf('month'), moment.tz(currentTimestamp,timezone).endOf('month')]
 		}
 	}, function(start,end,label) {
-		$('input[name=from]').val(start.unix());
-		$('input[name=to]').val(end.unix());
-		set_daterange(start, end);
+		console.log(start.unix());
+		if (label == "Custom Range") {
+			$('input[name=from]').val(moment_as_default_timezone_to_UTC_timestamp(start));
+			$('input[name=to]').val(moment_as_default_timezone_to_UTC_timestamp(end));
+			set_daterange(start, end)
+		} else {
+			$('input[name=from]').val(start.unix());
+			$('input[name=to]').val(end.unix());
+			set_daterange(start.tz(timezone), end.tz(timezone));
+		}
 	});
 
-	set_daterange(moment().subtract(1, 'hour'), moment());
+
+
+	set_daterange(moment().tz(timezone).subtract(1, 'hour'), moment().tz(timezone));
+
+	function set_daterange(start, end) {
+		var label = start.format('DD MMMM YYYY, HH:mm:ss');
+		label += ' - ' + end.format('DD MMMM YYYY, HH:mm:ss');
+		$('div#daterange label').html(label);
+	}
+
+
+
+	function moment_as_default_timezone_to_UTC_timestamp(time) {
+		var offset = moment().tz(timezone).utcOffset() - time.utcOffset();
+		return time.unix() - offset * 60;
+	}
 });
 
-function set_daterange(start, end) {
-	label = start.format('DD MMMM YYYY, HH:mm:ss');
-	label += ' - ' + end.format('DD MMMM YYYY, HH:mm:ss');
-	$('div#daterange label').html(label);
-}
+
+timezoneJS.timezone.zoneFileBasePath = "public/libraries/flot/tz";
+timezoneJS.timezone.defaultZoneFile = [];
+timezoneJS.timezone.init({async: false});

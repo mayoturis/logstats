@@ -1,7 +1,10 @@
 <?php  namespace Logstats\Repositories; 
 
 use Illuminate\Support\ServiceProvider;
-use Logstats\Repositories\Contracts\DataRepository;
+use Logstats\Repositories\Contracts\RecordRepository;
+use Logstats\Repositories\Database\DbRecordRepository;
+use Logstats\Repositories\Database\DbProjectRepository;
+use Logstats\Repositories\Database\DbUserRepository;
 use Logstats\Services\Factories\UserFactory;
 use Logstats\Repositories\Contracts\ProjectRepository;
 use Logstats\Repositories\Contracts\UserRepository;
@@ -16,7 +19,7 @@ class RepositoryProvider extends ServiceProvider{
 	public function register() {
 		$this->registerUserRepository();
 		$this->registerProjectRepository();
-		$this->registerDataRepository();
+		$this->registerRecordRepository();
 	}
 
 	private function registerUserRepository() {
@@ -34,10 +37,10 @@ class RepositoryProvider extends ServiceProvider{
 		);
 	}
 
-	private function registerDataRepository() {
+	private function registerRecordRepository() {
 		$this->app->bind(
-			DataRepository::class,
-			DbDataRepository::class
+			RecordRepository::class,
+			DbRecordRepository::class
 		);
 	}
 }

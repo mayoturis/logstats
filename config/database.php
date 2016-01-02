@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_TYPE'),
+    'default' => env('DB_TYPE', isset($_ENV['DB_TYPE']) ? $_ENV['DB_TYPE'] : null),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,41 +48,41 @@ return [
 
         'sqlite' => [
             'driver'   => 'sqlite',
-            'database' => env('DB_DATABASE_PATH'),
-            'prefix'   => env('DB_PREFIX'),
+            'database' => env('DB_DATABASE_PATH', isset($_ENV['DB_DATABASE_PATH']) ? $_ENV['DB_DATABASE_PATH'] : null),
+            'prefix'   => env('DB_PREFIX', isset($_ENV['DB_PREFIX']) ? $_ENV['DB_PREFIX'] : null),
         ],
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST'),
-            'database'  => env('DB_DATABASE'),
-            'username'  => env('DB_USERNAME'),
-            'password'  => env('DB_PASSWORD'),
-            'charset'   => env('DB_CHARSET'),
-            'collation' => env('COLLATION'),
-            'prefix'    => env('DB_PREFIX'),
+            'host'      => env('DB_HOST', isset($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : null),
+            'database'  => env('DB_DATABASE', isset($_ENV['DB_DATABASE']) ? $_ENV['DB_DATABASE'] : null),
+            'username'  => env('DB_USERNAME', isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : null),
+            'password'  => env('DB_PASSWORD', isset($_ENV['DB_PASSWORD']) ? $_ENV['DB_PASSWORD'] : null),
+            'charset'   => env('DB_CHARSET', isset($_ENV['DB_CHARSET']) ? $_ENV['DB_CHARSET'] : null),
+            'collation' => env('COLLATION', isset($_ENV['DB_COLLATION']) ? $_ENV['DB_COLLATION'] : null),
+            'prefix'    => env('DB_PREFIX', isset($_ENV['DB_PREFIX']) ? $_ENV['DB_PREFIX'] : null),
             'strict'    => false,
         ],
 
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => env('DB_HOST'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
-            'charset'  => env('DB_CHARSET'),
-            'prefix'   => env('DB_PREFIX'),
-            'schema'   => env('DB_SCHEMA'),
+            'host'     => env('DB_HOST', isset($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : null),
+            'database' => env('DB_DATABASE', isset($_ENV['DB_DATABASE']) ? $_ENV['DB_DATABASE'] : null),
+            'username' => env('DB_USERNAME', isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : null),
+            'password' => env('DB_PASSWORD', isset($_ENV['DB_PASSWORD']) ? $_ENV['DB_PASSWORD'] : null),
+            'charset'  => env('DB_CHARSET', isset($_ENV['DB_CHARSET']) ? $_ENV['DB_CHARSET'] : null),
+            'prefix'   => env('DB_PREFIX', isset($_ENV['DB_PREFIX']) ? $_ENV['DB_PREFIX'] : null),
+            'schema'   => env('DB_SCHEMA', isset($_ENV['DB_DATABASE_PATH']) ? $_ENV['DB_DATABASE_PATH'] : null),
         ],
 
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
-            'charset'  => env('DB_CHARSET'),
-            'prefix'   => env('DB_PREFIX'),
+            'host'     => env('DB_HOST', isset($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : null),
+            'database' => env('DB_DATABASE', isset($_ENV['DB_DATABASE']) ? $_ENV['DB_DATABASE'] : null),
+            'username' => env('DB_USERNAME', isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : null),
+            'password' => env('DB_PASSWORD', isset($_ENV['DB_PASSWORD']) ? $_ENV['DB_PASSWORD'] : null),
+            'charset'  => env('DB_CHARSET', isset($_ENV['DB_CHARSET']) ? $_ENV['DB_CHARSET'] : null),
+            'prefix'   => env('DB_PREFIX', isset($_ENV['DB_PREFIX']) ? $_ENV['DB_PREFIX'] : null),
         ],
 
     ],

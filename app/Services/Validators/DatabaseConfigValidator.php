@@ -6,30 +6,30 @@ class DatabaseConfigValidator extends AbstractValidator {
 	];
 
 	private $sqliteRules = [
-		'database_location' => 'required|file_can_be_created'
+		'database_location' => 'required|string|file_can_be_created'
 	];
 
 	private $mysqlRules = [
-		'host' => 'required',
-		'database' => 'required',
-		'username' => 'required',
-		'charset' => 'required',
-		'collation' => 'required',
+		'host' => 'required|string',
+		'database' => 'required|string',
+		'username' => 'required|string',
+		'charset' => 'required|string',
+		'collation' => 'required|string',
 	];
 
 	private $mssqlRules = [
-		'host' => 'required',
-		'database' => 'required',
-		'username' => 'required',
-		'charset' => 'required',
+		'host' => 'required|string',
+		'database' => 'required|string',
+		'username' => 'required|string',
+		'charset' => 'required|string',
 	];
 
 	private $pgsqlRules = [
-		'host' => 'required',
-		'database' => 'required',
-		'username' => 'required',
-		'charset' => 'required',
-		'schema' => 'required',
+		'host' => 'required|string',
+		'database' => 'required|string',
+		'username' => 'required|string',
+		'charset' => 'required|string',
+		'schema' => 'required|string',
 	];
 
 	public function isValidDatabaseSetup($input) {

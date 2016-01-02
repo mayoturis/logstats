@@ -11,12 +11,22 @@
 	{!! Html::style('public/libraries/adminlte/dist/css/AdminLTE.min.css') !!}
 	{!! Html::style('public/libraries/adminlte/dist/css/skins/skin-green.min.css') !!}
 	{!! Html::style('public/libraries/daterangepicker/daterangepicker.css') !!}
+	{!! Html::style('public/libraries/select2/dist/css/select2.css') !!}
+	{!! Html::style('public/libraries/select2/dist/css/bootstrap-theme.css') !!}
 
 	{!! Html::script('public/libraries/jquery/jquery.min.js') !!}
 	{!! Html::script('public/libraries/bootstrap/bootstrap.min.js') !!}
 	{!! Html::script('public/libraries/adminlte/dist/js/app.min.js') !!}
 	{!! Html::script('public/libraries/moment/moment.min.js') !!}
+	{!! Html::script('public/libraries/moment/moment-timezone-with-data.min.js') !!}
+	{!! Html::script('public/libraries/chained/jquery.chained.min.js') !!}
 	{!! Html::script('public/libraries/daterangepicker/daterangepicker.js') !!}
+	{!! Html::script('public/libraries/select2/dist/js/select2.min.js') !!}
+	{!! Html::script('public/libraries/flot/timezone.js') !!}
+	{!! Html::script('public/libraries/flot/jquery.flot.min.js') !!}
+	{!! Html::script('public/libraries/flot/jquery.flot.time.min.js') !!}
+	{!! Html::script('public/libraries/flot/jquery.flot.selection.min.js') !!}
+	{!! Html::script('public/libraries/serializeobject/jquery.serialize-object.min.js') !!}
 
 	{!! Html::script('public/js/main.js') !!}
 	{{-- Html::script('public/libraries/slimScroll/jquery.slimScroll.min.js') --}}
@@ -71,7 +81,7 @@
 				@if(!empty($currentProject))
 					<li class="header">{{ $currentProject->getName() }}</li>
 					<li class="{{ set_active('log') }}"><a href="{{ route('log') }}"><i class="fa fa-list-ul"></i><span>Log records</span></a></li>
-					<li><a href="#"><i class="fa fa-bar-chart"></i><span>Segmentation</span></a></li>
+					<li class="{{ set_active('segmentation') }}"><a href="{{ route('segmentation') }}"><i class="fa fa-bar-chart"></i><span>Segmentation</span></a></li>
 					<li><a href="#"><i class="fa fa-envelope"></i><span>Email alerting</span></a>
 				@endif
 				<li class="header">General</li>
@@ -113,7 +123,7 @@
 		<strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
 	</footer>
 </div>
-
+<div id="data-holder" data-timezone="{{ $timezone }}"></div>
 </body>
 </html>
 

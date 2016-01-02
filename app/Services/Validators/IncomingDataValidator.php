@@ -3,13 +3,13 @@
 class IncomingDataValidator extends AbstractValidator {
 
 	private $rootRules = [
-		'project' => 'required|exists:projects,token',
+		'project' => 'required|string|exists:projects,token',
 		'messages' => 'required|array'
 	];
 
 	private $messageRules = [
 		'level' => 'required|in:emergency,alert,critical,error,warning,notice,info,debug',
-		'message' => 'required',
+		'message' => 'required|string',
 		'time' => 'required|integer'
 	];
 

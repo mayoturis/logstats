@@ -5,20 +5,25 @@ namespace Logstats\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Logstats\Entities\Project;
 use Logstats\Entities\User;
+use Logstats\Repositories\Contracts\ProjectRepository;
+use Logstats\ValueObjects\RoleTypes;
 
 class ProjectPolicy
 {
     use HandlesAuthorization;
 
-    /**
+	private $projectRepository;
+
+	/**
      * Create a new policy instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ProjectRepository $projectRepository)
     {
         //
-    }
+		$this->projectRepository = $projectRepository;
+	}
 
 	public function create(User $user) {
 		return $user->isGeneralDataManager();
@@ -28,9 +33,32 @@ class ProjectPolicy
 		return $this->create($user);
 	}
 
+	public function showRecords(User $user, Project $project) {
+		return $this->show($user, $project);
+	}
+
+	public function showSegmentation(User $user, Project $project) {
+		return $this->show($user, $project);
+	}
+
+	public function show(User $user, Project $project) {
+		if ($user->isGeneralVisitor()) {
+			return true;
+		}
+
+		$roles = $this->projectRepository->findRolesForUserInProject($user, $project);
+		foreach ($roles as $role) {
+			if (in_array(RoleTypes::VISITOR, $role->allSubRoles())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	/*
 	public function before(User $user, $ability) {
 		if ($user->isGeneralAdmin()) {
 			return true;
 		}
-	}
+	}*/
 }

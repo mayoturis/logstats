@@ -5,6 +5,7 @@ namespace Logstats\Providers;
 use Illuminate\Support\ServiceProvider;
 use Logstats\Http\ViewComposers\AuthUserComposer;
 use Logstats\Http\ViewComposers\CurrentProjectComposer;
+use Logstats\Http\ViewComposers\TimezoneViewComposer;
 
 class ViewComposerProvider extends ServiceProvider
 {
@@ -18,6 +19,8 @@ class ViewComposerProvider extends ServiceProvider
 		view()->composer($this->adminViews(), AuthUserComposer::class);
 
 		view()->composer($this->adminViews(), CurrentProjectComposer::class);
+
+		view()->composer('*', TimezoneViewComposer::class);
     }
 
     /**
@@ -34,7 +37,8 @@ class ViewComposerProvider extends ServiceProvider
 		return [
 			'projects/*',
 			'info/*',
-			'log/*'
+			'log/*',
+			'segmentation/*'
 		];
 	}
 }

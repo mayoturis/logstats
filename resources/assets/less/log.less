@@ -1,0 +1,104 @@
+@import "variables.less";
+
+.log {
+  input, select {
+	display: inline-block;
+	width: auto;
+  }
+
+  .upper-control {
+
+	.add-filter {
+	  float: left;
+	  margin-left: 10px;
+	  margin-right: 10px;
+	}
+
+	input[name="message-search"] {
+	  width: 500px;
+	  float: left;
+	}
+
+
+  }
+
+
+  .page-numbers {
+	text-align: center;
+  }
+}
+
+.log-records {
+  font-family: @monospacedFont;
+  margin-top: 20px;
+
+  pre {
+	font-family: @monospacedFont;
+  }
+  .box {
+	border-top: none;
+	margin: 0px;
+	padding-left: 5px;
+
+	&:first-of-type {
+	  padding-top: 5px;
+	}
+	&:last-of-type {
+	  padding-bottom: 5px;
+	}
+
+	.box-header {
+	  padding: 1px;
+
+	  .text {
+		width: 100%;
+		padding-right: 100px;
+		overflow: hidden;
+		float: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	  }
+	  .more {
+		width: 100px;
+		top: 0px;
+		right: 0px;
+
+		a {
+		  padding: 1px;
+		  padding-right: 10px;
+		  float: right;
+		}
+	  }
+	}
+
+	.box-body {
+	  background-color: #F7F7F7;
+	}
+  }
+}
+
+
+@media (max-width: 730px) {
+  .filters input, .filters select {
+	width: 100% !important;
+  }
+}
+
+@media (min-width: 730px) and (max-width: 955px) {
+  .filters input, .filters select {
+	width: 115px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .log .upper-control input[name="message-search"] {
+	width: 100%;
+  }
+  .log .upper-control .daterange {
+	width: 100%;
+
+	i {
+	  display: none;
+	}
+  }
+}

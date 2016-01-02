@@ -26,13 +26,12 @@ use Logstats\ValueObjects\RoleTypes;
 use Mayoturis\Properties\RepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class InstallationController extends Controller
+class InstallationPostConfigurationController extends Controller
 {
 
 	private $steps;
 	private $databaseConfig;
 	private $tableCreator;
-	private $dbCreator;
 	private $userValidator;
 	private $userService;
 	private $projectService;
@@ -47,7 +46,6 @@ class InstallationController extends Controller
 	public function __construct(StepCollection $steps,
 								DatabaseConfigServiceInterface $databaseConfig,
 								TableCreator $tableCreator,
-								DatabaseCreator $dbCreator,
 								UserValidator $userValidator,
 								UserServiceInterface $userService,
 								ProjectServiceInterface $projectService,
@@ -60,7 +58,6 @@ class InstallationController extends Controller
 		$this->steps = $steps;
 		$this->databaseConfig = $databaseConfig;
 		$this->tableCreator = $tableCreator;
-		$this->dbCreator = $dbCreator;
 		$this->userValidator = $userValidator;
 		$this->userService = $userService;
 		$this->projectService = $projectService;

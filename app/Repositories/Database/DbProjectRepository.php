@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Repositories; 
+<?php  namespace Logstats\Repositories\Database;
 
 use Carbon\Carbon;
 use Logstats\DTOs\ProjectLastRecordDTO;
@@ -243,4 +243,23 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 		return $this->connection->quote($string, $param);
 	}
 
+	/**
+	 * @param User $user
+	 * @param Project $project
+	 * @return array of Role
+	 */
+	public function findRolesForUserInProject(User $user, Project $project) {
+		$rawRoles = \DB::table($this->projectRoleUserTable)
+				->where('user_id', $user->getId())
+				->where('project_id', $project->getId())->get(['role']);
+		return $this->rawRolesToRoleArray($rawRoles);
+	}
+
+	private function rawRolesToRoleArray($rawRoles) {
+		$roles = [];
+		foreach ($rawRoles as $rawRole) {
+			$roles[] = new Role($rawRole->role);
+		}
+		return $roles;
+	}
 }

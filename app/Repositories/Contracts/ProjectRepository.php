@@ -60,4 +60,11 @@ interface ProjectRepository {
 	 * @return array
 	 */
 	public function findAllWithLatestRecord($allowedRoles = null, $userId = null);
+
+	/**
+	 * @param User $user
+	 * @param Project $project
+	 * @return array of Role
+	 */
+	public function findRolesForUserInProject(User $user, Project $project);
 }

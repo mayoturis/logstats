@@ -6,8 +6,8 @@
 	{!! Html::script('public/libraries/jquery/jquery.min.js') !!}
 	{!! Html::style('public/libraries/bootstrap/bootstrap.min.css') !!}
 	{!! Html::script('public/libraries/bootstrap/bootstrap.min.js') !!}
-	{!! Html::script('public/libraries/select2/select2.min.js') !!}
-	{!! Html::style('public/libraries/select2/select2.css') !!}
+	{!! Html::script('public/libraries/select2/dist/js/select2.min.js') !!}
+	{!! Html::style('public/libraries/select2/dist/css/select2.css') !!}
 	{!! Html::style('public/css/main.css') !!}
 	{!! Html::style('public/css/installation.css') !!}
 	{!! Html::script('public/js/installation.js') !!}
@@ -30,7 +30,7 @@
 					<ol>
 						@foreach($installationSteps->getSteps() as $key => $step)
 							@if(!isset($step['notShow']))
-								<li class="{{ set_active('installation/'.$key) }}">{{ $step['menu'] }}</li>
+								<li class="{{ set_active('installation/1/'.$key) ? set_active('installation/1/'.$key) : set_active('installation/2/'.$key) }}">{{ $step['menu'] }}</li>
 							@endif
 						@endforeach
 					</ol>

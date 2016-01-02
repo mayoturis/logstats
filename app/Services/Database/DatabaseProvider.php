@@ -34,16 +34,5 @@ class DatabaseProvider extends ServiceProvider
 			TableCreator::class,
 			ArtisanTableCreator::class
 		);
-
-		$this->registerDatabaseCreator();
     }
-
-	private function registerDatabaseCreator() {
-		$this->app->bind(DatabaseCreator::class, function($app) {
-			$envConfig = $app->make('\\Mayoturis\\Properties\\RepositoryInterface');
-			$pdo = new \PDO("{$envConfig->get('DB_TYPE')}:user={$envConfig->get('DB_USERNAME')} password={$envConfig->get('DB_PASSWORD')}");
-
-			return new PDODatabaseCreator($envConfig, $pdo);
-		});
-	}
 }

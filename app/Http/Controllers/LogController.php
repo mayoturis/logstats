@@ -2,6 +2,8 @@
 
 namespace Logstats\Http\Controllers;
 
+use Illuminate\Auth\Access\UnauthorizedException;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
 use Logstats\Http\Requests;
@@ -12,9 +14,12 @@ class LogController extends Controller
 {
 
 	private $currentProjectProvider;
+	private $gate;
 
-	public function __construct(CurrentProjectProviderInterface $currentProjectProvider) {
+	public function __construct(CurrentProjectProviderInterface $currentProjectProvider,
+								Gate $gate) {
 		$this->currentProjectProvider = $currentProjectProvider;
+		$this->gate = $gate;
 	}
 
     /**
@@ -25,7 +30,10 @@ class LogController extends Controller
     public function index()
     {
 		$project = $this->currentProjectProvider->get();
+		if (!$this->gate->check('showRecords', [$project])) {
+			throw new UnauthorizedException('Access denied');
+		}
 
-		return view('log.index');
+		return view('log.index')->with('project', $project);
     }
 }

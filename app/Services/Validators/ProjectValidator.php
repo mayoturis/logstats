@@ -2,7 +2,7 @@
 
 class ProjectValidator extends AbstractValidator{
 	private $createRules = [
-		"name" => "required|unique:projects,name"
+		"name" => "required|string|unique:projects,name"
 	];
 
 	public function isValidForCreate($input) {

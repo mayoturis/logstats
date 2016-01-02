@@ -2,6 +2,7 @@
 
 use Logstats\Entities\Project;
 use Logstats\Entities\Record;
+use Logstats\ValueObjects\RecordConditions;
 
 interface RecordServiceInterface {
 

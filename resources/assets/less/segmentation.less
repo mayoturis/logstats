@@ -1,0 +1,98 @@
+@import "variables";
+
+.segmentation {
+  input, select {
+	display: inline-block;
+  }
+  .form-control {
+	width: auto;
+  }
+
+  select.form-control, input.form-control {
+	padding: 3px;
+	height: 28px;
+  }
+
+  div.level {
+	float: left;
+	width: 180px;
+  }
+
+  .select2-selection {
+	border-radius: 0px;
+	padding: 3px;
+  }
+
+  select#event {
+	width: 443px;
+  }
+
+  .upper-bar {
+	margin-top: 30px;
+
+	.group-by {
+	  width: 230px;
+	  float: left;
+
+	  select {
+		width: 150px;
+	  }
+	}
+
+
+	.interval {
+	  width: 156px;
+	  float: left;
+	  clear: both;
+	}
+
+	.target-property {
+	  select {
+		width: 150px;
+	  }
+	}
+
+	.aggregation {
+	  float: left;
+	  width: 184px;
+	}
+
+	.daterange {
+	  height: 28px;
+	  padding: 3px 12px;
+	}
+
+	button {
+	  padding: 3px 12px;
+	}
+  }
+
+  .graph {
+	clear: both;
+	width: 100%;
+	padding-right: 50px;
+	margin-top: 20px;
+
+	.graph-area {
+	  width: 100%;
+	  height: 400px;
+
+	  &.graph-one-value-container {
+		background-color: @mainColor;
+		vertical-align: middle;
+		text-align: center;
+		line-height: 400px;
+	  }
+	}
+
+
+
+	.graph-one-value {
+	  color: white;
+	  text-align: center;
+	  vertical-align: middle;
+	  font-size: 60px;
+	  font-weight: bold;
+	}
+  }
+}

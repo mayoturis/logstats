@@ -37,3 +37,20 @@ function old_select($optionName, $optionValue, $default = '', $attribute = 'sele
 function valueOrNull($array, $key) {
 	return isset($array[$key]) ? $array[$key] : null;
 }
+
+/**
+ * Assigns $value in $arr by the given $path in "dot" notation
+ *
+ * @param $arr
+ * @param $path
+ * @param $value
+ */
+function assignToArrayByDot(&$arr, $path, $value) {
+	$keys = explode('.', $path);
+
+	foreach ($keys as $key) {
+		$arr = &$arr[$key];
+	}
+
+	$arr = $value;
+}

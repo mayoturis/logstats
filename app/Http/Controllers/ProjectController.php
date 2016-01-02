@@ -79,7 +79,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-		if (!$this->gate->check('project.store')) {
+		if (!$this->gate->check('store.project')) {
 			throw new UnauthorizedException('Access denied');
 		}
 
@@ -109,7 +109,7 @@ class ProjectController extends Controller
 
 		$this->currentProjectProvider->set($project);
 
-		return redirect()->route('home');
+		return redirect()->route('log');
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Repositories; 
+<?php  namespace Logstats\Repositories\Database;
 
 use Logstats\Repositories\Contracts\BaseRepository;
 use Logstats\Repositories\Contracts\Entity;

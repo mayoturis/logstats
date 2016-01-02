@@ -2,9 +2,9 @@
 
 class UserValidator extends AbstractValidator {
 	private $create = [
-		"name" => "required|min:3|unique:users,name|max:255",
-		"password" => "required|min:5|confirmed|max:60",
-		"email" => "email|unique:users,email|max:255"
+		"name" => "required|string|min:3|unique:users,name|max:255",
+		"password" => "required|string|min:5|confirmed|max:60",
+		"email" => "email|string|unique:users,email|max:255"
 	];
 
 	public function isValidForCreate($input) {
