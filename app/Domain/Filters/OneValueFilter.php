@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters; 
+<?php  namespace Logstats\Domain\Filters;
 
 class OneValueFilter {
 

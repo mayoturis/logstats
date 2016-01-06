@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\BooleanFilters; 
+<?php  namespace Logstats\Domain\Filters\BooleanFilters;
 use Logstats\Domain\Filters\OneValueFilter;
 
 class EqualToFilter extends OneValueFilter implements BooleanFilter{

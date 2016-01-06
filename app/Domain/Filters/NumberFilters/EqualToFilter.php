@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\NumberFilters; 
+<?php  namespace Logstats\Domain\Filters\NumberFilters;
 
 use Logstats\Domain\Filters\OneValueFilter;
 

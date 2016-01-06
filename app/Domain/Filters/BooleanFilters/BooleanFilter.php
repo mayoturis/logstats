@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\BooleanFilters; 
+<?php  namespace Logstats\Domain\Filters\BooleanFilters;
 
 interface BooleanFilter {
 

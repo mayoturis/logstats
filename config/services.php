@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model'  => Logstats\User::class,
+        'model'  => Logstats\App\User::class,
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

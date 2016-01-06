@@ -443,8 +443,9 @@ LogstatsGraphDrawer.prototype.getFlotBarOptions = function() {
 LogstatsGraphDrawer.prototype.validDataCount = function() {
 	if (!this.timeframe || !this.interval)
 		return true;
-
-	var secondsToDisplay = this.timeframe.to - this.timeframe.from;
+	console.log(this.interval);
+	var minutesToDisplay = (this.timeframe.to - this.timeframe.from) / 60;
+	console.log(minutesToDisplay);
 	var step = 1;
 	if (this.interval == "hourly") {
 		step *= 60;
@@ -459,8 +460,8 @@ LogstatsGraphDrawer.prototype.validDataCount = function() {
 		step *= 365;
 	}
 
-	const MAX_INTERVAL_POINTS_TO_DISPLAY = 700000;
-	return secondsToDisplay / step < MAX_INTERVAL_POINTS_TO_DISPLAY;
+	const MAX_INTERVAL_POINTS_TO_DISPLAY = 50000;
+	return minutesToDisplay / step < MAX_INTERVAL_POINTS_TO_DISPLAY;
 }
 
 var GraphType = {

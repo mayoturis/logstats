@@ -1,4 +1,18 @@
 $(document).ready(function() {
+
+	function set_daterange(start, end) {
+		var label = start.format('DD MMMM YYYY, HH:mm:ss');
+		label += ' - ' + end.format('DD MMMM YYYY, HH:mm:ss');
+		$('div#daterange label').html(label);
+	}
+
+
+
+	function moment_as_default_timezone_to_UTC_timestamp(time) {
+		var offset = moment().tz(timezone).utcOffset() - time.utcOffset();
+		return time.unix() - offset * 60;
+	}
+
 	var timezone = $("#data-holder").attr("data-timezone");
 	var currentTimestamp = Date.now();
 	$('.daterange input[name=from]').val(moment.tz(currentTimestamp,timezone).subtract(1, 'hour').unix());
@@ -20,7 +34,6 @@ $(document).ready(function() {
 			'This Month': [moment.tz(currentTimestamp,timezone).startOf('month'), moment.tz(currentTimestamp,timezone).endOf('month')]
 		}
 	}, function(start,end,label) {
-		console.log(start.unix());
 		if (label == "Custom Range") {
 			$('input[name=from]').val(moment_as_default_timezone_to_UTC_timestamp(start));
 			$('input[name=to]').val(moment_as_default_timezone_to_UTC_timestamp(end));
@@ -36,18 +49,7 @@ $(document).ready(function() {
 
 	set_daterange(moment().tz(timezone).subtract(1, 'hour'), moment().tz(timezone));
 
-	function set_daterange(start, end) {
-		var label = start.format('DD MMMM YYYY, HH:mm:ss');
-		label += ' - ' + end.format('DD MMMM YYYY, HH:mm:ss');
-		$('div#daterange label').html(label);
-	}
 
-
-
-	function moment_as_default_timezone_to_UTC_timestamp(time) {
-		var offset = moment().tz(timezone).utcOffset() - time.utcOffset();
-		return time.unix() - offset * 60;
-	}
 });
 
 

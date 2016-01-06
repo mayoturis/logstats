@@ -63,7 +63,10 @@
 			<input type="hidden" name="page" value="1">
 			<input type="hidden" name="page-count" value="100">
 		</form>
-
+		<div class="log-graph">
+			<div class="log-graph-area"></div>
+			<div class="graph-tooltip"></div>
+		</div>
 		<div class="log-records">
 		</div>
 		<div class="page-numbers">

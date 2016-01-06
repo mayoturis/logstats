@@ -141,26 +141,25 @@ return [
         /*
          * Application Service Providers...
          */
-        Logstats\Providers\AppServiceProvider::class,
-        Logstats\Providers\AuthServiceProvider::class,
-        Logstats\Providers\EventServiceProvider::class,
-        Logstats\Providers\RouteServiceProvider::class,
+        Logstats\App\Providers\AppServiceProvider::class,
+        Logstats\App\Providers\AuthServiceProvider::class,
+        Logstats\App\Providers\EventServiceProvider::class,
+        Logstats\App\Providers\RouteServiceProvider::class,
 
 		// Other
 		Collective\Html\HtmlServiceProvider::class,
 		// Own
-		Logstats\Services\Installation\InstallationProvider::class,
-		Logstats\Services\Database\DatabaseProvider::class,
-		Logstats\Services\Validators\Rules\CustomRulesServiceProvider::class,
-		Logstats\Providers\EnvConfigProvider::class,
-		Logstats\Repositories\RepositoryProvider::class,
-		Logstats\Services\Auth\EntityAuthProvider::class,
-		Logstats\Services\Entities\EntitiesProvider::class,
-		Logstats\Services\Factories\FactoryProvider::class,
-		Logstats\Services\Data\DataProvider::class,
-		Logstats\Providers\ViewComposerProvider::class,
-		Logstats\Providers\ViewComposerProvider::class,
-		Logstats\Services\Date\DateProvider::class,
+		Logstats\App\Providers\Services\InstallationProvider::class,
+		Logstats\App\Providers\Services\DatabaseProvider::class,
+		Logstats\App\Providers\Services\CustomRulesServiceProvider::class,
+		Logstats\App\Providers\EnvConfigProvider::class,
+		Logstats\App\Providers\User\UserProvider::class,
+		Logstats\App\Providers\Project\ProjectProvider::class,
+		Logstats\App\Providers\Record\RecordProvider::class,
+		Logstats\App\Providers\Record\QueryProvider::class,
+		Logstats\App\Providers\Auth\EntityAuthProvider::class,
+		Logstats\App\Providers\ViewComposerProvider::class,
+		Logstats\App\Providers\Services\DateProvider::class,
 	),
 
     /*

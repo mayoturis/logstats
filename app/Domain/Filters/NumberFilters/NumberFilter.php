@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\NumberFilters; 
+<?php  namespace Logstats\Domain\Filters\NumberFilters;
 interface NumberFilter {
 
 	/**

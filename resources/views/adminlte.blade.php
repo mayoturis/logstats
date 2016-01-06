@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -79,7 +78,7 @@
 			<!-- Sidebar Menu -->
 			<ul class="sidebar-menu">
 				@if(!empty($currentProject))
-					<li class="header">{{ $currentProject->getName() }}</li>
+					<li class="header project-name">{{ $currentProject->getName() }}</li>
 					<li class="{{ set_active('log') }}"><a href="{{ route('log') }}"><i class="fa fa-list-ul"></i><span>Log records</span></a></li>
 					<li class="{{ set_active('segmentation') }}"><a href="{{ route('segmentation') }}"><i class="fa fa-bar-chart"></i><span>Segmentation</span></a></li>
 					<li><a href="#"><i class="fa fa-envelope"></i><span>Email alerting</span></a>

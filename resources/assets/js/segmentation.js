@@ -1,5 +1,44 @@
 $(document).ready(function() {
 	if($('.segmentation').size() > 0) { // if segmentation page
+
+		function reload_property_names(messageId) {
+			$.ajax({
+				type: "GET",
+				url: $(".segmentation").attr('data-property-names-url'),
+				data: {
+					'message-id': messageId
+				}, // serializes the form's elements.
+				success: function(data)
+				{
+					$('.property-options').html('');
+					$('.property-options').append('<option>&nbsp;</option>');
+					$.each(data, function(key, value) {
+						$('.property-options').append('<option value="'+value+'">'+value+'</option>');
+					});
+				}
+			});
+		}
+
+		function add_filter_row() {
+			var html = $("#example-filter-row").html();
+			$(".filters").append('<div id="'+filterId+'">'+html+'</div>');
+			var row = $('div#'+filterId);
+			$(".property-name", row).select2({placeholder:'Property name'});
+			$(".property-name", row).attr('name', 'filters['+filterId+'][propertyName]');
+			$(".comparison", row).attr('name', 'filters['+filterId+'][comparisonType]');
+			$(".value", row).attr('name', 'filters['+filterId+'][propertyValue]');
+			$(".remove-filter-row", row).attr("data-id", filterId);
+			filterId++;
+		}
+
+		function show_loader() {
+			$("#loader").show();
+		}
+
+		function hide_loader() {
+			$("#loader").hide();
+		}
+
 		var drawer = new LogstatsGraphDrawer('.graph-area', {
 			enablePointHover: true,
 			enableLineManipulation: true,
@@ -19,7 +58,6 @@ $(document).ready(function() {
 				var split = $('select#event').val().split(',');
 				query.event = split[1];
 			}
-			console.log(query);
 			if (typeof query.filters != "undefined") {
 				query.filters = $.grep(query.filters, function(value) {
 					return typeof value != "undefined";
@@ -112,43 +150,7 @@ $(document).ready(function() {
 		});
 
 
-		function reload_property_names(messageId) {
-			$.ajax({
-				type: "GET",
-				url: $(".segmentation").attr('data-property-names-url'),
-				data: {
-					'message-id': messageId
-				}, // serializes the form's elements.
-				success: function(data)
-				{
-					$('.property-options').html('');
-					$('.property-options').append('<option>&nbsp;</option>');
-					$.each(data, function(key, value) {
-						$('.property-options').append('<option value="'+value+'">'+value+'</option>');
-					});
-				}
-			});
-		}
 
-		function add_filter_row() {
-			var html = $("#example-filter-row").html();
-			$(".filters").append('<div id="'+filterId+'">'+html+'</div>');
-			var row = $('div#'+filterId);
-			$(".property-name", row).select2({placeholder:'Property name'});
-			$(".property-name", row).attr('name', 'filters['+filterId+'][propertyName]');
-			$(".comparison", row).attr('name', 'filters['+filterId+'][comparisonType]');
-			$(".value", row).attr('name', 'filters['+filterId+'][propertyValue]');
-			$(".remove-filter-row", row).attr("data-id", filterId);
-			filterId++;
-		}
-
-		function show_loader() {
-			$("#loader").show();
-		}
-
-		function hide_loader() {
-			$("#loader").hide();
-		}
 	}
 
 

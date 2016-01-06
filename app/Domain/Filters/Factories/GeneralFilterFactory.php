@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\Factories; 
+<?php  namespace Logstats\Domain\Filters\Factories;
 class GeneralFilterFactory {
 
 	public function make($value, $variableType, $comparisonType) {

@@ -46,8 +46,10 @@ Route::group(['middleware' => 'installed'], function() {
 	});
 
 	// both URLs should be able to handle data
-	Route::post('', ['uses' => 'RecordController@store']);
-	Route::post('api', ['uses' => 'RecordController@store']);
+	Route::post('', ['uses' => 'IncomingDataController@store']);
+	Route::post('api', ['uses' => 'IncomingDataController@store']);
+	/*Route::post('', ['uses' => 'RecordController@store']);
+	Route::post('api', ['uses' => 'RecordController@store']);*/
 
 });
 

@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\ArrayFilters; 
+<?php  namespace Logstats\Domain\Filters\ArrayFilters;
 interface ArrayFilter {
 
 	/**

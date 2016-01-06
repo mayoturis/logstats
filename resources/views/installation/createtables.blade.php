@@ -4,7 +4,6 @@
 
 @section('content')
 
-	@inject('installationSteps', '\Logstats\Services\Installation\StepCollection')
 
 	@if (!empty($errorMessage))
 		<div class="bg-danger message-div">

@@ -5,7 +5,6 @@
 @section('content')
 	@include('partials.form_errors', ['messageBag' => 'databaseSetup'])
 
-	@inject('installationSteps', '\Logstats\Services\Installation\StepCollection')
 	<form method="POST" action="{{ URL::route('installation', ['step' =>  $installationSteps->getKeyByShort('databaseSetup')])}}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<table class="table database-setup">

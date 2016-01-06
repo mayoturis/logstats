@@ -84,6 +84,7 @@ ul.pagination li.active a:focus {
   padding: 2px;
   background-color: #00A65A;
   opacity: 0.80;
+  z-index: 1000;
 }
 .graph-checkboxes input {
   margin-left: 10px;
@@ -91,6 +92,9 @@ ul.pagination li.active a:focus {
 }
 #data-holder {
   color: #00A65A;
+}
+.sidebar-menu .project-name {
+  color: white !important;
 }
 
 .login-form {
@@ -170,6 +174,15 @@ ul.pagination li.active a:focus {
 }
 .log-records .box .box-body {
   background-color: #F7F7F7;
+}
+.log-graph {
+  width: 100%;
+  height: 100px;
+  padding-right: 50px;
+}
+.log-graph .log-graph-area {
+  width: 100%;
+  height: 100px;
 }
 @media (max-width: 730px) {
   .filters input,

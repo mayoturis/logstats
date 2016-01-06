@@ -26,7 +26,6 @@
 		<div class="row">
 			<div class="col-xs-3">
 				<nav>
-					@inject('installationSteps', '\Logstats\Services\Installation\StepCollection')
 					<ol>
 						@foreach($installationSteps->getSteps() as $key => $step)
 							@if(!isset($step['notShow']))

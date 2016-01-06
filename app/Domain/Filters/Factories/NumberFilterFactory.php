@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\Factories; 
+<?php  namespace Logstats\Domain\Filters\Factories;
 use InvalidArgumentException;
 use Logstats\Domain\Filters\NumberFilters\EqualToFilter;
 use Logstats\Domain\Filters\NumberFilters\GreaterOrEqualToFilter;

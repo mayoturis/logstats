@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\Factories; 
+<?php  namespace Logstats\Domain\Filters\Factories;
 use Logstats\Domain\Filters\BooleanFilters\EqualToFilter;
 
 class BooleanFilterFactory {

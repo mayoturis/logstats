@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Filters\TimeFilters; 
+<?php  namespace Logstats\Domain\Filters\TimeFilters;
 
 use Carbon\Carbon;
 use Logstats\Domain\Filters\OneValueFilter;

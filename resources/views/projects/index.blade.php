@@ -18,6 +18,7 @@
 				</div>
 			</div>
 			<div class="box-body">
+				Token: {{ $projectdto->getProject()->getToken() }}<br>
 			    Created at: {{ $projectdto->getProject()->getCreatedAt() }}
 				<div class="pull-right">
 					@if($projectdto->getLastRecordDate() === null)

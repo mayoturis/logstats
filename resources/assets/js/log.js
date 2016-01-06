@@ -1,42 +1,11 @@
 $(document).ready(function() {
 	if ($('.log').size() > 0) {
-		var page = 1;
-		var totalRecordCount = 0;
-		var recordPerPage = 100;
-		var filterId = 1;
-
-		$("form#get-records").submit(function(e) {
-			$("input[name='page']").val('1');
-			load_records();
-			e.preventDefault();
-		})
-
-		$(".page-numbers").on('click', 'li a', function(e) {
-			page = $(this).parent().attr('data-page');
-			$('.page-numbers li').removeClass('active');
-			$(this).parent().addClass('active');
-			$('input[name="page"]').val(page);
-			load_records();
-			window.scrollTo(0,0);
-			e.preventDefault();
-			return false;
+		var graphDrawer = new LogstatsGraphDrawer('.log-graph-area', {
+			enablePointHover: true,
+			enableLineManipulation: false,
+			enableSelectionZooming: false,
+			timezone: $("#data-holder").attr("data-timezone")
 		});
-
-		$(".add-filter").click(function() {
-			$(".down-control").show();
-		});
-
-		$("#add-filter-row").click(add_filter_row);
-		$(".filters").on('click', '.remove-filter-row', function() {
-			$("div#" + $(this).attr('data-id')).remove();
-		});
-
-		if($('div.log')) { // if log page
-			add_filter_row();
-			load_records();
-		}
-
-
 		function load_records() {
 			show_loader();
 			$.ajax({
@@ -53,6 +22,13 @@ $(document).ready(function() {
 
 					totalRecordCount = data.count;
 					generate_page_numbers();
+					console.log(data.graphData);
+					if (data.graphData.data && data.graphData.data.length > 0) {
+						$(".log-graph").show();
+						graphDrawer.draw(data.graphData.data, data.graphData.timeframe);
+					} else {
+						$(".log-graph").hide();
+					}
 					hide_loader();
 				}
 			});
@@ -90,6 +66,45 @@ $(document).ready(function() {
 			$('select[name="filters['+filterId+'][comparison-type]"]').chained('select[name="filters['+filterId+'][property-type]"]');
 			filterId++;
 		}
+
+		var page = 1;
+		var totalRecordCount = 0;
+		var recordPerPage = 100;
+		var filterId = 1;
+
+		$("form#get-records").submit(function(e) {
+			$("input[name='page']").val('1');
+			load_records();
+			e.preventDefault();
+		})
+
+		$(".page-numbers").on('click', 'li a', function(e) {
+			page = $(this).parent().attr('data-page');
+			$('.page-numbers li').removeClass('active');
+			$(this).parent().addClass('active');
+			$('input[name="page"]').val(page);
+			load_records();
+			window.scrollTo(0,0);
+			e.preventDefault();
+			return false;
+		});
+
+		$(".add-filter").click(function() {
+			$(".down-control").show();
+		});
+
+		$("#add-filter-row").click(add_filter_row);
+		$(".filters").on('click', '.remove-filter-row', function() {
+			$("div#" + $(this).attr('data-id')).remove();
+		});
+
+		if($('div.log')) { // if log page
+			add_filter_row();
+			load_records();
+		}
+
+
+
 
 	} // end of if
 });

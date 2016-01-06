@@ -1,4 +1,18 @@
 $(document).ready(function() {
+
+	function set_daterange(start, end) {
+		var label = start.format('DD MMMM YYYY, HH:mm:ss');
+		label += ' - ' + end.format('DD MMMM YYYY, HH:mm:ss');
+		$('div#daterange label').html(label);
+	}
+
+
+
+	function moment_as_default_timezone_to_UTC_timestamp(time) {
+		var offset = moment().tz(timezone).utcOffset() - time.utcOffset();
+		return time.unix() - offset * 60;
+	}
+
 	var timezone = $("#data-holder").attr("data-timezone");
 	var currentTimestamp = Date.now();
 	$('.daterange input[name=from]').val(moment.tz(currentTimestamp,timezone).subtract(1, 'hour').unix());
@@ -20,7 +34,6 @@ $(document).ready(function() {
 			'This Month': [moment.tz(currentTimestamp,timezone).startOf('month'), moment.tz(currentTimestamp,timezone).endOf('month')]
 		}
 	}, function(start,end,label) {
-		console.log(start.unix());
 		if (label == "Custom Range") {
 			$('input[name=from]').val(moment_as_default_timezone_to_UTC_timestamp(start));
 			$('input[name=to]').val(moment_as_default_timezone_to_UTC_timestamp(end));
@@ -36,18 +49,7 @@ $(document).ready(function() {
 
 	set_daterange(moment().tz(timezone).subtract(1, 'hour'), moment().tz(timezone));
 
-	function set_daterange(start, end) {
-		var label = start.format('DD MMMM YYYY, HH:mm:ss');
-		label += ' - ' + end.format('DD MMMM YYYY, HH:mm:ss');
-		$('div#daterange label').html(label);
-	}
 
-
-
-	function moment_as_default_timezone_to_UTC_timestamp(time) {
-		var offset = moment().tz(timezone).utcOffset() - time.utcOffset();
-		return time.unix() - offset * 60;
-	}
 });
 
 
@@ -57,43 +59,12 @@ timezoneJS.timezone.init({async: false});
 
 $(document).ready(function() {
 	if ($('.log').size() > 0) {
-		var page = 1;
-		var totalRecordCount = 0;
-		var recordPerPage = 100;
-		var filterId = 1;
-
-		$("form#get-records").submit(function(e) {
-			$("input[name='page']").val('1');
-			load_records();
-			e.preventDefault();
-		})
-
-		$(".page-numbers").on('click', 'li a', function(e) {
-			page = $(this).parent().attr('data-page');
-			$('.page-numbers li').removeClass('active');
-			$(this).parent().addClass('active');
-			$('input[name="page"]').val(page);
-			load_records();
-			window.scrollTo(0,0);
-			e.preventDefault();
-			return false;
+		var graphDrawer = new LogstatsGraphDrawer('.log-graph-area', {
+			enablePointHover: true,
+			enableLineManipulation: false,
+			enableSelectionZooming: false,
+			timezone: $("#data-holder").attr("data-timezone")
 		});
-
-		$(".add-filter").click(function() {
-			$(".down-control").show();
-		});
-
-		$("#add-filter-row").click(add_filter_row);
-		$(".filters").on('click', '.remove-filter-row', function() {
-			$("div#" + $(this).attr('data-id')).remove();
-		});
-
-		if($('div.log')) { // if log page
-			add_filter_row();
-			load_records();
-		}
-
-
 		function load_records() {
 			show_loader();
 			$.ajax({
@@ -110,6 +81,13 @@ $(document).ready(function() {
 
 					totalRecordCount = data.count;
 					generate_page_numbers();
+					console.log(data.graphData);
+					if (data.graphData.data && data.graphData.data.length > 0) {
+						$(".log-graph").show();
+						graphDrawer.draw(data.graphData.data, data.graphData.timeframe);
+					} else {
+						$(".log-graph").hide();
+					}
 					hide_loader();
 				}
 			});
@@ -148,12 +126,90 @@ $(document).ready(function() {
 			filterId++;
 		}
 
+		var page = 1;
+		var totalRecordCount = 0;
+		var recordPerPage = 100;
+		var filterId = 1;
+
+		$("form#get-records").submit(function(e) {
+			$("input[name='page']").val('1');
+			load_records();
+			e.preventDefault();
+		})
+
+		$(".page-numbers").on('click', 'li a', function(e) {
+			page = $(this).parent().attr('data-page');
+			$('.page-numbers li').removeClass('active');
+			$(this).parent().addClass('active');
+			$('input[name="page"]').val(page);
+			load_records();
+			window.scrollTo(0,0);
+			e.preventDefault();
+			return false;
+		});
+
+		$(".add-filter").click(function() {
+			$(".down-control").show();
+		});
+
+		$("#add-filter-row").click(add_filter_row);
+		$(".filters").on('click', '.remove-filter-row', function() {
+			$("div#" + $(this).attr('data-id')).remove();
+		});
+
+		if($('div.log')) { // if log page
+			add_filter_row();
+			load_records();
+		}
+
+
+
+
 	} // end of if
 });
 
 
 $(document).ready(function() {
 	if($('.segmentation').size() > 0) { // if segmentation page
+
+		function reload_property_names(messageId) {
+			$.ajax({
+				type: "GET",
+				url: $(".segmentation").attr('data-property-names-url'),
+				data: {
+					'message-id': messageId
+				}, // serializes the form's elements.
+				success: function(data)
+				{
+					$('.property-options').html('');
+					$('.property-options').append('<option>&nbsp;</option>');
+					$.each(data, function(key, value) {
+						$('.property-options').append('<option value="'+value+'">'+value+'</option>');
+					});
+				}
+			});
+		}
+
+		function add_filter_row() {
+			var html = $("#example-filter-row").html();
+			$(".filters").append('<div id="'+filterId+'">'+html+'</div>');
+			var row = $('div#'+filterId);
+			$(".property-name", row).select2({placeholder:'Property name'});
+			$(".property-name", row).attr('name', 'filters['+filterId+'][propertyName]');
+			$(".comparison", row).attr('name', 'filters['+filterId+'][comparisonType]');
+			$(".value", row).attr('name', 'filters['+filterId+'][propertyValue]');
+			$(".remove-filter-row", row).attr("data-id", filterId);
+			filterId++;
+		}
+
+		function show_loader() {
+			$("#loader").show();
+		}
+
+		function hide_loader() {
+			$("#loader").hide();
+		}
+
 		var drawer = new LogstatsGraphDrawer('.graph-area', {
 			enablePointHover: true,
 			enableLineManipulation: true,
@@ -173,7 +229,6 @@ $(document).ready(function() {
 				var split = $('select#event').val().split(',');
 				query.event = split[1];
 			}
-			console.log(query);
 			if (typeof query.filters != "undefined") {
 				query.filters = $.grep(query.filters, function(value) {
 					return typeof value != "undefined";
@@ -266,43 +321,7 @@ $(document).ready(function() {
 		});
 
 
-		function reload_property_names(messageId) {
-			$.ajax({
-				type: "GET",
-				url: $(".segmentation").attr('data-property-names-url'),
-				data: {
-					'message-id': messageId
-				}, // serializes the form's elements.
-				success: function(data)
-				{
-					$('.property-options').html('');
-					$('.property-options').append('<option>&nbsp;</option>');
-					$.each(data, function(key, value) {
-						$('.property-options').append('<option value="'+value+'">'+value+'</option>');
-					});
-				}
-			});
-		}
 
-		function add_filter_row() {
-			var html = $("#example-filter-row").html();
-			$(".filters").append('<div id="'+filterId+'">'+html+'</div>');
-			var row = $('div#'+filterId);
-			$(".property-name", row).select2({placeholder:'Property name'});
-			$(".property-name", row).attr('name', 'filters['+filterId+'][propertyName]');
-			$(".comparison", row).attr('name', 'filters['+filterId+'][comparisonType]');
-			$(".value", row).attr('name', 'filters['+filterId+'][propertyValue]');
-			$(".remove-filter-row", row).attr("data-id", filterId);
-			filterId++;
-		}
-
-		function show_loader() {
-			$("#loader").show();
-		}
-
-		function hide_loader() {
-			$("#loader").hide();
-		}
 	}
 
 
@@ -991,8 +1010,9 @@ LogstatsGraphDrawer.prototype.getFlotBarOptions = function() {
 LogstatsGraphDrawer.prototype.validDataCount = function() {
 	if (!this.timeframe || !this.interval)
 		return true;
-
-	var secondsToDisplay = this.timeframe.to - this.timeframe.from;
+	console.log(this.interval);
+	var minutesToDisplay = (this.timeframe.to - this.timeframe.from) / 60;
+	console.log(minutesToDisplay);
 	var step = 1;
 	if (this.interval == "hourly") {
 		step *= 60;
@@ -1007,8 +1027,8 @@ LogstatsGraphDrawer.prototype.validDataCount = function() {
 		step *= 365;
 	}
 
-	const MAX_INTERVAL_POINTS_TO_DISPLAY = 700000;
-	return secondsToDisplay / step < MAX_INTERVAL_POINTS_TO_DISPLAY;
+	const MAX_INTERVAL_POINTS_TO_DISPLAY = 50000;
+	return minutesToDisplay / step < MAX_INTERVAL_POINTS_TO_DISPLAY;
 }
 
 var GraphType = {

@@ -4,7 +4,6 @@
 
 @section('content')
 
-	@inject('installationSteps', '\Logstats\Services\Installation\StepCollection')
 	<form method="POST" action="{{ URL::route('installation', ['step' =>  $installationSteps->getKeyByShort('generalSetup')])}}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		@include('partials.form_errors', ['messageBag' => 'generalSetupUser'])
