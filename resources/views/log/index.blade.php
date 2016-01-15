@@ -17,19 +17,15 @@
 				<button class="maincolor-box btn">
 					<i class="fa fa-search"></i> Find
 				</button>
+				<button class="maincolor-box btn" id="export-csv" data-export-csv-url="{{ route('export-csv') }}">
+					<i class="fa fa-file-code-o"></i> Export in CSV
+				</button>
 			</div>
 			<div class="down-control">
 				<div>
 					<select class="form-control" name="level">
 						<option value="">All levels</option>
-						<option value="emergency">emergency</option>
-						<option value="alert">alert</option>
-						<option value="critical">critical</option>
-						<option value="error">error</option>
-						<option value="warning">warning</option>
-						<option value="notice">notice</option>
-						<option value="info">info</option>
-						<option value="debug">debug</option>
+						@include('partials.level_options')
 					</select>
 				</div>
 				<div class="filters">

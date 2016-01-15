@@ -50,6 +50,18 @@ $(document).ready(function() {
 	set_daterange(moment().tz(timezone).subtract(1, 'hour'), moment().tz(timezone));
 
 
+	$(".nav-tabs li").click(function() {
+		$(".nav-tabs li").removeClass("active");
+		$(this).addClass("active");
+		$(".tab-div").hide();
+		var id = $(this).attr('data-id');
+		$("#"+id).show();
+	});
+
+	$(".submitable-link").click(function() {
+		$(this).closest('form').submit();
+	})
+
 });
 
 

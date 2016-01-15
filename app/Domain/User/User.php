@@ -163,7 +163,7 @@ class User implements Authenticatable {
 	/**
 	 * @param Role $roles
 	 */
-	public function setRole(Role $role) {
+	public function setRole(Role $role = null) {
 		$this->role = $role;
 	}
 
@@ -184,6 +184,6 @@ class User implements Authenticatable {
 			return false;
 		}
 
-		return in_array($role, $this->role->allSubRoles());
+		return $this->role->isRole($role);
 	}
 }

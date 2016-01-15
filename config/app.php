@@ -143,15 +143,16 @@ return [
          */
         Logstats\App\Providers\AppServiceProvider::class,
         Logstats\App\Providers\AuthServiceProvider::class,
-        Logstats\App\Providers\EventServiceProvider::class,
         Logstats\App\Providers\RouteServiceProvider::class,
 
 		// Other
 		Collective\Html\HtmlServiceProvider::class,
 		// Own
+		Logstats\Domain\Events\EventServiceProvider::class,
 		Logstats\App\Providers\Services\InstallationProvider::class,
 		Logstats\App\Providers\Services\DatabaseProvider::class,
 		Logstats\App\Providers\Services\CustomRulesServiceProvider::class,
+		Logstats\App\Providers\Services\ConvertorsProvider::class,
 		Logstats\App\Providers\EnvConfigProvider::class,
 		Logstats\App\Providers\User\UserProvider::class,
 		Logstats\App\Providers\Project\ProjectProvider::class,
@@ -160,6 +161,7 @@ return [
 		Logstats\App\Providers\Auth\EntityAuthProvider::class,
 		Logstats\App\Providers\ViewComposerProvider::class,
 		Logstats\App\Providers\Services\DateProvider::class,
+		Logstats\App\Providers\Alerting\AlertingProvider::class,
 	),
 
     /*

@@ -20,7 +20,7 @@ Route::group(['middleware' => 'installed'], function() {
 	Route::get('auth/login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
 	Route::post('auth/login', 'AuthController@postLogin');
 	Route::get('auth/logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
-	Route::get('auth/register', 'UserController@create');
+	Route::get('auth/register', ['as' => 'register', 'uses' => 'UserController@create']);
 	Route::resource('user', 'UserController');
 
 	Route::get('query', ['as' => 'query', 'uses' => 'QueryController@get']);
@@ -31,13 +31,27 @@ Route::group(['middleware' => 'installed'], function() {
 		Route::resource('projects', 'ProjectController');
 
 		Route::get('how-to-send-logs', ['as' => 'how-to-send-logs', 'uses' => 'InfoController@howToSendLogs']);
+		// User management
+		Route::get('user-management', ['as' => 'user-management', 'middleware' => 'admin', 'uses' => 'UserManagementController@index']);
+		Route::post('user-management-all', ['as' => 'user-management-all', 'middleware' => 'admin', 'uses' => 'UserManagementController@saveUsersRoles']);
+		Route::post('user-management-project', ['as' => 'user-management-project', 'middleware' => 'admin', 'uses' => 'UserManagementController@saveProjectRoles']);
+
+		Route::get('settings', ['as' => 'settings', 'middleware' => 'admin', 'uses' => 'SettingsController@index']);
+		Route::post('settings-store', ['as' => 'settings-store', 'middleware' => 'admin', 'uses' => 'SettingsController@store']);
 
 		Route::group(['middleware' => 'project_choosen'], function() {
+			Route::get('log', ['as' => 'log', 'uses' => 'LogController@index']);
+			Route::get('export-csv', ['as' => 'export-csv', 'uses' => 'ExportController@csv']);
+
 			Route::get('segmentation', ['as' => 'segmentation', 'uses' => 'SegmentationController@index']);
+			Route::get('record/ajax-show', ['as' => 'ajax-get-records', 'uses' => 'RecordController@ajaxShow']);
 			Route::get('record/ajax-messages', ['as' => 'ajax-messages', 'uses' => 'RecordController@ajaxMessages']);
 			Route::get('record/ajax-property-names', ['as' => 'ajax-property-names', 'uses' => 'RecordController@ajaxPropertyNames']);
-			Route::get('log', ['as' => 'log', 'uses' => 'LogController@index']);
-			Route::get('record/ajax-show', ['as' => 'ajax-get-records', 'uses' => 'RecordController@ajaxShow']);
+
+			Route::resource('alerting', 'AlertingController');
+
+			Route::get('project-management', ['as' => 'project-management', 'uses' => 'ProjectManagementController@index']);
+			Route::delete('project-management/delete-records', ['as' => 'project-management.deleteRecords', 'uses' => 'ProjectManagementController@deleteRecords']);
 		});
 
 		Route::get('seed', function() {
@@ -72,14 +86,24 @@ Route::get('seed', function() {
 });
 
 Route::get('a', function(Request $request) {
-	$response = new Illuminate\Http\Response('Hello World');
+	\Illuminate\Support\Facades\Mail::send('auth.login', [], function ($m)  {
+		$m->from('hello@app.com', 'Your Application');
 
-	$response->withCookie(cookie('name', 'value', 5));
+		$m->to('mtfotky@gmail.com', 'Marek Novák')->subject('Your Reminder!');
+	});
 
-	return $response;
-});
+	$mail = new PHPMailer(true);
+	$mail->setFrom('from@example.com', 'Mailer');
+	$mail->addAddress('mtfotky@gmail.com');               // Name is optional
+	$mail->addReplyTo('info@example.com', 'Information');
+	$mail->Subject = 'Here is the subject';
+	$mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+	$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-Route::get('b', function() {
-	dd(new \DateTime('4 minutes ago'));
-	dd(\Carbon\Carbon::parse('first day of may'));
+	if(!$mail->send()) {
+		echo 'Message could not be sent.';
+		echo 'Mailer Error: ' . $mail->ErrorInfo;
+	} else {
+		echo 'Message has been sent';
+	}
 });

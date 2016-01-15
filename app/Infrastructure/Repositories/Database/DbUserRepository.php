@@ -1,5 +1,6 @@
 <?php  namespace Logstats\Infrastructure\Repositories\Database;
 
+use Illuminate\Support\Facades\DB;
 use Logstats\Domain\User\User;
 use Logstats\Domain\User\UserRepository;
 use Logstats\Infrastructure\Repositories\Database\Factories\StdUserFactory;
@@ -13,7 +14,6 @@ class DbUserRepository extends DbBaseRepository implements UserRepository{
 
 	private $roleTable = 'roles';
 
-	private $roleUserTable = 'role_user';
 	/**
 	 *  \Logstats\App\Entities\Factories\StdFactory
 	 */
@@ -106,5 +106,21 @@ class DbUserRepository extends DbBaseRepository implements UserRepository{
 		}
 
 		return $this->userFactory->makeFromStd($rawUser);
+	}
+
+	/**
+	 * @return User[]
+	 */
+	public function getAll() {
+		return $this->findBy([]);
+	}
+
+	/**
+	 * @param User $user
+	 */
+	public function delete(User $user) {
+		DB::table($this->table)
+			->where('id', $user->getId())
+			->delete();
 	}
 }

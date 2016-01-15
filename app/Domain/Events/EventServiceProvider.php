@@ -1,9 +1,10 @@
 <?php
 
-namespace Logstats\App\Providers;
+namespace Logstats\Domain\Events;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Logstats\Domain\Alerting\Email\NewRecordEmailAlerting;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Logstats\App\Events\SomeEvent' => [
-            'Logstats\App\Listeners\EventListener',
+        NewRecord::class => [
+            NewRecordEmailAlerting::class,
         ],
     ];
 

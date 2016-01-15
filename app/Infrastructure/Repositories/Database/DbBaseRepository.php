@@ -12,7 +12,6 @@ abstract class DbBaseRepository {
 	 */
 	protected function findFirstRawBy(array $conditions) {
 		$query = \DB::table($this->getTable());
-		$this->addJoins($query);
 
 		foreach ($conditions as $key => $value) {
 			$query->where($key, $value);
@@ -29,7 +28,6 @@ abstract class DbBaseRepository {
 	 */
 	protected function findRawBy(array $conditions) {
 		$query = \DB::table($this->getTable());
-		$this->addJoins($query);
 
 		foreach ($conditions as $key => $value) {
 			$query->where($key, $value);
@@ -38,9 +36,6 @@ abstract class DbBaseRepository {
 		return $query->get();
 	}
 
-	protected function addJoins($query) {
-		return $query;
-	}
 
 	/**
 	 * @return string Table name

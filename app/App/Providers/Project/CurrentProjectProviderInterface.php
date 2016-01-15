@@ -25,4 +25,9 @@ interface CurrentProjectProviderInterface {
 	 * @return bool
 	 */
 	public function isSetProject();
+
+	/**
+	 * Unset current project
+	 */
+	public function unsetProject();
 }

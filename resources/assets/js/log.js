@@ -103,6 +103,13 @@ $(document).ready(function() {
 			load_records();
 		}
 
+		$("#export-csv").click(function(e) {
+			window.location.href = $(this).attr('data-export-csv-url') + '?' + $('form#get-records').serialize();
+			//e.preventDefault();
+			return false;
+
+		});
+
 
 
 

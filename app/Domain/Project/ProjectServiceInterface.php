@@ -24,4 +24,15 @@ interface ProjectServiceInterface {
 	 * @return void
 	 */
 	public function addUserToProject(Project $project, User $user, Role $role);
+
+	/**
+	 * @param Project $project
+	 */
+	public function deleteProject(Project $project);
+
+	/**
+	 * @param User $user
+	 * @return mixed
+	 */
+	public function deleteProjectRolesForUser(User $user);
 }

@@ -3,7 +3,7 @@
 	<div class="box box-default collapsed-box">
 		<div class="box-header with-border">
 			<div class="text" >
-				[{{ $record->getDate() }}] - {{ $record->getLevel() }} - {{ $record->getMessage() }} - {{ json_encode($record->getContext()) }}
+				[{{ $record->getDate() }}] - {{ $record->getLevel() }} - {{ $record->getMessage() }} - {{ json_encode($record->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}
 			</div>
 			<div class="more box-tools pull-right">
 				<a class="btn btn-box-tool" data-widget="collapse">Show more</a>
@@ -14,7 +14,7 @@
 			<b>Level: </b>{{ $record->getLevel() }}<br>
 			<b>Message: </b>{!! nl2br(e($record->getMessage())) !!}<br>
 			<b>Properties: </b><br>
-			<pre>{{ json_encode($record->getContext(), JSON_PRETTY_PRINT) }}</pre>
+			<pre>{{ json_encode($record->getContext(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}</pre>
 		</div>
 
 	</div>

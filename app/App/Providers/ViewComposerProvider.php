@@ -17,9 +17,9 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-		view()->composer($this->adminViews(), AuthUserComposer::class);
+		view()->composer($this->adminViewFolders(), AuthUserComposer::class);
 
-		view()->composer($this->adminViews(), CurrentProjectComposer::class);
+		view()->composer($this->adminViewFolders(), CurrentProjectComposer::class);
 
 		view()->composer('*', TimezoneViewComposer::class);
 
@@ -36,12 +36,17 @@ class ViewComposerProvider extends ServiceProvider
         //
     }
 
-	private function adminViews() {
+	private function adminViewFolders() {
 		return [
 			'projects/*',
 			'info/*',
 			'log/*',
-			'segmentation/*'
+			'segmentation/*',
+			'usermanagement/*',
+			'user/*',
+			'settings/*',
+			'projectmanagement/*',
+			'alerting/*',
 		];
 	}
 }

@@ -96,6 +96,12 @@ ul.pagination li.active a:focus {
 .sidebar-menu .project-name {
   color: white !important;
 }
+.tab-div {
+  display: none;
+}
+form.no-style-form {
+  margin-bottom: 0px;
+}
 
 .login-form {
   width: 300px;
@@ -127,7 +133,7 @@ ul.pagination li.active a:focus {
   margin-right: 10px;
 }
 .log .upper-control input[name="message-search"] {
-  width: 500px;
+  width: 400px;
   float: left;
 }
 .log .page-numbers {
@@ -237,6 +243,7 @@ ul.pagination li.active a:focus {
 .segmentation .upper-bar .group-by {
   width: 230px;
   float: left;
+  margin-right: 10px;
 }
 .segmentation .upper-bar .group-by select {
   width: 150px;
@@ -245,6 +252,7 @@ ul.pagination li.active a:focus {
   width: 156px;
   float: left;
   clear: both;
+  margin-right: 10px;
 }
 .segmentation .upper-bar .target-property select {
   width: 150px;
@@ -252,10 +260,13 @@ ul.pagination li.active a:focus {
 .segmentation .upper-bar .aggregation {
   float: left;
   width: 184px;
+  margin-right: 10px;
 }
 .segmentation .upper-bar .daterange {
   height: 28px;
   padding: 3px 12px;
+  width: 385px !important;
+  margin-right: 5px;
 }
 .segmentation .upper-bar button {
   padding: 3px 12px;
@@ -282,6 +293,40 @@ ul.pagination li.active a:focus {
   vertical-align: middle;
   font-size: 60px;
   font-weight: bold;
+}
+.segmentation #export-image {
+  margin-right: 50px;
+  margin-top: 20px;
+  display: none;
+  width: 200px;
+}
+
+.user-management-table td:nth-of-type(2),
+.user-management-table td:nth-of-type(3),
+.user-management-table td:nth-of-type(4) {
+  text-align: center;
+}
+.user-management-table td,
+.user-management-table th {
+  padding: 3px;
+}
+
+.alerting table td,
+.alerting table th {
+  padding: 2px;
+}
+.alerting table.current-alerting {
+  margin-bottom: 50px;
+}
+.alerting table.current-alerting td:nth-of-type(1) {
+  width: 100px;
+}
+.alerting table.current-alerting td:nth-of-type(2) {
+  padding-right: 30px;
+}
+.alerting input,
+.alerting select {
+  height: 32px;
 }
 
 /*# sourceMappingURL=main.css.map */

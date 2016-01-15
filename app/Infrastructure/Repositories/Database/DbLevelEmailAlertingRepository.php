@@ -1,0 +1,67 @@
+<?php  namespace Logstats\Infrastructure\Repositories\Database; 
+
+use Illuminate\Support\Facades\DB;
+use Logstats\Domain\Alerting\Email\LevelEmailAlertingRepository;
+use Logstats\Domain\Alerting\Email\LevelEmailAlerting;
+use Logstats\Infrastructure\Repositories\Database\Factories\StdLevelEmailAlertingFactory;
+
+class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEmailAlertingRepository {
+
+	private $table = 'email_send';
+
+	private $stdLevelEmailAlertingFactory;
+
+	public function __construct(StdLevelEmailAlertingFactory $stdLevelEmailAlertingFactory) {
+		$this->stdLevelEmailAlertingFactory = $stdLevelEmailAlertingFactory;
+	}
+
+	public function insert(LevelEmailAlerting $levelEmailAlerting) {
+		DB::table($this->table)
+			->insert([
+				'project_id' => $levelEmailAlerting->getProjectId(),
+				'email' => $levelEmailAlerting->getEmail(),
+				'level' => $levelEmailAlerting->getLevel()
+			]);
+	}
+
+	public function getAllForProject($projectId) {
+		$raw = $this->findRawBy(['project_id' => $projectId]);
+		return $this->stdLevelEmailAlertingFactory->makeFromStdArray($raw);
+	}
+
+	protected function getTable() {
+		return $this->table;
+	}
+
+	/**
+	 * @param $id
+	 * @return LevelEmailAlerting
+	 */
+	public function findById($id) {
+		return $this->findFirstBy(['id' => $id]);
+	}
+
+	public function findBy(array $conditions) {
+		$rawAlertings = $this->findRawBy($conditions);
+		return $this->stdLevelEmailAlertingFactory->makeFromStdArray($rawAlertings);
+	}
+
+	public function findFirstBy(array $conditions) {
+		$rawAlerting = $this->findFirstRawBy($conditions);
+
+		if (empty($rawAlerting)) {
+			return null;
+		}
+
+		return $this->stdLevelEmailAlertingFactory->makeFromStd($rawAlerting);
+	}
+
+	/**
+	 * @param LevelEmailAlerting $alerting
+	 */
+	public function delete(LevelEmailAlerting $alerting) {
+		DB::table($this->table)
+			->where('id', $alerting->getId())
+			->delete();
+	}
+}

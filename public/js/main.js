@@ -50,6 +50,18 @@ $(document).ready(function() {
 	set_daterange(moment().tz(timezone).subtract(1, 'hour'), moment().tz(timezone));
 
 
+	$(".nav-tabs li").click(function() {
+		$(".nav-tabs li").removeClass("active");
+		$(this).addClass("active");
+		$(".tab-div").hide();
+		var id = $(this).attr('data-id');
+		$("#"+id).show();
+	});
+
+	$(".submitable-link").click(function() {
+		$(this).closest('form').submit();
+	})
+
 });
 
 
@@ -162,6 +174,13 @@ $(document).ready(function() {
 			load_records();
 		}
 
+		$("#export-csv").click(function(e) {
+			window.location.href = $(this).attr('data-export-csv-url') + '?' + $('form#get-records').serialize();
+			//e.preventDefault();
+			return false;
+
+		});
+
 
 
 
@@ -223,6 +242,7 @@ $(document).ready(function() {
 		var filterId = 0;
 
 		$("#query-form").submit(function(e) {
+			$("#export-image").hide();
 			show_loader();
 			var query = $(this).serializeObject();
 			if ($('select#event').val()) {
@@ -240,6 +260,9 @@ $(document).ready(function() {
 			var logstatsQuery = new LogstatsQuery(queryUrl, projectToken);
 			logstatsQuery.get(query, function(data) {
 				drawer.draw(data.data, data.timeframe);
+				if (drawer.isExportable()) {
+					$("#export-image").show();
+				}
 				hide_loader();
 			}, function(data) {
 				var errors = typeof data.responseJSON != "undefined" ? data.responseJSON : ["Error while retrieving data"];
@@ -247,6 +270,18 @@ $(document).ready(function() {
 				hide_loader();
 			});
 			e.preventDefault();
+		});
+
+		$("#export-image").click(function() {
+			$(".graph").css("background-color", "#fff");
+			html2canvas($(".graph"), {
+				onrendered: function(canvas) {
+					$(".graph").css("background", "none");
+					console.log(canvas);
+					var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+					window.location.href = image;
+				}
+			});
 		});
 
 		$("select#event").select2({
@@ -597,7 +632,7 @@ LogstatsGraphDrawer.prototype.draw = function(data, timeframe) {
 	this.timeframe = timeframe;
 	this.interval = this.determineInterval();
 	this.groupBySet = this.determineGroupBy();
-	var graphType = this.determineBestGraphType();
+	this.graphType = this.determineBestGraphType();
 	this.clearGraph();
 
 	if (!this.validDataCount()) {
@@ -605,7 +640,7 @@ LogstatsGraphDrawer.prototype.draw = function(data, timeframe) {
 		return;
 	}
 
-	switch (graphType) {
+	switch (this.graphType) {
 		case GraphType.NO_DATA:
 			this.drawNoData();
 			break;
@@ -1010,9 +1045,7 @@ LogstatsGraphDrawer.prototype.getFlotBarOptions = function() {
 LogstatsGraphDrawer.prototype.validDataCount = function() {
 	if (!this.timeframe || !this.interval)
 		return true;
-	console.log(this.interval);
 	var minutesToDisplay = (this.timeframe.to - this.timeframe.from) / 60;
-	console.log(minutesToDisplay);
 	var step = 1;
 	if (this.interval == "hourly") {
 		step *= 60;
@@ -1031,6 +1064,10 @@ LogstatsGraphDrawer.prototype.validDataCount = function() {
 	return minutesToDisplay / step < MAX_INTERVAL_POINTS_TO_DISPLAY;
 }
 
+LogstatsGraphDrawer.prototype.isExportable = function() {
+	return this.graphType != GraphType.NO_DATA;
+}
+
 var GraphType = {
 	NO_DATA : "no data",
 	BAR: "bar",
@@ -1038,4 +1075,19 @@ var GraphType = {
 	ONE_LINE: "one line",
 	MULITPLE_LINES: "mulitple lines"
 }
+$(document).ready(function() {
+	if ($('.dataManagement').size() > 0) {
+
+	}
+});
+$(document).ready(function() {
+	$(".delete-project").click(function() {
+		var projectName = $(this).attr('data-project-name');
+		if (confirm("Do you really want to delete project: " + projectName + "? All records will be lost")) {
+			$(this).parent('form').submit();
+		}
+	});
+});
+
+
 //# sourceMappingURL=main.js.map

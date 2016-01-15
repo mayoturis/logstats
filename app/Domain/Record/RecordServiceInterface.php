@@ -20,4 +20,9 @@ interface RecordServiceInterface {
 	 * @param RecordFilter $recordFilter
 	 */
 	public function getRecordsCountInInterval(Project $project, $interval, RecordFilter $recordFilter = null);
+
+	/**
+	 * @param Project $project
+	 */
+	public function deleteRecordsForProject(Project $project);
 }

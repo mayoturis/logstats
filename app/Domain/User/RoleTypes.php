@@ -50,4 +50,12 @@ abstract class RoleTypes {
 
 		return self::$allSuperRoles[$role];
 	}
+
+	public static function allRoles() {
+		return [
+			self::VISITOR,
+			self::DATAMANAGER,
+			self::ADMIN,
+		];
+	}
 }

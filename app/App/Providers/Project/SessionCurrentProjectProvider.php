@@ -55,4 +55,12 @@ class SessionCurrentProjectProvider implements CurrentProjectProviderInterface{
 		return !empty($this->currentProject)
 			|| !empty($this->session->get('current_project_id'));
 	}
+
+	/**
+	 * Unset current project
+	 */
+	public function unsetProject() {
+		$this->currentProject = null;
+		$this->session->set('current_project_id', null);
+	}
 }

@@ -1,5 +1,6 @@
 <?php  namespace Logstats\Domain\Project;
 
+use Logstats\Domain\DTOs\ProjectProjectRoleListDTO;
 use Logstats\Domain\User\User;
 use Logstats\Domain\User\Role;
 
@@ -34,7 +35,7 @@ interface ProjectRepository {
 	 * Find projects by conditions
 	 *
 	 * @param array $conditions
-	 * @return array of Project
+	 * @return Project[]
 	 */
 	public function findBy(array $conditions);
 
@@ -49,7 +50,7 @@ interface ProjectRepository {
 	/**
 	 * Get all projects
 	 *
-	 * @return array of Project
+	 * @return Project[]
 	 */
 	public function findAll();
 
@@ -63,7 +64,41 @@ interface ProjectRepository {
 	/**
 	 * @param User $user
 	 * @param Project $project
-	 * @return array of Role
+	 * @return Role[]
 	 */
-	public function findRolesForUserInProject(User $user, Project $project);
+	public function findRoleForUserInProject(User $user, Project $project);
+
+
+	/**
+	 * @param Project $project
+	 */
+	public function getProjectRoleList(Project $project);
+
+	/**
+	 * @return ProjectProjectRoleListDTO[]
+	 */
+	public function getAllProjectsWithRoleLists();
+
+	/**
+	 * @return Project[]
+	 */
+	public function getAll();
+
+	/**
+	 * @param ProjectRoleList $projectRoleList
+	 * @param Project $project
+	 */
+	public function saveProjectRoleList(ProjectRoleList $projectRoleList, Project $project);
+
+	public function deleteProjectRoles(Project $project);
+
+	/**
+	 * @param Project $project
+	 */
+	public function delete(Project $project);
+
+	/**
+	 * @param User $user
+	 */
+	public function deleteProjectRolesForUser(User $user);
 }

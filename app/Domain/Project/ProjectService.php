@@ -1,6 +1,7 @@
 <?php  namespace Logstats\Domain\Project;
 
 use Carbon\Carbon;
+use Logstats\Domain\Record\RecordServiceInterface;
 use Logstats\Domain\User\User;
 use Logstats\Domain\User\Role;
 use Logstats\Domain\User\RoleTypes;
@@ -11,12 +12,18 @@ class ProjectService implements ProjectServiceInterface {
 	 * @var ProjectRepository
 	 */
 	private $repository;
+	/**
+	 * @var RecordServiceInterface
+	 */
+	private $recordService;
 
 	/**
 	 * @param ProjectRepository $repository
 	 */
-	public function __construct(ProjectRepository $repository) {
+	public function __construct(ProjectRepository $repository,
+								RecordServiceInterface $recordService) {
 		$this->repository = $repository;
+		$this->recordService = $recordService;
 	}
 
 	/**
@@ -59,5 +66,21 @@ class ProjectService implements ProjectServiceInterface {
 	 */
 	public function addUserToProject(Project $project, User $user, Role $role) {
 		$this->repository->addUserToProject($project, $user, $role);
+	}
+
+	/**
+	 * @param Project $project
+	 */
+	public function deleteProject(Project $project) {
+		$this->recordService->deleteRecordsForProject($project);
+		$this->repository->delete($project);
+	}
+
+	/**
+	 * @param User $user
+	 * @return mixed
+	 */
+	public function deleteProjectRolesForUser(User $user) {
+		$this->repository->deleteProjectRolesForUser($user);
 	}
 }

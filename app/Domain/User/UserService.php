@@ -1,15 +1,19 @@
 <?php  namespace Logstats\Domain\User;
 
 
+use Logstats\Domain\Project\ProjectService;
+
 class UserService implements UserServiceInterface{
 
 	private $repository;
+	private $projectService;
 
 	/**
 	 * @param UserRepository $repository
 	 */
-	public function __construct(UserRepository $repository) {
+	public function __construct(UserRepository $repository, ProjectService $projectService) {
 		$this->repository = $repository;
+		$this->projectService = $projectService;
 	}
 
 	/**
@@ -30,8 +34,13 @@ class UserService implements UserServiceInterface{
 	 * @param Role $role
 	 * @return User
 	 */
-	public function addRoleToUser(User $user, Role $role) {
+	public function setUserRole(User $user, Role $role = null) {
 		$user->setRole($role);
 		$this->repository->save($user);
+	}
+
+	public function delete(User $user) {
+		$this->projectService->deleteProjectRolesForUser($user);
+		$this->repository->delete($user);
 	}
 }

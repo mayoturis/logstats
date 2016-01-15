@@ -34,6 +34,7 @@ class Kernel extends HttpKernel
 		'installed' => \Logstats\App\Http\Middleware\InstalledMiddleware::class,
 		'correct_installation_step' => \Logstats\App\Http\Middleware\CorrectInstallationStepMiddleware::class,
 		'can_visit' => \Logstats\App\Http\Middleware\CanVisitMiddleware::class,
+		'admin' => \Logstats\App\Http\Middleware\AdminMiddleware::class,
 		'project_choosen' => \Logstats\App\Http\Middleware\ProjectChoosenMiddleware::class,
     ];
 }

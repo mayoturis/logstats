@@ -13,7 +13,7 @@ class StdRecordFactory {
 		$this->carbonConvertor = $carbonConvertor;
 	}
 
-	public function makeFromMoreRaws($rawRecords) {
+	public function makeFromStdArray($rawRecords) {
 		$this->arrayRecords = [];
 		foreach ($rawRecords as $rawRecord) {
 			if (!isset($this->arrayRecords[$rawRecord->id])) {

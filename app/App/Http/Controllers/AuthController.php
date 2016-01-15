@@ -6,14 +6,18 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use Logstats\App\Http\Requests;
+use Logstats\App\Providers\Project\CurrentProjectProviderInterface;
 
 class AuthController extends Controller
 {
 
 	private $auth;
+	private $currentProjectProvider;
 
-	public function __construct(Guard $auth) {
+	public function __construct(Guard $auth,
+								CurrentProjectProviderInterface $currentProjectProvider) {
 		$this->auth = $auth;
+		$this->currentProjectProvider = $currentProjectProvider;
 	}
 
 	public function getLogin() {
@@ -31,6 +35,7 @@ class AuthController extends Controller
 
 	public function logout() {
 		$this->auth->logout();
+		$this->currentProjectProvider->unsetProject();
 
 		return redirect()->route('login');
 	}

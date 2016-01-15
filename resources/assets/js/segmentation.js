@@ -52,6 +52,7 @@ $(document).ready(function() {
 		var filterId = 0;
 
 		$("#query-form").submit(function(e) {
+			$("#export-image").hide();
 			show_loader();
 			var query = $(this).serializeObject();
 			if ($('select#event').val()) {
@@ -69,6 +70,9 @@ $(document).ready(function() {
 			var logstatsQuery = new LogstatsQuery(queryUrl, projectToken);
 			logstatsQuery.get(query, function(data) {
 				drawer.draw(data.data, data.timeframe);
+				if (drawer.isExportable()) {
+					$("#export-image").show();
+				}
 				hide_loader();
 			}, function(data) {
 				var errors = typeof data.responseJSON != "undefined" ? data.responseJSON : ["Error while retrieving data"];
@@ -76,6 +80,18 @@ $(document).ready(function() {
 				hide_loader();
 			});
 			e.preventDefault();
+		});
+
+		$("#export-image").click(function() {
+			$(".graph").css("background-color", "#fff");
+			html2canvas($(".graph"), {
+				onrendered: function(canvas) {
+					$(".graph").css("background", "none");
+					console.log(canvas);
+					var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+					window.location.href = image;
+				}
+			});
 		});
 
 		$("select#event").select2({

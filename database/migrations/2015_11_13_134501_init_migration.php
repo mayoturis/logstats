@@ -91,19 +91,20 @@ class InitMigration extends Migration
 			$table->unsignedInteger('record_id');
 			$table->foreign('record_id', 'properties_record_id' . $this->generateRandomSuffix())->references('id')->on('records');
 		});
-		Schema::create('emails', function(Blueprint $table) {
+		/*Schema::create('emails', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('email');
-		});
+		});*/
 
 		Schema::create('email_send', function(Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('project_id');
 			$table->string('level');
-			$table->unsignedInteger('email_id');
+			$table->string('email');
+			//$table->unsignedInteger('email_id');
 			$table->foreign('project_id', 'email_send_project_id' . $this->generateRandomSuffix())->references('id')->on('projects');
 			$table->foreign('level', 'email_send_level' . $this->generateRandomSuffix())->references('name')->on('levels');
-			$table->foreign('email_id', 'email_send_email_id' . $this->generateRandomSuffix())->references('id')->on('emails');
+			//$table->foreign('email_id', 'email_send_email_id' . $this->generateRandomSuffix())->references('id')->on('emails');
 		});
     }
 
@@ -121,7 +122,7 @@ class InitMigration extends Migration
         Schema::drop('property_types');
 		Schema::drop('properties');
         Schema::drop('messages');
-        Schema::drop('emails');
+        //Schema::drop('emails');
         Schema::drop('levels');
         Schema::drop('records');
         Schema::drop('projects');

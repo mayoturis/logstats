@@ -3,11 +3,14 @@
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Logstats\Domain\DTOs\ProjectLastRecordDTO;
+use Logstats\Domain\DTOs\ProjectProjectRoleListDTO;
 use Logstats\Domain\Project\Project;
+use Logstats\Domain\Project\ProjectRoleList;
 use Logstats\Domain\User\User;
 use Logstats\Domain\Project\ProjectRepository;
 use Logstats\Domain\User\Role;
 use Logstats\Infrastructure\Repositories\Database\Factories\StdProjectFactory;
+use Logstats\Infrastructure\Repositories\Database\Factories\StdUserFactory;
 use Logstats\Support\Date\CarbonConvertorInterface;
 use PDO;
 
@@ -16,17 +19,23 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	private $table = 'projects';
 	private $projectRoleUserTable = 'project_role_user';
 	private $recordTable = 'records';
+	private $userTable = 'users';
 	private $prefix;
 	private $factory;
 	private $connection;
 	private $carbonConvertor;
+	/**
+	 *
+	 */
+	private $userFactory;
 
-	public function __construct(StdProjectFactory $factory, CarbonConvertorInterface $carbonConvertor) {
+	public function __construct(StdProjectFactory $factory, CarbonConvertorInterface $carbonConvertor, StdUserFactory $userFactory) {
 		$this->prefix = \DB::getTablePrefix();
 		$this->connection = \DB::getPdo();
 		$this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 		$this->factory = $factory;
 		$this->carbonConvertor = $carbonConvertor;
+		$this->userFactory = $userFactory;
 	}
 
 	/**
@@ -171,18 +180,17 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	public function findAllWithLatestRecord($allowedRoles = null, $userId = null) {
 		$query = 'SELECT * FROM ' . $this->prefix.$this->table . ' projects
 					LEFT JOIN (
-						SELECT project_id, date
+						SELECT project_id, MAX(date) as date
 						FROM '. $this->prefix.$this->recordTable . '
-						ORDER BY date DESC
-						LIMIT 1
+						GROUP BY project_id
 					) r ON projects.id = project_id';
 
 		if (!is_null($allowedRoles) && !is_null($userId)) {
 			$query .= " WHERE EXISTS (" . $this->projectUserRoleExistsQuery($allowedRoles, $userId, 'projects') . ")";
 		}
 
+		$query .= " ORDER BY date DESC ";
 		$rows = $this->connection->query($query)->fetchAll();
-
 		$dtos = [];
 		foreach ($rows as $row) {
 			$project = $this->factory->makeFromStd($row);
@@ -217,18 +225,101 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	 * @param Project $project
 	 * @return array of Role
 	 */
-	public function findRolesForUserInProject(User $user, Project $project) {
-		$rawRoles = \DB::table($this->projectRoleUserTable)
+	public function findRoleForUserInProject(User $user, Project $project) {
+		$rawRole = \DB::table($this->projectRoleUserTable)
 				->where('user_id', $user->getId())
 				->where('project_id', $project->getId())->get(['role']);
-		return $this->rawRolesToRoleArray($rawRoles);
+
+		if (empty($rawRole)) {
+			return null;
+		}
+
+		return new Role($rawRole[0]->role);
 	}
 
-	private function rawRolesToRoleArray($rawRoles) {
-		$roles = [];
-		foreach ($rawRoles as $rawRole) {
-			$roles[] = new Role($rawRole->role);
+
+
+	/**
+	 * @param Project $project
+	 */
+	public function getProjectRoleList(Project $project) {
+		$raw = \DB::table($this->projectRoleUserTable)
+			->join($this->userTable, $this->userTable.'.id', '=',$this->projectRoleUserTable.'.user_id')
+			->where('project_id', $project->getId())
+			->get([$this->userTable.'.id',$this->userTable.'.role','name', 'password', 'email','remember_token', DB::raw($this->prefix.$this->projectRoleUserTable.'.role as project_role')]);
+
+		$projectRoleList = new ProjectRoleList();
+		foreach ($raw as $oneRaw) {
+			$user = $this->userFactory->makeFromStd($oneRaw);
+			$projectRoleList->setRole($user, new Role($oneRaw->project_role));
 		}
-		return $roles;
+
+		return $projectRoleList;
+	}
+
+	/**
+	 * @return Project[]
+	 */
+	public function getAll() {
+		return $this->findBy([]);
+	}
+
+	public function getAllProjectsWithRoleLists() {
+		$projects = $this->getAll();
+		$projectProjectRoleListDTOs = [];
+		foreach ($projects as $project) {
+			$projectRoleList = $this->getProjectRoleList($project);
+			$projectProjectRoleListDTOs[] = new ProjectProjectRoleListDTO($project, $projectRoleList);
+		}
+
+		return $projectProjectRoleListDTOs;
+	}
+
+	/**
+	 * @param ProjectRoleList $projectRoleList
+	 * @param Project $project
+	 */
+	public function saveProjectRoleList(ProjectRoleList $projectRoleList, Project $project) {
+		DB::table($this->projectRoleUserTable)
+			->where('project_id', $project->getId())
+			->delete();
+
+		$insertRows = [];
+		foreach ($projectRoleList->getUsers() as $user) {
+			$insertRows[] = [
+				'user_id' => $user->getId(),
+				'project_id' => $project->getId(),
+				'role' => $projectRoleList->getRoleForUser($user)
+			];
+		}
+
+		DB::table($this->projectRoleUserTable)
+			->insert($insertRows);
+	}
+
+	public function deleteProjectRoles(Project $project) {
+		DB::table($this->projectRoleUserTable)
+			->where('project_id', $project->getId())
+			->delete();
+	}
+
+	/**
+	 * @param Project $project
+	 */
+	public function delete(Project $project) {
+		$this->deleteProjectRoles($project);
+
+		DB::table($this->table)
+			->where('id', $project->getId())
+			->delete();
+	}
+
+	/**
+	 * @param User $user
+	 */
+	public function deleteProjectRolesForUser(User $user) {
+		DB::table($this->projectRoleUserTable)
+			->where('user_id', $user->getId())
+			->delete();
 	}
 }

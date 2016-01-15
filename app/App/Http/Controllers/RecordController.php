@@ -4,6 +4,7 @@
 use Illuminate\Auth\Access\UnauthorizedException;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Logstats\App\Support\RecordFilterCreator;
 use Logstats\Domain\Filters\ArrayFilters\LastKeyArrayFilter;
 use Logstats\Domain\Filters\Factories\GeneralFilterFactory;
 use Logstats\Domain\Record\MessageFilter;
@@ -32,6 +33,7 @@ class RecordController extends Controller {
 	private $recordRepository;
 	private $projectRepository;
 	private $generalFilterFactory;
+	private $recordFilterCreator;
 
 	public function __construct(CarbonConvertorInterface $carbonConvertor,
 								RecordValidator $recordValidator,
@@ -39,7 +41,8 @@ class RecordController extends Controller {
 								Gate $gate,
 								RecordRepository $recordRepository,
 								ProjectRepository $projectRepository,
-								GeneralFilterFactory $generalFilterFactory) {
+								GeneralFilterFactory $generalFilterFactory,
+								RecordFilterCreator $recordFilterCreator) {
 		$this->carbonConvertor = $carbonConvertor;
 		$this->recordValidator = $recordValidator;
 		$this->recordService = $recordService;
@@ -47,6 +50,7 @@ class RecordController extends Controller {
 		$this->recordRepository = $recordRepository;
 		$this->projectRepository = $projectRepository;
 		$this->generalFilterFactory = $generalFilterFactory;
+		$this->recordFilterCreator = $recordFilterCreator;
 	}
 
 	public function ajaxShow(Request $request) {
@@ -56,7 +60,7 @@ class RecordController extends Controller {
 			throw new UnauthorizedException('Access denied');
 		}
 
-		$filter = $this->createRecordFilterFromRequest($request);
+		$filter = $this->recordFilterCreator->createRecordFilterFromRequest($request);
 		$pagination = $this->createPaginationFromRequest($request);
 		$records = $this->recordRepository->getRecordsByConditions($project, $filter,$pagination);
 		$recordsCountWithoutPagination = $this->recordRepository->getRecordsCountByConditions($project,$filter);
@@ -78,8 +82,6 @@ class RecordController extends Controller {
 			]
 		]);
 	}
-
-
 
 	public function ajaxMessages(Request $request) {
 		$project = $this->projectRepository->findById($request->get('project-id'));
@@ -108,32 +110,6 @@ class RecordController extends Controller {
 		return response()->json($properties);
 	}
 
-	private function createRecordFilterFromRequest(Request $request) {
-		$recordFilter = new RecordFilter();
-
-		if (!empty($request->get('from'))) {
-			$from = $this->carbonConvertor->carbonFromTimestampUTC((int) $request->get('from'));
-			$recordFilter->addDateFilter(new FromFilter($from));
-		}
-		if(!empty($request->get('to'))) {
-			$to = $this->carbonConvertor->carbonFromTimestampUTC((int) $request->get('to'));
-			$recordFilter->addDateFilter(new ToFilter($to));
-		}
-		if (!empty($request->get('message-search'))) {
-			$messageSearch = (string) $request->get('message-search');
-			$recordFilter->addMessageFilter(new ContainsFilter($messageSearch));
-		}
-		if (!empty($request->get('level'))) {
-			$level = (string) $request->get('level');
-			$recordFilter->addLevelFilter(new EqualToFilter($level));
-		}
-		foreach ($this->getArrayFiltersFromRequest($request) as $filter) {
-			$recordFilter->addContextFilter($filter);
-		}
-
-		return $recordFilter;
-	}
-
 	private function createPaginationFromRequest(Request $request) {
 		$pagination = null;
 		if (!empty($request->get('page')) && !empty($request->get('page-count'))) {
@@ -142,49 +118,6 @@ class RecordController extends Controller {
 			$pagination = new Pagination($page, $pageCount);
 		}
 		return $pagination;
-	}
-
-	private function getArrayFiltersFromRequest(Request $request) {
-		$requstFilters = $request->get('filters');
-		if (!is_array($requstFilters)) {
-			return [];
-		}
-
-		$arrayFilters = [];
-		foreach ($requstFilters as $filter) {
-			if ($this->recordValidator->isValidFilter($filter)) {
-				$arrayFilters[] = new LastKeyArrayFilter(
-					$filter['property-name'],
-					$this->generalFilterFactory->make(
-						$filter['property-value'],
-						$filter['property-type'],
-						$filter['comparison-type']
-					));
-			}
-		}
-
-		return $arrayFilters;
-	}
-
-	private function getFilterObjects($arrayFilters) {
-		if (!is_array($arrayFilters)) {
-			return [];
-		}
-
-		$filters = [];
-		foreach ($arrayFilters as $arrayFilter) {
-			if ($this->recordValidator->isValidFilter($arrayFilter)) {
-				$filter = $this->propertyFilterFactory->make(
-					$arrayFilter['property-name'],
-					$arrayFilter['property-value'],
-					$arrayFilter['property-type'],
-					$arrayFilter['comparison-type']
-				);
-				$filters[] = $filter;
-			}
-		}
-
-		return $filters;
 	}
 
 	private function messagesFromRecords($records) {

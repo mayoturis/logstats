@@ -169,7 +169,7 @@ class InstallationPostConfigurationController extends Controller
 			$request->get('name'),
 			$request->get('password'),
 			$request->get('email'));
-		$this->userService->addRoleToUser($user, new Role(RoleTypes::ADMIN));
+		$this->userService->setUserRole($user, new Role(RoleTypes::ADMIN));
 		$this->auth->login($user);
 
 

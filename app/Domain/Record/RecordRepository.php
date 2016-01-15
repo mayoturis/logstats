@@ -57,4 +57,10 @@ interface RecordRepository {
 	 * @param RecordFilter $recordFilter
 	 */
 	public function getRecordsCountInInterval(Project $project, $interval, RecordFilter $recordFilter = null);
+
+	/**
+	 * @param Project $project
+	 * @return mixed
+	 */
+	public function deleteRecordsForProject(Project $project);
 }

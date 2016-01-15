@@ -4,9 +4,10 @@ namespace Logstats\App\Providers;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Logstats\App\Policies\UserPolicy;
 use Logstats\Domain\Project\Project;
 use Logstats\App\Policies\ProjectPolicy;
-use Logstats\App\Policies\RecordPolicy;
+use Logstats\Domain\User\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
 		Project::class => ProjectPolicy::class,
+		User::class => UserPolicy::class
     ];
 
     /**
@@ -29,15 +31,17 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(GateContract $gate)
     {
 		parent::registerPolicies($gate);
-		$this->registerAllPolicies($gate);
+		$this->registerProjectPolicies($gate);
+		$this->registerUserPolicies($gate);
     }
 
-	public function registerAllPolicies(GateContract $gate) {
-		/*$gate->define('showrecords', function($user, $post) {
-			return true;
-		});*/
+	public function registerProjectPolicies(GateContract $gate) {
 		$gate->define('create.project', ProjectPolicy::class . '@create');
 		$gate->define('store.project', ProjectPolicy::class . '@store');
 		//$gate->define('show.records', RecordPolicy::class . '@show');
+	}
+
+	private function registerUserPolicies(GateContract $gate) {
+		$gate->define('delete.user', UserPolicy::class . '@delete');
 	}
 }

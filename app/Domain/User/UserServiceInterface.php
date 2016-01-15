@@ -16,5 +16,11 @@ interface UserServiceInterface {
 	 * @param Role $role
 	 * @return User
 	 */
-	public function addRoleToUser(User $user, Role $role);
+	public function setUserRole(User $user, Role $role);
+
+	/**
+	 * @param User $user
+	 * @return mixed
+	 */
+	public function delete(User $user);
 }

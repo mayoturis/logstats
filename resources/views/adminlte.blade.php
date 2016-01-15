@@ -26,6 +26,7 @@
 	{!! Html::script('public/libraries/flot/jquery.flot.time.min.js') !!}
 	{!! Html::script('public/libraries/flot/jquery.flot.selection.min.js') !!}
 	{!! Html::script('public/libraries/serializeobject/jquery.serialize-object.min.js') !!}
+	{!! Html::script('public/libraries/html2canvas/html2canvas.min.js') !!}
 
 	{!! Html::script('public/js/main.js') !!}
 	{{-- Html::script('public/libraries/slimScroll/jquery.slimScroll.min.js') --}}
@@ -64,7 +65,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="{{ route('logout') }}"><i class="fa fa-power-off"></i></a>
+						<a href="{{ route('logout') }}" style="padding-top: 18px;"><i class="fa fa-power-off"></i></a>
 					</li>
 				</ul>
 			</div>
@@ -81,14 +82,20 @@
 					<li class="header project-name">{{ $currentProject->getName() }}</li>
 					<li class="{{ set_active('log') }}"><a href="{{ route('log') }}"><i class="fa fa-list-ul"></i><span>Log records</span></a></li>
 					<li class="{{ set_active('segmentation') }}"><a href="{{ route('segmentation') }}"><i class="fa fa-bar-chart"></i><span>Segmentation</span></a></li>
-					<li><a href="#"><i class="fa fa-envelope"></i><span>Email alerting</span></a>
+					@can('manageAlerting', [$currentProject])
+						<li class="{{ set_active('alerting') }}"><a href="{{ route('alerting.index') }}"><i class="fa fa-envelope"></i><span>Email alerting</span></a>
+					@endcan
+					@can('deleteRecords', [$currentProject])
+						<li class="{{ set_active('project-management') }}"><a href="{{ route('project-management') }}"><i class="fa fa-pencil-square-o"></i><span>Project management</span></a></li>
+					@endcan
 				@endif
 				<li class="header">General</li>
 				<li class="{{ set_active('projects') }}"><a href="{{ route('projects.index') }}"><i class="fa fa-exchange"></i></i><span>Projects</span></a></li>
-				<li><a href="#"><i class="fa fa-user"></i><span>Users</span></a></li>
+				@if($user->isGeneralAdmin())
+					<li class="{{ set_active('user-management') }}"><a href="{{ route('user-management') }}"><i class="fa fa-user"></i><span>Users</span></a></li>
+					<li class="{{ set_active('settings') }}"><a href="{{ route('settings') }}"><i class="fa fa-cog"></i><span>Settings</span></a></li>
+				@endif
 				<li class="{{ set_active('how-to-send-logs') }}"><a href="{{ route('how-to-send-logs') }}"><i class="fa fa-paper-plane"></i><span>How to send logs</span></a></li>
-				<li><a href="#"><i class="fa fa-cog"></i><span>Settings</span></a></li>
-				</li>
 			</ul>
 			<!-- /.sidebar-menu -->
 		</section>

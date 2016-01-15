@@ -19,8 +19,7 @@ class IncomingDataController extends Controller {
 	}
 
 	public function store(Request $request) {
-		$jsonData = $request->get('data');
-		$data = json_decode($jsonData,true);
+		$data = $request->all();
 
 		if (!is_array($data)) { // invalid data format
 			throw new \UnexpectedValueException('Data has to be array');

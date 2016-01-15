@@ -33,7 +33,7 @@ class DbRecordFinder {
 		$recordsBuilder = $this->getBuilderWithRecordsTable($project, $conditions, $pagination);
 		$recordsBuilder->leftJoin('properties', $this->recordTable.'.id', '=', 'record_id');
 		$rawRecords = $recordsBuilder->get($this->recordWithPropertiesColumns());
-		return $this->stdRecordFactory->makeFromMoreRaws($rawRecords);
+		return $this->stdRecordFactory->makeFromStdArray($rawRecords);
 	}
 
 	public function getRecordsCountByConditions(Project $project, RecordFilter $conditions = null) {

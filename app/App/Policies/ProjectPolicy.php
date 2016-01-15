@@ -6,7 +6,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Logstats\Domain\Project\Project;
 use Logstats\Domain\User\User;
 use Logstats\Domain\Project\ProjectRepository;
-use Logstats\App\ValueObjects\RoleTypes;
+use Logstats\Domain\User\RoleTypes;
 
 class ProjectPolicy
 {
@@ -14,14 +14,8 @@ class ProjectPolicy
 
 	private $projectRepository;
 
-	/**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
     public function __construct(ProjectRepository $projectRepository)
     {
-        //
 		$this->projectRepository = $projectRepository;
 	}
 
@@ -31,6 +25,18 @@ class ProjectPolicy
 
 	public function store(User $user) {
 		return $this->create($user);
+	}
+
+	public function delete(User $user, Project $project) {
+		if ($user->isGeneralAdmin()) {
+			return true;
+		}
+
+		return $this->hasRoleAtLeastInProject($user, $project, RoleTypes::ADMIN);
+	}
+
+	public function deleteRecords(User $user, Project $project) {
+		return $this->delete($user, $project);
 	}
 
 	public function showRecords(User $user, Project $project) {
@@ -46,19 +52,26 @@ class ProjectPolicy
 			return true;
 		}
 
-		$roles = $this->projectRepository->findRolesForUserInProject($user, $project);
-		foreach ($roles as $role) {
-			if (in_array(RoleTypes::VISITOR, $role->allSubRoles())) {
-				return true;
-			}
+		return $this->hasRoleAtLeastInProject($user, $project, RoleTypes::VISITOR);
+	}
+
+	public function manageAlerting(User $user, Project $project) {
+		if ($user->isGeneralAdmin()) {
+			return true;
+		}
+
+		return $this->hasRoleAtLeastInProject($user, $project, RoleTypes::ADMIN);
+	}
+
+	private function hasRoleAtLeastInProject(User $user, Project $project, $role) {
+		$userRole = $this->projectRepository->findRoleForUserInProject($user, $project);
+		if ($userRole === null) {
+			return false;
+		}
+		if (in_array($role, $userRole->allSubRoles())) {
+			return true;
 		}
 
 		return false;
 	}
-	/*
-	public function before(User $user, $ability) {
-		if ($user->isGeneralAdmin()) {
-			return true;
-		}
-	}*/
 }

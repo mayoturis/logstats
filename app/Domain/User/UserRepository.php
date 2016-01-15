@@ -32,4 +32,14 @@ interface UserRepository {
 	 * @return User
 	 */
 	public function findById($id);
+
+	/**
+	 * @return User[]
+	 */
+	public function getAll();
+
+	/**
+	 * @param User $user
+	 */
+	public function delete(User $user);
 }

@@ -14,8 +14,8 @@ class ProjectWithRecordsSeeder extends Seeder
     public function run()
     {
 		$projectId = DB::table('projects')->insertGetId([
-			'name' => 'seededProject2',
-			'token' => 'seededToken2',
+			'name' => 'Test project',
+			'token' => 'newtestProjectToken',
 			'created_at' => Carbon::now()
 		]);
 
@@ -42,7 +42,7 @@ class ProjectWithRecordsSeeder extends Seeder
 
 		$records = [];
 		for ($i = 0; $i < 1000; $i++) {
-			$time = Carbon::createFromTimestamp(rand(time() - 86000,time() + 86000));
+			$time = Carbon::createFromTimestamp(rand(time() - 7*86000,time() + 86000));
 			$records[] = [
 				'date' => $time,
 				'minute' => $time->minute,
@@ -68,7 +68,7 @@ class ProjectWithRecordsSeeder extends Seeder
 
 		$recordIds = [];
 		for ($i = 0; $i < 1000; $i++) {
-			$time = Carbon::createFromTimestamp(rand(time() - 86000,time() + 86000));
+			$time = Carbon::createFromTimestamp(rand(time() - 7*86000,time() + 86000));
 			$recordIds[] = DB::table('records')->insertGetId([
 				'date' => $time,
 				'minute' => $time->minute,

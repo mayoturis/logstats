@@ -142,6 +142,16 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+		$project = $this->projectRepository->findById($id);
+		if (!$this->gate->check('delete', [$project])) {
+			throw new UnauthorizedException('Access denied');
+		}
+
+		$this->projectService->deleteProject($project);
+
+		return redirect()->route('projects.index')->with([
+			'flash_message' => 'Project successfully deleted',
+			'flash_type' => 'success'
+		]);
     }
 }

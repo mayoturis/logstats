@@ -36,10 +36,15 @@ class DbRecordRepository implements RecordRepository {
 	 * @var DbByQueryFinder
 	 */
 	private $dbByQueryFinder;
+	/**
+	 * @var DbRecordDeleter
+	 */
+	private $recordDeleter;
 
 
 	public function __construct(DbRecordSaver $recordSaver,
 								DbRecordFinder $recordFinder,
+								DbRecordDeleter $recordDeleter,
 								DbMessageFinder $messageFinder,
 								DbPropertyFinder $propertyFinder,
 								DbByQueryFinder $dbByQueryFinder) {
@@ -48,6 +53,7 @@ class DbRecordRepository implements RecordRepository {
 		$this->messageFinder = $messageFinder;
 		$this->propertyFinder = $propertyFinder;
 		$this->dbByQueryFinder = $dbByQueryFinder;
+		$this->recordDeleter = $recordDeleter;
 	}
 
 	/**
@@ -120,5 +126,13 @@ class DbRecordRepository implements RecordRepository {
 	 */
 	public function getRecordsCountInInterval(Project $project, $interval, RecordFilter $recordFilter = null) {
 		return $this->recordFinder->getRecordsCountInInterval($project, $interval, $recordFilter);
+	}
+
+	/**
+	 * @param Project $project
+	 * @return mixed
+	 */
+	public function deleteRecordsForProject(Project $project) {
+		$this->recordDeleter->deleteRecordsForProject($project);
 	}
 }

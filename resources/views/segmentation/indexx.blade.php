@@ -110,6 +110,9 @@
 			<div class="graph-tooltip"></div>
 			<div class="graph-checkboxes"></div>
 		</div>
+		<div id="export-image" class="btn maincolor-box">
+			Export as image
+		</div>
 	</div>
 	<div class="loader" id="loader"></div>
 @endsection

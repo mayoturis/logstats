@@ -21,6 +21,10 @@ class Role {
 		return $this->name;
 	}
 
+	public function isRole($role) {
+		return in_array($role, $this->allSubRoles());
+	}
+
 	public function __toString() {
 		return $this->name;
 	}

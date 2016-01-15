@@ -16,6 +16,7 @@
 			<input class="form-control" type="password" id="password" name="password" placeholder="Password">
 			<input type="checkbox" id="remember_me" name="remember_me"> <label for="remember_me">Remember me</label>
 			<input class="form-control" type="submit" value="Login">
+			<a href="{{ route('register') }}">(Register)</a>
 		</form>
 	</div>
 @endsection
