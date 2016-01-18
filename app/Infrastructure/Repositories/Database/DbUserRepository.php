@@ -53,7 +53,7 @@ class DbUserRepository extends DbBaseRepository implements UserRepository{
 	/**
 	 * @return string Table name
 	 */
-	public function getTable() {
+	protected function getTable() {
 		return $this->table;
 	}
 

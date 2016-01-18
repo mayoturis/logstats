@@ -10,9 +10,15 @@
          stopOnFailure="false"
          syntaxCheck="false">
     <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory>./tests/</directory>
+        <testsuite name="App">
+            <directory>./tests/app/App</directory>
         </testsuite>
+		<testsuite name="Domain">
+			<directory>./tests/app/Domain</directory>
+		</testsuite>
+		<testsuite name="Infrastructure">
+			<directory>./tests/app/Infrastructure</directory>
+		</testsuite>
     </testsuites>
     <filter>
         <whitelist>
@@ -24,5 +30,19 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
+		<!-- sqlite
+        <env name="DB_TYPE" value="sqlite"/>
+        <env name="DB_PREFIX" value=""/>
+        <env name="DB_DATABASE_PATH" value="C:\xampp\htdocs\logstats\storage\testing_database.sqlite"/>
+        -->
+		<!-- mysql -->
+		<env name="DB_TYPE" value="mysql"/>
+		<env name="DB_PREFIX" value=""/>
+		<env name="DB_HOST" value="localhost"/>
+		<env name="DB_DATABASE" value="logstats_test"/>
+		<env name="DB_PASSWORD" value=""/>
+		<env name="DB_USERNAME" value="root"/>
+		<env name="DB_CHARSET" value="utf8"/>
+		<env name="DB_COLLATION" value="utf8_unicode_ci"/>
     </php>
 </phpunit>

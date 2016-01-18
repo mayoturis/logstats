@@ -11,31 +11,36 @@
         "filp/whoops": "^1.1",
         "anlutro/l4-settings": "^0.4.4",
         "mayoturis/properties-ini": "^1.0",
-        "phpmailer/phpmailer": "^5.2"
+        "phpmailer/phpmailer": "^5.2",
+        "codeception/codeception": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0",
-        "phpspec/phpspec": "~2.1"
-    },
+        "phpspec/phpspec": "~2.1",
+	    "phpunit/dbunit": ">=1.2"
+	},
     "autoload": {
         "classmap": [
             "database"
         ],
         "psr-4": {
-            "Logstats\\": "app/",
-		  	"Mayoturis\\Properties\\": "vendor/mayoturis/properties-ini/src"
+            "Logstats\\": "app/"
         },
 	    "files" : [
-		  "app/helpers.php",
-		  "tests/IlluminateMocks.php"
+		  "app/helpers.php"
 		]
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
-        ]
+            "tests/TestCase.php",
+            "tests/DatabaseTestCase.php",
+		  	"tests/factories"
+		],
+		"files" : [
+		  "tests/IlluminateMocks.php"
+		]
     },
     "scripts": {
         "post-install-cmd": [

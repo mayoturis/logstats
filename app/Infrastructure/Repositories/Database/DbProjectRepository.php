@@ -79,7 +79,7 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 		\DB::table($this->table)->where('id', $project->getId())
 			->update([
 				"name" => $project->getName(),
-				"token" => $project->getName()
+				"token" => $project->getToken()
 			]);
 
 		return $project;
@@ -175,7 +175,7 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	/**
 	 * Return all projects and date of the latest record
 	 *
-	 * @return array
+	 * @return ProjectLastRecordDTO[]
 	 */
 	public function findAllWithLatestRecord($allowedRoles = null, $userId = null) {
 		$query = 'SELECT * FROM ' . $this->prefix.$this->table . ' projects

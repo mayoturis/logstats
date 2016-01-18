@@ -32,6 +32,7 @@ class DbRecordFinder {
 	public function getRecordsByConditions(Project $project, RecordFilter $conditions = null, Pagination $pagination = null) {
 		$recordsBuilder = $this->getBuilderWithRecordsTable($project, $conditions, $pagination);
 		$recordsBuilder->leftJoin('properties', $this->recordTable.'.id', '=', 'record_id');
+		$recordsBuilder->orderBy('date');
 		$rawRecords = $recordsBuilder->get($this->recordWithPropertiesColumns());
 		return $this->stdRecordFactory->makeFromStdArray($rawRecords);
 	}
@@ -108,7 +109,7 @@ class DbRecordFinder {
 
 	private function recordColumns() {
 		return [
-			$this->recordTable . '.id',
+			DB::raw($this->prefix.$this->recordTable . '.id as id'),
 			'date',
 			'message',
 			'level',
@@ -117,7 +118,7 @@ class DbRecordFinder {
 			'day',
 			'hour',
 			'minute',
-			$this->recordTable.'.project_id',
+			DB::raw($this->prefix.$this->recordTable.'.project_id as project_id'),
 		];
 	}
 

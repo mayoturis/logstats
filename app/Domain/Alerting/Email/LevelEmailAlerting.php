@@ -38,7 +38,8 @@ class LevelEmailAlerting {
 	}
 
 	public function matchRecord(Record $record) {
-		return $record->getLevel() == $this->level;
+		return $record->getLevel() == $this->level
+		          && $record->getProjectId() == $this->projectId;
 	}
 
 	/**

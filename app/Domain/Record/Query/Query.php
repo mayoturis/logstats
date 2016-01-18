@@ -110,7 +110,7 @@ class Query {
 	/**
 	 * @param mixed $from
 	 */
-	public function setFrom($from) {
+	public function setFrom(Carbon $from) {
 		$this->from = $from;
 	}
 
@@ -124,7 +124,7 @@ class Query {
 	/**
 	 * @param mixed $to
 	 */
-	public function setTo($to) {
+	public function setTo(Carbon $to) {
 		$this->to = $to;
 	}
 

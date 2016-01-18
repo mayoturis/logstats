@@ -11,7 +11,9 @@
 |
 */
 
-$factory->define(Logstats\App\User::class, function (Faker\Generator $faker) {
+use Logstats\Domain\User\User;
+
+$factory->define(User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,

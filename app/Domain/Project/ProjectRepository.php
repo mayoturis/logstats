@@ -1,5 +1,6 @@
 <?php  namespace Logstats\Domain\Project;
 
+use Logstats\Domain\DTOs\ProjectLastRecordDTO;
 use Logstats\Domain\DTOs\ProjectProjectRoleListDTO;
 use Logstats\Domain\User\User;
 use Logstats\Domain\User\Role;
@@ -57,7 +58,7 @@ interface ProjectRepository {
 	/**
 	 * Return all projects and date of the latest record
 	 *
-	 * @return array
+	 * @return ProjectLastRecordDTO[]
 	 */
 	public function findAllWithLatestRecord($allowedRoles = null, $userId = null);
 

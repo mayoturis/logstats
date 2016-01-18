@@ -21,7 +21,7 @@ class DbMessageFinder {
 		return $this->getMessagesFromRaw($rawMessages);
 	}
 
-	private function getQueryBuilderWithConditions(Project $project, MessageFilter $conditions, Pagination $pagination = null) {
+	private function getQueryBuilderWithConditions(Project $project, MessageFilter $conditions = null, Pagination $pagination = null) {
 		$queryBuilder = DB::table($this->messageTable)
 			->where('project_id', $project->getId());
 
@@ -67,6 +67,7 @@ class DbMessageFinder {
 		return $rows[0]->project_id;
 	}
 
+	// not public to DbRecordRepository
 	public function getMessageidForMessageInProject($message, Project $project) {
 		$raw = DB::table($this->messageTable)->where('message', $message)
 			->where('project_id', $project->getId())->get(['id']);

@@ -66,7 +66,7 @@ class DbRecordRepository implements RecordRepository {
 
 	/**
 	 * @param RecordFilter $conditions
-	 * @return array of Record
+	 * @return Record[]
 	 */
 	public function getRecordsByConditions(Project $project, RecordFilter $conditions = null, Pagination $pagination = null) {
 		return $this->recordFinder->getRecordsByConditions($project, $conditions, $pagination);
@@ -84,7 +84,7 @@ class DbRecordRepository implements RecordRepository {
 	/**
 	 * @param Project $project
 	 * @param MessageConditions $conditions
-	 * @return array of strings
+	 * @return string[]
 	 */
 	public function getMessagesByConditions(Project $project, MessageFilter $conditions = null, Pagination $pagination = null) {
 		return $this->messageFinder->getMessagesByConditions($project, $conditions);

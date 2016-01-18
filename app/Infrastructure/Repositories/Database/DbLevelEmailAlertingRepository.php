@@ -16,12 +16,13 @@ class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEm
 	}
 
 	public function insert(LevelEmailAlerting $levelEmailAlerting) {
-		DB::table($this->table)
-			->insert([
+		$id = DB::table($this->table)
+			->insertGetId([
 				'project_id' => $levelEmailAlerting->getProjectId(),
 				'email' => $levelEmailAlerting->getEmail(),
 				'level' => $levelEmailAlerting->getLevel()
 			]);
+		$levelEmailAlerting->setId($id);
 	}
 
 	public function getAllForProject($projectId) {

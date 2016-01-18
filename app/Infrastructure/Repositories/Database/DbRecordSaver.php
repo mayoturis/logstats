@@ -49,7 +49,7 @@ class DbRecordSaver {
 	private function insertRecord(Record $record, $messageId) {
 		$gmtDate = $this->carbonConvertor->carbonInGMT($record->getDate());
 		$id = \DB::table($this->recordTable)->insertGetId([
-			'date' => $gmtDate,
+			'date' => (string) $gmtDate,
 			'minute' => $gmtDate->minute,
 			'hour' => $gmtDate->hour,
 			'day' => $gmtDate->day,

@@ -75,10 +75,17 @@ class DbByQueryFinder {
 	public function getData(Project $project, Query $query) {
 		$this->query = $query;
 		$this->project = $project;
+		$this->validateAggregation();
 		$this->setMessageId();
 		$this->setPropertyTypes();
 		$this->createPropertyAliases();
 		return $this->runQuery();
+	}
+
+	private function validateAggregation() {
+		if (!in_array(strtolower($this->query->getAggregation()), ['sum','count','avg','min','max'])) {
+			throw new QueryException('Invalid aggregation '.$this->query->getAggregation());
+		}
 	}
 
 	private function setMessageId() {

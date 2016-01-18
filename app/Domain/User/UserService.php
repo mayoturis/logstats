@@ -2,6 +2,7 @@
 
 
 use Logstats\Domain\Project\ProjectService;
+use Logstats\Domain\Project\ProjectServiceInterface;
 
 class UserService implements UserServiceInterface{
 
@@ -11,7 +12,7 @@ class UserService implements UserServiceInterface{
 	/**
 	 * @param UserRepository $repository
 	 */
-	public function __construct(UserRepository $repository, ProjectService $projectService) {
+	public function __construct(UserRepository $repository, ProjectServiceInterface $projectService) {
 		$this->repository = $repository;
 		$this->projectService = $projectService;
 	}

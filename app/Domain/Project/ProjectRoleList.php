@@ -23,6 +23,10 @@ class ProjectRoleList {
 		$this->userRoles[$user->getId()] = $role;
 	}
 
+	private function userExists(User $user) {
+		return array_key_exists($user->getId(), $this->users);
+	}
+
 	public function isAdmin(User $user) {
 		return $this->isRole($user, RoleTypes::ADMIN);
 	}
@@ -43,10 +47,6 @@ class ProjectRoleList {
 		$role = $this->userRoles[$user->getId()];
 
 		return $role->isRole($roleString);
-	}
-
-	private function userExists(User $user) {
-		return array_key_exists($user->getId(), $this->users);
 	}
 
 	/**

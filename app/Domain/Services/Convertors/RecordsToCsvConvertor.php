@@ -35,7 +35,7 @@ class RecordsToCsvConvertor implements RecordsToCsvConvertorInterface {
 	}
 
 	private function convertRecordContextToCsvString(array $context) {
-		return empty($context) ? "" : json_encode($context);
+		return empty($context) ? "" : json_encode($context, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 	}
 
 	private function escapeCsvParts(array $csvParts) {
