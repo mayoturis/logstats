@@ -39,14 +39,18 @@ Route::group(['middleware' => 'installed'], function() {
 		Route::get('settings', ['as' => 'settings', 'middleware' => 'admin', 'uses' => 'SettingsController@index']);
 		Route::post('settings-store', ['as' => 'settings-store', 'middleware' => 'admin', 'uses' => 'SettingsController@store']);
 
+		// for log
+		Route::get('record/ajax-show', ['as' => 'ajax-get-records', 'uses' => 'RecordController@ajaxShow']);
+
+		// for segmentation
+		Route::get('record/ajax-messages', ['as' => 'ajax-messages', 'uses' => 'RecordController@ajaxMessages']);
+		Route::get('record/ajax-property-names', ['as' => 'ajax-property-names', 'uses' => 'RecordController@ajaxPropertyNames']);
+
 		Route::group(['middleware' => 'project_choosen'], function() {
 			Route::get('log', ['as' => 'log', 'uses' => 'LogController@index']);
 			Route::get('export-csv', ['as' => 'export-csv', 'uses' => 'ExportController@csv']);
 
 			Route::get('segmentation', ['as' => 'segmentation', 'uses' => 'SegmentationController@index']);
-			Route::get('record/ajax-show', ['as' => 'ajax-get-records', 'uses' => 'RecordController@ajaxShow']);
-			Route::get('record/ajax-messages', ['as' => 'ajax-messages', 'uses' => 'RecordController@ajaxMessages']);
-			Route::get('record/ajax-property-names', ['as' => 'ajax-property-names', 'uses' => 'RecordController@ajaxPropertyNames']);
 
 			Route::resource('alerting', 'AlertingController');
 

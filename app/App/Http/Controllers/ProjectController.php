@@ -89,7 +89,10 @@ class ProjectController extends Controller
 		$user = $this->auth->user();
 		$this->projectService->createProject($request->get('name'), $user);
 
-		return redirect()->route('projects.index');
+		return redirect()->route('projects.index')->with([
+			'flash_message' => 'Project successfully created',
+			'flash_type' => 'success',
+		]);
     }
 
     /**

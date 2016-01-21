@@ -2,7 +2,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
+	<title>@yield('title')</title>
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	{!! Html::style('public/libraries/bootstrap/bootstrap.min.css') !!}
 	{!! Html::style('public/libraries/font-awesome/css/font-awesome.min.css') !!}
@@ -56,7 +56,6 @@
 			<!-- Navbar Right Menu -->
 			<div class="navbar-custom-menu">
 				<ul class="nav navbar-nav">
-
 					<!-- User Account Menu -->
 					<li class="user user-menu">
 						<!-- Menu Toggle Button -->

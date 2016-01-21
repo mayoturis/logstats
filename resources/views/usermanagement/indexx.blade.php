@@ -29,15 +29,11 @@
 						<tr>
 							<td>{{ $oneUser->getName() }}</td>
 							<td><input type="radio" name="users[{{ $oneUser->getId() }}][role]" value="" {{ $oneUser->isGeneralVisitor() ? "" : "checked" }}></td>
-							<td><input type="radio" name="users[{{ $oneUser->getId() }}][role]" value="visitor" {{ $oneUser->isGeneralVisitor() ? "checked" : "" }}></td>
-							<td><input type="radio" name="users[{{ $oneUser->getId() }}][role]" value="admin" {{ $oneUser->isGeneralAdmin() ? "checked" : "" }}></td>
+							<td><input type="radio" name="users[{{ $oneUser->getId() }}][role]" value="visitor" {{ $oneUser->getRole() == "visitor" ? "checked" : "" }}></td>
+							<td><input type="radio" name="users[{{ $oneUser->getId() }}][role]" value="admin" {{ $oneUser->getRole() == "admin" ? "checked" : "" }}></td>
 							<td>
 								@if($oneUser->getId() != $user->getId())
-									<form class="no-style-form" action="{{ route('user.destroy', ['id' => $oneUser->getId()]) }}" method="post">
-										{{ csrf_field() }}
-										{{ method_field('delete') }}
-										<a href="javascript:void(0)" class="submitable-link">Delete user</a>
-									</form>
+									<a href="javascript:void(0)" class="submitable-link" target-form-id="delete-{{ $oneUser->getId() }}">Delete user</a>
 								@endif
 							</td>
 						</tr>
@@ -45,6 +41,14 @@
 				</table>
 				<input class="btn maincolor-box" type="submit" value="Save">
 			</form>
+			@foreach($users as $oneUser)
+				@if($oneUser->getId() != $user->getId())
+					<form id="delete-{{ $oneUser->getId() }}" class="no-style-form" action="{{ route('user.destroy', ['id' => $oneUser->getId()]) }}" method="post">
+						{{ csrf_field() }}
+						{{ method_field('delete') }}
+					</form>
+				@endif
+			@endforeach
 		</div>
 
 		@foreach($projectProjectRoleListDTOs as $projectProjectRoleListDTO)

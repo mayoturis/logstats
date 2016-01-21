@@ -1,6 +1,8 @@
 <?php  namespace Logstats\Domain\Project;
 
 use Carbon\Carbon;
+use Logstats\Domain\Alerting\Email\LevelEmailAlerting;
+use Logstats\Domain\Alerting\Email\LevelEmailAlertingRepository;
 use Logstats\Domain\Record\RecordServiceInterface;
 use Logstats\Domain\User\User;
 use Logstats\Domain\User\Role;
@@ -16,14 +18,20 @@ class ProjectService implements ProjectServiceInterface {
 	 * @var RecordServiceInterface
 	 */
 	private $recordService;
+	/**
+	 * @var LevelEmailAlertingRepository
+	 */
+	private $levelEmailAlertingRepository;
 
 	/**
 	 * @param ProjectRepository $repository
 	 */
 	public function __construct(ProjectRepository $repository,
-								RecordServiceInterface $recordService) {
+								RecordServiceInterface $recordService,
+								LevelEmailAlertingRepository $levelEmailAlertingRepository) {
 		$this->repository = $repository;
 		$this->recordService = $recordService;
+		$this->levelEmailAlertingRepository = $levelEmailAlertingRepository;
 	}
 
 	/**
@@ -73,6 +81,7 @@ class ProjectService implements ProjectServiceInterface {
 	 */
 	public function deleteProject(Project $project) {
 		$this->recordService->deleteRecordsForProject($project);
+		$this->levelEmailAlertingRepository->deleteForProject($project->getId());
 		$this->repository->delete($project);
 	}
 

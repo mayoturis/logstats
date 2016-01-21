@@ -3,7 +3,9 @@
 namespace Logstats\App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\UnauthorizedException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Mayoturis\Properties\RepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -18,6 +20,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         HttpException::class,
         ModelNotFoundException::class,
+		NotFoundHttpException::class
     ];
 
     /**
@@ -42,13 +45,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
-        }
 
-		if (config('app.debug'))
-		{
+		if (config('app.debug')) {
 			return $this->renderExceptionWithWhoops($e);
+		} else {
+			if ($this->isShowableException($e)) {
+				return response()->view('errors.installation', ['message' => $e->getMessage()]);
+			}
+
+			if ($e instanceof NotFoundHttpException) {
+				return response()->view('errors.404');
+			}
+
+			if ($e instanceof UnauthorizedException) {
+				return response()->view('errors.401');
+			}
+
+
+			return response()->view('errors.500');
 		}
 
 
@@ -71,5 +85,10 @@ class Handler extends ExceptionHandler
 			$e->getStatusCode(),
 			$e->getHeaders()
 		);
+	}
+
+	private function isShowableException($e) {
+		return ($e instanceof \PDOException) ||
+			($e instanceof \InvalidArgumentException && strrpos($e->getMessage(), 'Database', -strlen($e->getMessage())) !== FALSE);
 	}
 }

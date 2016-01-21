@@ -5,6 +5,7 @@ namespace Logstats\App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Logstats\App\Http\ViewComposers\AuthUserComposer;
 use Logstats\App\Http\ViewComposers\CurrentProjectComposer;
+use Logstats\App\Http\ViewComposers\EmptyUserViewComposer;
 use Logstats\App\Http\ViewComposers\InstallationStepsViewComposer;
 use Logstats\App\Http\ViewComposers\TimezoneViewComposer;
 
@@ -18,6 +19,8 @@ class ViewComposerProvider extends ServiceProvider
     public function boot()
     {
 		view()->composer($this->adminViewFolders(), AuthUserComposer::class);
+
+		view()->composer($this->emptyUserComposer(), EmptyUserViewComposer::class);
 
 		view()->composer($this->adminViewFolders(), CurrentProjectComposer::class);
 
@@ -47,6 +50,12 @@ class ViewComposerProvider extends ServiceProvider
 			'settings/*',
 			'projectmanagement/*',
 			'alerting/*',
+		];
+	}
+
+	private function emptyUserComposer() {
+		return [
+			'errors/*'
 		];
 	}
 }

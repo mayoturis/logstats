@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Logstats\App\Validators\IncomingDataValidator;
 use Logstats\App\Validators\ValidationException;
 use Logstats\Domain\Project\Project;
@@ -22,32 +23,42 @@ class IncomingDataController extends Controller {
 		$data = $request->all();
 
 		if (!is_array($data)) { // invalid data format
-			throw new \UnexpectedValueException('Data has to be array');
+			return $this->errorResponse();
 		}
 
-		$this->newData($data);
+		return $this->newData($data);
 	}
 
 	private function newData(array $data) {
 		if (!$this->incDataValidator->isValidRoot($data)) {
-			throw new ValidationException($this->incDataValidator->getErrors(), 'Invalid data');
+			return $this->errorResponse();
 		}
 
 		// $data['project'] is already valid here
 		$project = $this->projectRepository->findByToken($data['project']);
 
-		foreach ($data['messages'] as $message) {
+		if ($project == null) {
+			return $this->errorResponse('Invalid project token');
+		}
+
+		$messages = json_decode($data['messages'], true);
+
+		foreach ($messages as $message) {
 			$this->newRecord($message, $project);
 		}
 	}
 
 	private function newRecord($message, Project $project) {
-		if (!$this->incDataValidator->isValidRecord($message)) {
+		if (!is_array($message) || !$this->incDataValidator->isValidRecord($message)) {
 			return false;
 		}
 
 		$context = isset($message['context']) ? $message['context'] : [];
 
 		$this->recordService->createRecord($message['level'], $message['message'], $message['time'], $project, $context);
+	}
+
+	public function errorResponse($message = 'Invalid data format, please see documentation') {
+		return response($message, 400);
 	}
 }

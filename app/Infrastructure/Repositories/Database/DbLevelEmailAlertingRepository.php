@@ -65,4 +65,10 @@ class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEm
 			->where('id', $alerting->getId())
 			->delete();
 	}
+
+	public function deleteForProject($projectId) {
+		DB::table($this->table)
+			->where('project_id', $projectId)
+			->delete();
+	}
 }

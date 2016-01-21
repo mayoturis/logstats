@@ -59,7 +59,12 @@ $(document).ready(function() {
 	});
 
 	$(".submitable-link").click(function() {
-		$(this).closest('form').submit();
+		var formId = $(this).attr('target-form-id');
+		if (formId) {
+			$('#'+formId).submit();
+		} else {
+			$(this).closest('form').submit();
+		}
 	})
 
 });

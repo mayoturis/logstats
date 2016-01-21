@@ -1,6 +1,6 @@
 @extends('empty')
 
-@section('title', 'Login')
+@section('title', 'Register')
 
 @section('head')
 	{!! Html::style('public/libraries/bootstrap/bootstrap.min.css') !!}
@@ -13,7 +13,7 @@
 			@include('partials.form_errors', ['messageBag' => 'register'])
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<input class="form-control" type="text" name="name" placeholder="Username" value="{{ old('name') }}">
-			<input class="form-control" type="text" name="email" placeholder="Email" value="{{ old('email') }}">
+			<input class="form-control" type="email" name="email" placeholder="Email" value="{{ old('email') }}">
 			<input class="form-control" type="password" name="password" placeholder="Password">
 			<input class="form-control" type="password" name="password_confirmation" placeholder="Repeat assword">
 			<input class="form-control" type="submit" value="Register">

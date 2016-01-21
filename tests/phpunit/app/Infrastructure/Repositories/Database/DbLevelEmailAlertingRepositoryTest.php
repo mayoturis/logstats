@@ -59,4 +59,12 @@ class DbLevelEmailAlertingRepositoryTest extends DatabaseTestCase {
 		$this->assertNull($this->repository->findById(1));
 	}
 
+	public function test_alertings_for_project_can_be_deleted() {
+		$this->repository->deleteForProject(1);
+
+		$this->assertEquals(1, count($this->repository->findBy([])));
+		$this->assertNull($this->repository->findById(1));
+		$this->assertNull($this->repository->findById(2));
+	}
+
 }

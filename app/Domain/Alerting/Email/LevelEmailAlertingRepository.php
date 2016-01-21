@@ -20,4 +20,9 @@ interface LevelEmailAlertingRepository {
 	 * @param LevelEmailAlerting $alerting
 	 */
 	public function delete(LevelEmailAlerting $alerting);
+
+	/**
+	 * @param int $projectId
+	 */
+	public function deleteForProject($projectId);
 }

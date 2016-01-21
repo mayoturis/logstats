@@ -1,0 +1,10 @@
+class_name: ApiTester
+modules:
+    enabled:
+        - PhpBrowser:
+                url: http://localhost/logstats/
+        - \Helper\Api
+        - REST:
+            url: http://localhost/logstats/
+            depends: PhpBrowser
+        - Db

@@ -102,6 +102,10 @@ ul.pagination li.active a:focus {
 form.no-style-form {
   margin-bottom: 0px;
 }
+.big-error-message {
+  font-size: 30px;
+  font-weight: bold;
+}
 
 .login-form {
   width: 300px;

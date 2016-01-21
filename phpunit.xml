@@ -11,13 +11,13 @@
          syntaxCheck="false">
     <testsuites>
         <testsuite name="App">
-            <directory>./tests/app/App</directory>
+            <directory>./tests/phpunit/app/App</directory>
         </testsuite>
 		<testsuite name="Domain">
-			<directory>./tests/app/Domain</directory>
+			<directory>./tests/phpunit/app/Domain</directory>
 		</testsuite>
 		<testsuite name="Infrastructure">
-			<directory>./tests/app/Infrastructure</directory>
+			<directory>./tests/phpunit/app/Infrastructure</directory>
 		</testsuite>
     </testsuites>
     <filter>

@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
-	<title>@section('title', 'Logstats')</title>
+	<title>@yield('title')</title>
 	@yield('head')
 </head>
 <body>

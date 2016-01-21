@@ -121,7 +121,6 @@ class InstallationPostConfigurationController extends Controller
 
 	public function createTables() {
 		$errorMessage = null;
-
 		try {
 			//$this->dbCreator->createDatabaseIfNotExists();
 			$this->tableCreator->migrateDatabase();

@@ -23,7 +23,6 @@ class StdRecordFactory {
 				$this->addContextItem($rawRecord);
 			}
 		}
-
 		return $this->getRecords();
 	}
 
