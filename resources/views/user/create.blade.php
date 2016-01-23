@@ -17,6 +17,7 @@
 			<input class="form-control" type="password" name="password" placeholder="Password">
 			<input class="form-control" type="password" name="password_confirmation" placeholder="Repeat assword">
 			<input class="form-control" type="submit" value="Register">
+			<a href="{{ route('login') }}">(Login)</a>
 		</form>
 	</div>
 @endsection

@@ -8,7 +8,7 @@
 		Logstats was successfully installed
 	</p>
 
-	<a class="step next" href="{{ route('how-to-send-logs') }}">
-		How to send logs >>
+	<a class="step next" href="{{ route('home') }}">
+		Home page >>
 	</a>
 @endsection

@@ -16,10 +16,17 @@ modules:
     config:
         Db:
             # MYSQL
-            dsn: 'mysql:host=localhost;dbname=logstats_codeception'
+            #dsn: 'mysql:host=localhost;dbname=logstats_codeception'
+            #user: 'root'
+            #password: ''
+            #dump: tests/_data/dump.sql
+
+            # PGSQL
+            dsn: 'pgsql:host=localhost;dbname=logstats_codeception;user=root;password=password'
             user: 'root'
-            password: ''
-            dump: tests/_data/dump.sql
+            password: 'password'
+            dump: tests/_data/dump_pgsql.sql
+
 
             # SQLITE - doesn't work
             #dsn: "sqlite:C:\\xampp\\htdocs\\logstats\\storage\\codeception_database.sqlite"

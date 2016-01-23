@@ -18,7 +18,7 @@
 					<i class="fa fa-search"></i> Find
 				</button>
 				<button class="maincolor-box btn" id="export-csv" data-export-csv-url="{{ route('export-csv') }}">
-					<i class="fa fa-file-code-o"></i> Export in CSV
+					<!--<i class="fa fa-file-code-o"></i>-->Export in CSV
 				</button>
 			</div>
 			<div class="down-control">

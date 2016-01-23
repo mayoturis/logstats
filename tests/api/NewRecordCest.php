@@ -19,7 +19,7 @@ class NewRecordCest
 		$message = 'some_message';
 		$level = 'info';
 		$context = [];
-		$api->sendRecords('', 'project1Token', [[
+		$api->sendRecords('api', 'project1Token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -46,7 +46,7 @@ class NewRecordCest
 			],
 			"some_array" => ['value1', 'value2']
 		];
-		$api->sendRecords('', 'project1Token', [[
+		$api->sendRecords('api', 'project1Token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -65,7 +65,7 @@ class NewRecordCest
 		$context = [
 			'weird_value' => 'ľ+ščľčžťžťýáííáéäúô\'"§↨7Wš\\/BĎ'
 		];
-		$api->sendRecords('', 'project1Token', [[
+		$api->sendRecords('api', 'project1Token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -81,7 +81,7 @@ class NewRecordCest
 		$message2 = 'another_message';
 		$level2 = 'debug';
 		$context2 = ['value' => 5];
-		$api->sendRecords('', 'project1Token', [[
+		$api->sendRecords('api', 'project1Token', [[
 			'message' => $message1,
 			'level' => $level1,
 			'context' => $context1,
@@ -104,7 +104,7 @@ class NewRecordCest
 		$message = 'some_message';
 		$level = 'info';
 		$context = [];
-		$api->sendRecords('', 'invalid_token', [[
+		$api->sendRecords('api', 'invalid_token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -121,7 +121,7 @@ class NewRecordCest
 		$message2 = 'another_message';
 		$level2 = 'debug';
 		$context2 = ['value' => 5];
-		$api->sendRecords('', 'project1Token', [[
+		$api->sendRecords('api', 'project1Token', [[
 			'message' => $message1,
 			'level' => $level1,
 			'context' => $context1,

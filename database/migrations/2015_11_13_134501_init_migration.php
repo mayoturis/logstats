@@ -68,14 +68,14 @@ class InitMigration extends Migration
 
 		Schema::create('records', function (Blueprint $table) {
 			$table->increments('id');
-			$table->timestamp('date');
+			$table->timestamp('date')->index();
 			$table->tinyInteger('minute');
 			$table->tinyInteger('hour');
 			$table->tinyInteger('day');
 			$table->tinyInteger('month');
 			$table->smallInteger('year');
 			$table->unsignedInteger('project_id');
-			$table->string('level');
+			$table->string('level')->index();
 			$table->unsignedInteger('message_id');
 			$table->foreign('project_id', 'records_project_id'. $this->generateRandomSuffix())->references('id')->on('projects');
 			$table->foreign('level', 'records_level'. $this->generateRandomSuffix())->references('name')->on('levels');
@@ -115,18 +115,18 @@ class InitMigration extends Migration
      */
     public function down()
     {
-		Schema::drop('users');
 		Schema::drop('project_role_user');
+		Schema::drop('users');
 		Schema::drop('roles');
-        Schema::drop('email_send');
-        Schema::drop('property_types');
+		Schema::drop('email_send');
+		Schema::drop('property_types');
 		Schema::drop('properties');
-        Schema::drop('messages');
-        //Schema::drop('emails');
-        Schema::drop('levels');
-        Schema::drop('records');
-        Schema::drop('projects');
-    }
+		Schema::drop('records');
+		Schema::drop('messages');
+		//Schema::drop('emails');
+		Schema::drop('levels');
+		Schema::drop('projects');
+	}
 
 	/**
 	 * to avoid collisions in foreign key names

@@ -444,22 +444,36 @@ LogstatsGraphDrawer.prototype.validDataCount = function() {
 	if (!this.timeframe || !this.interval)
 		return true;
 	var minutesToDisplay = (this.timeframe.to - this.timeframe.from) / 60;
-	var step = 1;
-	if (this.interval == "hourly") {
-		step *= 60;
-	}
-	if (this.interval == "daily") {
-		step *= 24;
-	}
-	if (this.interval == "monthly") {
-		step *= 30;
-	}
-	if (this.interval == "yearly") {
-		step *= 365;
-	}
+	var step = this.getStepFromInterval(this.interval);
 
 	const MAX_INTERVAL_POINTS_TO_DISPLAY = 50000;
 	return minutesToDisplay / step < MAX_INTERVAL_POINTS_TO_DISPLAY;
+}
+
+LogstatsGraphDrawer.prototype.getStepFromInterval = function(interval) {
+	var step = 1;
+
+	if (interval == "minutely") {
+		return step;
+	}
+
+	step *= 60;
+	if (interval == "hourly") {
+		return step;
+	}
+
+	step *= 24;
+	if (interval == "daily") {
+		return step;
+	}
+
+	step *= 30;
+	if (interval == "monthly") {
+		return step;
+	}
+
+	step *= 12;
+	return step;
 }
 
 LogstatsGraphDrawer.prototype.isExportable = function() {

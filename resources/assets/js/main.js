@@ -28,10 +28,10 @@ $(document).ready(function() {
 			'Yesterday': [moment.tz(currentTimestamp,timezone).subtract(1, 'days').startOf('day'), moment.tz(currentTimestamp,timezone).subtract(1, 'days').endOf('day')],
 			'Last 20 Minutes': [moment.tz(currentTimestamp,timezone).subtract(20, 'minutes'), moment.tz(currentTimestamp,timezone)],
 			'Last Hour': [moment.tz(currentTimestamp,timezone).subtract(1, 'hours'), moment.tz(currentTimestamp,timezone)],
+			'Last 24 Hours': [moment.tz(currentTimestamp,timezone).subtract(24, 'hours'), moment.tz(currentTimestamp,timezone)],
 			'Last 7 Days': [moment.tz(currentTimestamp,timezone).subtract(7, 'days'), moment.tz(currentTimestamp,timezone)],
 			'Last 14 Days': [moment.tz(currentTimestamp,timezone).subtract(14, 'days'), moment.tz(currentTimestamp,timezone)],
-			'Last 30 Days': [moment.tz(currentTimestamp,timezone).subtract(30, 'days'), moment.tz(currentTimestamp,timezone)],
-			'This Month': [moment.tz(currentTimestamp,timezone).startOf('month'), moment.tz(currentTimestamp,timezone).endOf('month')]
+			'Last 30 Days': [moment.tz(currentTimestamp,timezone).subtract(30, 'days'), moment.tz(currentTimestamp,timezone)]
 		}
 	}, function(start,end,label) {
 		if (label == "Custom Range") {

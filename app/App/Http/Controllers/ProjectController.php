@@ -108,6 +108,10 @@ class ProjectController extends Controller
 		if ($project === null) {
 			throw new NotFoundHttpException('Project not found');
 		}
+		if (!$this->gate->check('show', [$project])) {
+			throw new UnauthorizedException('Access denied');
+		}
+
 
 		$this->currentProjectProvider->set($project);
 
@@ -148,6 +152,12 @@ class ProjectController extends Controller
 		$project = $this->projectRepository->findById($id);
 		if (!$this->gate->check('delete', [$project])) {
 			throw new UnauthorizedException('Access denied');
+		}
+
+		$currentProject = $this->currentProjectProvider->get();
+		// if deleted project is same as current project
+		if ($currentProject !== null && $currentProject->getId() == $project->getId()) {
+			$this->currentProjectProvider->unsetProject();
 		}
 
 		$this->projectService->deleteProject($project);

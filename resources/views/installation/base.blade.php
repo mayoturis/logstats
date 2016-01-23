@@ -11,16 +11,16 @@
 	{!! Html::style('public/css/main.css') !!}
 	{!! Html::style('public/css/installation.css') !!}
 	{!! Html::script('public/js/installation.js') !!}
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<title>Installation - @yield('title')</title>
 </head>
 <body class="installation">
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-3" style="height: 100px;">
-				Logstats logo
+			<div class="col-xs-3" style="height: 60px; line-height: 60px">
+				<span class="logstats-name">Logstats</span>
 			</div>
 			<div class="col-xs-9">
-				# Some title
 			</div>
 		</div>
 		<div class="row">
@@ -29,7 +29,7 @@
 					<ol>
 						@foreach($installationSteps->getSteps() as $key => $step)
 							@if(!isset($step['notShow']))
-								<li class="{{ set_active('installation/1/'.$key) ? set_active('installation/1/'.$key) : set_active('installation/2/'.$key) }}">{{ $step['menu'] }}</li>
+								<li class="{{ set_active('installation/'.$key) }}">{{ $step['menu'] }}</li>
 							@endif
 						@endforeach
 					</ol>

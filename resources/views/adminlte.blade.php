@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -6,7 +7,6 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	{!! Html::style('public/libraries/bootstrap/bootstrap.min.css') !!}
 	{!! Html::style('public/libraries/font-awesome/css/font-awesome.min.css') !!}
-	{!! Html::style('public/libraries/ionicons/css/ionicons.min.css') !!}
 	{!! Html::style('public/libraries/adminlte/dist/css/AdminLTE.min.css') !!}
 	{!! Html::style('public/libraries/adminlte/dist/css/skins/skin-green.min.css') !!}
 	{!! Html::style('public/libraries/daterangepicker/daterangepicker.css') !!}
@@ -29,13 +29,12 @@
 	{!! Html::script('public/libraries/html2canvas/html2canvas.min.js') !!}
 
 	{!! Html::script('public/js/main.js') !!}
-	{{-- Html::script('public/libraries/slimScroll/jquery.slimScroll.min.js') --}}
-
 	{!! Html::style('public/css/main.css') !!}
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
@@ -82,14 +81,14 @@
 					<li class="{{ set_active('log') }}"><a href="{{ route('log') }}"><i class="fa fa-list-ul"></i><span>Log records</span></a></li>
 					<li class="{{ set_active('segmentation') }}"><a href="{{ route('segmentation') }}"><i class="fa fa-bar-chart"></i><span>Segmentation</span></a></li>
 					@can('manageAlerting', [$currentProject])
-						<li class="{{ set_active('alerting') }}"><a href="{{ route('alerting.index') }}"><i class="fa fa-envelope"></i><span>Email alerting</span></a>
+						<li class="{{ set_active('alerting') }}"><a href="{{ route('alerting.index') }}"><i class="fa fa-envelope"></i><span>Email notifications</span></a>
 					@endcan
 					@can('deleteRecords', [$currentProject])
 						<li class="{{ set_active('project-management') }}"><a href="{{ route('project-management') }}"><i class="fa fa-pencil-square-o"></i><span>Project management</span></a></li>
 					@endcan
 				@endif
 				<li class="header">General</li>
-				<li class="{{ set_active('projects') }}"><a href="{{ route('projects.index') }}"><i class="fa fa-exchange"></i></i><span>Projects</span></a></li>
+				<li class="{{ set_active('projects') }}"><a href="{{ route('projects.index') }}"><i class="fa fa-exchange"></i><span>Projects</span></a></li>
 				@if($user->isGeneralAdmin())
 					<li class="{{ set_active('user-management') }}"><a href="{{ route('user-management') }}"><i class="fa fa-user"></i><span>Users</span></a></li>
 					<li class="{{ set_active('settings') }}"><a href="{{ route('settings') }}"><i class="fa fa-cog"></i><span>Settings</span></a></li>
@@ -122,10 +121,10 @@
 	<footer class="main-footer">
 		<!-- To the right -->
 		<div class="pull-right hidden-xs">
-			Anything you want
+			marek.turis@gmail.com
 		</div>
 		<!-- Default to the left -->
-		<strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+		<strong>Copyright &copy; 2016 Marek Turis</strong>
 	</footer>
 </div>
 <div id="data-holder" data-timezone="{{ $timezone }}"></div>

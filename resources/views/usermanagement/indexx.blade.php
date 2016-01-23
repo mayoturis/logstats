@@ -20,7 +20,7 @@
 				<table class="user-management-table">
 					<tr>
 						<th>Username</th>
-						<th>None</th>
+						<th>No role</th>
 						<th>Visitor</th>
 						<th>Admin</th>
 						<th></th>
@@ -39,7 +39,7 @@
 						</tr>
 					@endforeach
 				</table>
-				<input class="btn maincolor-box" type="submit" value="Save">
+				<input style="margin-top: 5px" class="btn maincolor-box" type="submit" value="Save">
 			</form>
 			@foreach($users as $oneUser)
 				@if($oneUser->getId() != $user->getId())
@@ -60,7 +60,7 @@
 					<table class="user-management-table">
 						<tr>
 							<th>Username</th>
-							<th>None</th>
+							<th>No role</th>
 							<th>Visitor</th>
 							<th>Admin</th>
 						</tr>
@@ -73,7 +73,7 @@
 							</tr>
 						@endforeach
 					</table>
-					<input class="btn maincolor-box" type="submit" value="Save">
+					<input style="margin-top: 5px" class="btn maincolor-box" type="submit" value="Save">
 				</form>
 			</div>
 		@endforeach

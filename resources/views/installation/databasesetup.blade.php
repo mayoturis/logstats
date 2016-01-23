@@ -52,7 +52,8 @@
 				<td><input type="text" name="collation" id="collation" value="{{ old('collation', 'utf8_unicode_ci') }}"></td>
 			</tr>
 			<tr data-databases="sqlite">
-				<td><label for="database_location">Database location: </label></td>
+				<td><label for="database_location">Database location: </label><br>
+					<span class="grey-info">(File has to already exist)</span></td>
 				<td><input type="text" name="database_location" id="database_location" value="{{ old('database_location',storage_path('database.sqlite')) }}"></td>
 			</tr>
 			<tr data-databases="pgsql">

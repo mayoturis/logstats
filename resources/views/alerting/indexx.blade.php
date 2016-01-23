@@ -1,35 +1,40 @@
 @extends('adminlte')
 
-@section('title', 'Email alerting')
+@section('title', 'Email notifications')
 
 @section('content-header')
-	Email alerting in project {{ $currentProject->getName() }}
+	Email notification in project {{ $currentProject->getName() }}
 @endsection
 
 @section('content')
 	<div class="alerting">
 		@include('partials.flash_div_message')
-		<h4>Current email addresses</h4>
-		<table class="current-alerting">
-			<tr>
-				<th>Level</th>
-				<th>Email</th>
-				<th></th>
-			</tr>
-			@foreach($alertings as $alerting)
+		@if(count($alertings) > 0)
+			<h4>Current email addresses</h4>
+			<table class="current-alerting">
 				<tr>
-					<td>{{ $alerting->getLevel() }}</td>
-					<td>{{ $alerting->getEmail() }}</td>
-					<td>
-						<form class="no-style-form" action="{{ route('alerting.destroy', ['id' => $alerting->getId()]) }}" method="post">
-							{{ csrf_field() }}
-							{{ method_field('delete') }}
-							<a href="javascript:void(0)" class="submitable-link">Delete</a>
-						</form>
-					</td>
+					<th>Level</th>
+					<th>Email</th>
+					<th></th>
 				</tr>
-			@endforeach
-		</table>
+				@foreach($alertings as $alerting)
+					<tr>
+						<td>{{ $alerting->getLevel() }}</td>
+						<td>{{ $alerting->getEmail() }}</td>
+						<td>
+							<form class="no-style-form" action="{{ route('alerting.destroy', ['id' => $alerting->getId()]) }}" method="post">
+								{{ csrf_field() }}
+								{{ method_field('delete') }}
+								<a href="javascript:void(0)" class="submitable-link">Delete</a>
+							</form>
+						</td>
+					</tr>
+				@endforeach
+			</table>
+		@else
+			<div>No notifications created</div>
+		@endif
+
 
 		<h4>Add new</h4>
 		@include('partials.form_errors', ['messageBag' => 'alerting'])

@@ -93,7 +93,7 @@ class DbRecordFinder {
 			}
 		}
 		$query->orderBy('date');
-		$recordBuiler = DB::table(DB::raw("(({$query->toSql()}) as ".$this->prefix.$this->recordTable .')'))
+		$recordBuiler = DB::table(DB::raw("({$query->toSql()}) as ".$this->prefix.$this->recordTable .''))
 			->mergeBindings($query);
 		return $recordBuiler;
 	}

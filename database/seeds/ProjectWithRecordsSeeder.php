@@ -14,8 +14,8 @@ class ProjectWithRecordsSeeder extends Seeder
     public function run()
     {
 		$projectId = DB::table('projects')->insertGetId([
-			'name' => 'Test project',
-			'token' => 'newtestProjectToken',
+			'name' => 'Test2 project',
+			'token' => 'newtest2ProjectToken',
 			'created_at' => Carbon::now()
 		]);
 

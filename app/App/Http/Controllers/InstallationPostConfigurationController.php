@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use Logstats\App\Http\Requests;
 use Logstats\App\Providers\Project\CurrentProjectProviderInterface;
 use Logstats\Domain\Services\Database\DatabaseConfigServiceInterface;
-use Logstats\Domain\Services\Database\DatabaseCreator;
 use Logstats\Domain\Services\Database\TableCreator;
 use Logstats\Domain\Project\ProjectServiceInterface;
 use Logstats\Domain\User\UserServiceInterface;
@@ -122,7 +121,6 @@ class InstallationPostConfigurationController extends Controller
 	public function createTables() {
 		$errorMessage = null;
 		try {
-			//$this->dbCreator->createDatabaseIfNotExists();
 			$this->tableCreator->migrateDatabase();
 			$this->installationService->setNextInstallationStep(Steps::CREATE_TABLES);
 		} catch(\Exception $ex) {
