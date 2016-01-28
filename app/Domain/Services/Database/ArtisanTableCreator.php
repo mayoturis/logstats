@@ -4,9 +4,6 @@ use Illuminate\Contracts\Console\Kernel;
 
 class ArtisanTableCreator implements TableCreator{
 
-	/**
-	 *	Artisan
-	 */
 	private $artisan;
 
 	/**
@@ -16,6 +13,10 @@ class ArtisanTableCreator implements TableCreator{
 		$this->artisan = $artisan;
 	}
 
+	/**
+	 * Migrate database to newest version
+	 * @throws \Exception
+	 */
 	public function migrateDatabase() {
 		try {
 			$this->artisan->call('migrate');

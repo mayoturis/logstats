@@ -4,6 +4,7 @@ interface TableCreator {
 
 	/**
 	 * Migrate database to newest version
+	 * @throws \Exception
 	 */
 	public function migrateDatabase();
 }

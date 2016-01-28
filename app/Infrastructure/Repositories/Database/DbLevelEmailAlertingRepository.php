@@ -15,6 +15,9 @@ class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEm
 		$this->stdLevelEmailAlertingFactory = $stdLevelEmailAlertingFactory;
 	}
 
+	/**
+	 * @param LevelEmailAlerting $levelEmailAlerting
+	 */
 	public function insert(LevelEmailAlerting $levelEmailAlerting) {
 		$id = DB::table($this->table)
 			->insertGetId([
@@ -25,6 +28,12 @@ class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEm
 		$levelEmailAlerting->setId($id);
 	}
 
+	/**
+	 * Gets all alertings for project
+	 *
+	 * @param int $projectId
+	 * @return LevelEmailAlerting[]
+	 */
 	public function getAllForProject($projectId) {
 		$raw = $this->findRawBy(['project_id' => $projectId]);
 		return $this->stdLevelEmailAlertingFactory->makeFromStdArray($raw);
@@ -35,18 +44,26 @@ class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEm
 	}
 
 	/**
-	 * @param $id
+	 * @param int $id
 	 * @return LevelEmailAlerting
 	 */
 	public function findById($id) {
 		return $this->findFirstBy(['id' => $id]);
 	}
 
+	/**
+	 * @param array $conditions
+	 * @return LevelEmailAlerting[]
+	 */
 	public function findBy(array $conditions) {
 		$rawAlertings = $this->findRawBy($conditions);
 		return $this->stdLevelEmailAlertingFactory->makeFromStdArray($rawAlertings);
 	}
 
+	/**
+	 * @param array $conditions
+	 * @return LevelEmailAlerting|null
+	 */
 	public function findFirstBy(array $conditions) {
 		$rawAlerting = $this->findFirstRawBy($conditions);
 
@@ -66,6 +83,11 @@ class DbLevelEmailAlertingRepository extends DbBaseRepository implements LevelEm
 			->delete();
 	}
 
+	/**
+	 * Deletes all alertings for project
+	 *
+	 * @param int $projectId
+	 */
 	public function deleteForProject($projectId) {
 		DB::table($this->table)
 			->where('project_id', $projectId)

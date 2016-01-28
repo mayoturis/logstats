@@ -15,7 +15,7 @@
 						<option value="mysql" {{ old_select('database_type', 'mysql', 'selected') }}>MySQL</option>
 						<option value="sqlite" {{ old_select('database_type', 'sqlite') }}>SQLite</option>
 						<option value="pgsql" {{ old_select('database_type', 'pgsql') }}>PostgreSQL</option>
-						<option value="mssql" {{ old_select('database_type', 'mssql') }}>Microsoft SQL Server</option>
+						<option value="mssql" {{ old_select('database_type', 'mssql') }}>Microsoft SQL Server (not tested)</option>
 					</select>
 				</td>
 			</tr>

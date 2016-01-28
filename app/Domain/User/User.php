@@ -167,14 +167,23 @@ class User implements Authenticatable {
 		$this->role = $role;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isGeneralVisitor() {
 		return $this->isRole(RoleTypes::VISITOR);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isGeneralDataManager() {
 		return $this->isRole(RoleTypes::DATAMANAGER);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isGeneralAdmin() {
 		return $this->isRole(RoleTypes::ADMIN);
 	}

@@ -18,75 +18,78 @@ class Query {
 	 */
 	private $to;
 
+	/**
+	 * @param Where $where
+	 */
 	public function addWhere(Where $where) {
 		$this->wheres[] = $where;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getGroupBy() {
 		return $this->groupBy;
 	}
 
 	/**
-	 * @param mixed $groupBy
+	 * @param string $groupBy
 	 */
 	public function setGroupBy($groupBy) {
 		$this->groupBy = $groupBy;
 	}
 
 	/**
-	 * @return mixed
+	 * @return AggregateFunctions
 	 */
 	public function getAggregation() {
 		return $this->aggregation;
 	}
 
 	/**
-	 * @param mixed $aggregation
+	 * @param AggregateFunctions $aggregation
 	 */
 	public function setAggregation($aggregation) {
 		$this->aggregation = $aggregation;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getAggregationTarget() {
 		return $this->aggregationTarget;
 	}
 
 	/**
-	 * @param mixed $aggregationTarget
+	 * @param string $aggregationTarget
 	 */
 	public function setAggregationTarget($aggregationTarget) {
 		$this->aggregationTarget = $aggregationTarget;
 	}
 
 	/**
-	 * @return mixed
+	 * @return Intervals
 	 */
 	public function getInterval() {
 		return $this->interval;
 	}
 
 	/**
-	 * @param mixed $interval
+	 * @param Intervals $interval
 	 */
 	public function setInterval($interval) {
 		$this->interval = $interval;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getEvent() {
 		return $this->event;
 	}
 
 	/**
-	 * @param mixed $event
+	 * @param string $event
 	 */
 	public function setEvent($event) {
 		$this->event = $event;
@@ -101,49 +104,64 @@ class Query {
 
 
 	/**
-	 * @return mixed
+	 * @return Carbon
 	 */
 	public function getFrom() {
 		return $this->from;
 	}
 
 	/**
-	 * @param mixed $from
+	 * @param Carbon $from
 	 */
 	public function setFrom(Carbon $from) {
 		$this->from = $from;
 	}
 
 	/**
-	 * @return mixed
+	 * @return Carbon
 	 */
 	public function getTo() {
 		return $this->to;
 	}
 
 	/**
-	 * @param mixed $to
+	 * @param Carbon $to
 	 */
 	public function setTo(Carbon $to) {
 		$this->to = $to;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSetFrom() {
 		return $this->from !== null;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSetTo() {
 		return $this->to !== null;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSetGroupBy() {
 		return $this->groupBy !== null;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSetInterval() {
 		return $this->interval !== null;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getTimeFrame() {
 		$timeFrame = [];
 		if ($this->isSetFrom()) {

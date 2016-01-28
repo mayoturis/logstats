@@ -1,10 +1,18 @@
 <?php  namespace Logstats\Domain\Filters\ArrayFilters;
 
-class LastKeyArrayFilter implements ArrayFilter{
+use Logstats\Domain\Filters\BooleanFilters\BooleanFilter;
+use Logstats\Domain\Filters\NumberFilters\NumberFilter;
+use Logstats\Domain\Filters\StringFilters\StringFilter;
+
+class LastKeyArrayFilter implements ArrayFilter {
 
 	private $lastKey;
 	private $filter;
 
+	/**
+	 * @param string $lastKey
+	 * @param BooleanFilter|StringFilter|NumberFilter $filter
+	 */
 	public function __construct($lastKey, $filter) {
 		$this->lastKey = $lastKey;
 		$this->filter = $filter;

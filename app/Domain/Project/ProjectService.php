@@ -77,6 +77,8 @@ class ProjectService implements ProjectServiceInterface {
 	}
 
 	/**
+	 * Deletes project and all things related to it
+	 *
 	 * @param Project $project
 	 */
 	public function deleteProject(Project $project) {
@@ -86,6 +88,8 @@ class ProjectService implements ProjectServiceInterface {
 	}
 
 	/**
+	 * Deletes all roles for user in all projects
+	 *
 	 * @param User $user
 	 * @return mixed
 	 */

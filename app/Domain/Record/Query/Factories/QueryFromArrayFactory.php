@@ -8,11 +8,16 @@ class QueryFromArrayFactory {
 
 	private $carbonConvertor;
 
+	/**
+	 * @param CarbonConvertorInterface $carbonConvertor
+	 */
 	public function __construct(CarbonConvertorInterface $carbonConvertor) {
 		$this->carbonConvertor = $carbonConvertor;
 	}
 
 	/**
+	 * Creates Query from array
+	 *
 	 * @param array $data
 	 * @return Query
 	 */

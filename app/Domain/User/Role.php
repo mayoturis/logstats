@@ -21,6 +21,10 @@ class Role {
 		return $this->name;
 	}
 
+	/**
+	 * @param $role
+	 * @return bool
+	 */
 	public function isRole($role) {
 		return in_array($role, $this->allSubRoles());
 	}
@@ -29,6 +33,9 @@ class Role {
 		return $this->name;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function allSubRoles() {
 		return RoleTypes::allSubRoles($this->name);
 	}

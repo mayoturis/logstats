@@ -6,6 +6,9 @@ class NewRecord {
 
 	private $record;
 
+	/**
+	 * @param Record $record
+	 */
 	public function __construct(Record $record) {
 		$this->record = $record;
 	}

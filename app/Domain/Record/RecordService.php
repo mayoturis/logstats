@@ -12,6 +12,11 @@ class RecordService implements RecordServiceInterface {
 	private $carbonConvertor;
 	private $eventDispatcher;
 
+	/**
+	 * @param RecordRepository $recordRepository
+	 * @param CarbonConvertorInterface $carbonConvertor
+	 * @param Dispatcher $eventDispatcher
+	 */
 	public function __construct(RecordRepository $recordRepository,
 								CarbonConvertorInterface $carbonConvertor,
 								Dispatcher $eventDispatcher) {
@@ -21,6 +26,8 @@ class RecordService implements RecordServiceInterface {
 	}
 
 	/**
+	 * Creates new record
+	 *
 	 * @param string $level
 	 * @param string $message
 	 * @param int $timestamp timestamp
@@ -35,11 +42,21 @@ class RecordService implements RecordServiceInterface {
 		return $record;
 	}
 
+	/**
+	 * Gets records count grouped in given interval
+	 *
+	 * @param Project $project
+	 * @param string $interval
+	 * @param RecordFilter $recordFilter
+	 * @return array
+	 */
 	public function getRecordsCountInInterval(Project $project, $interval, RecordFilter $recordFilter = null) {
 		return $this->recordRepository->getRecordsCountInInterval($project, $interval, $recordFilter);
 	}
 
 	/**
+	 * Deletes all records for given project
+	 *
 	 * @param Project $project
 	 */
 	public function deleteRecordsForProject(Project $project) {

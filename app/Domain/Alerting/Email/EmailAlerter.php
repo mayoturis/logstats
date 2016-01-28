@@ -9,12 +9,20 @@ class EmailAlerter implements EmailAlerterInterface{
 
 	private $mailer;
 
+	/**
+	 * @param Mailer $mailer
+	 */
 	public function __construct(Mailer $mailer) {
 		$this->mailer = $mailer;
 	}
 
+	/**
+	 * Sends email with record
+	 *
+	 * @param string $email
+	 * @param Record $record
+	 */
 	public function sendEmailWithRecord($email, Record $record) {
-		//Log::info('New record: ' . var_export($record, true));
 		try {
 			$this->mailer->send('email.recordalert', ['record' => $record], function($m) use ($email) {
 				$m->to($email)->subject('New record arrived');

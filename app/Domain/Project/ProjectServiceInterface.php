@@ -26,11 +26,15 @@ interface ProjectServiceInterface {
 	public function addUserToProject(Project $project, User $user, Role $role);
 
 	/**
+	 * Deletes project and all things related to it
+	 *
 	 * @param Project $project
 	 */
 	public function deleteProject(Project $project);
 
 	/**
+	 * Deletes all roles for user in all projects
+	 *
 	 * @param User $user
 	 * @return mixed
 	 */

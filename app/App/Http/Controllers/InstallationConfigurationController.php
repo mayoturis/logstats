@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Logstats\App\Validators\DatabaseConfigValidator;
 use Logstats\Domain\Services\Database\DatabaseConfigServiceInterface;
 use Logstats\Domain\Services\Installation\InstallationServiceInterface;
 use Logstats\Domain\Services\Installation\StepCollection;
@@ -13,14 +14,17 @@ class InstallationConfigurationController extends Controller {
 	private $steps;
 	private $installationService;
 	private $databaseConfig;
+	private $databaseConfigValidator;
 
 
 	public function __construct(StepCollection $steps,
+								DatabaseConfigValidator $databaseConfigValidator,
 								DatabaseConfigServiceInterface $databaseConfig,
 								InstallationServiceInterface $installationService) {
 		$this->steps = $steps;
 		$this->installationService = $installationService;
 		$this->databaseConfig = $databaseConfig;
+		$this->databaseConfigValidator = $databaseConfigValidator;
 	}
 
 	public function index(Request $request, $step = 1) {
@@ -59,14 +63,15 @@ class InstallationConfigurationController extends Controller {
 	}
 
 	public function postDatabaseSetup(Request $request) {
-		try {
-			$this->databaseConfig->saveConfiguration($request->all());
-		} catch(ValidationException $ex) {
+		if (!$this->databaseConfigValidator->isValidDatabaseSetup($request->all())) {
+			$errors = $this->databaseConfigValidator->getErrors();
 			return redirect()
 				->route('installation', ['step' => $this->steps->getKeyByShort(Steps::DATABASE_SETUP)])
 				->withInput()
-				->withErrors($ex->getErrors(), 'databaseSetup');
+				->withErrors($errors, 'databaseSetup');
 		}
+
+		$this->databaseConfig->saveConfiguration($request->all());
 
 		$this->installationService->setNextInstallationStep(Steps::DATABASE_SETUP);
 

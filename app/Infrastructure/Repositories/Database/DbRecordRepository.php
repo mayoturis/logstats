@@ -109,12 +109,19 @@ class DbRecordRepository implements RecordRepository {
 
 	/**
 	 * @param int $messageId
-	 * @return array of strings
+	 * @return string[]
 	 */
 	public function getPropertyNamesForMessageId($messageId) {
 		return $this->propertyFinder->getPropertyNamesForMessageId($messageId);
 	}
 
+	/**
+	 * Gets data for Project by given Query
+	 *
+	 * @param Project $project
+	 * @param Query $query
+	 * @return array
+	 */
 	public function getData(Project $project, Query $query) {
 		return $this->dbByQueryFinder->getData($project, $query);
 	}
@@ -123,6 +130,7 @@ class DbRecordRepository implements RecordRepository {
 	 * @param Project $project
 	 * @param string $interval
 	 * @param RecordFilter $recordFilter
+	 * @return array
 	 */
 	public function getRecordsCountInInterval(Project $project, $interval, RecordFilter $recordFilter = null) {
 		return $this->recordFinder->getRecordsCountInInterval($project, $interval, $recordFilter);
@@ -130,7 +138,6 @@ class DbRecordRepository implements RecordRepository {
 
 	/**
 	 * @param Project $project
-	 * @return mixed
 	 */
 	public function deleteRecordsForProject(Project $project) {
 		$this->recordDeleter->deleteRecordsForProject($project);

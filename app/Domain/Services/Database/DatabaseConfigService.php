@@ -1,7 +1,5 @@
 <?php  namespace Logstats\Domain\Services\Database;
 
-use Logstats\App\Validators\DatabaseConfigValidator;
-use Logstats\App\Validators\ValidationException;
 use Mayoturis\Properties\RepositoryInterface;
 
 class DatabaseConfigService implements DatabaseConfigServiceInterface{
@@ -10,28 +8,21 @@ class DatabaseConfigService implements DatabaseConfigServiceInterface{
 	 *  Configuration class
 	 */
 	private $config;
-	/**
-	 * Installation validator
-	 */
-	private $validator;
+
 
 	/**
-	 * @param \Mayoturis\Properties\RepositoryInterface $config
-	 * @param  InstallationValidator $validator
+	 * @param RepositoryInterface $config
 	 */
-	public function __construct(RepositoryInterface $config, DatabaseConfigValidator $validator) {
+	public function __construct(RepositoryInterface $config) {
 		$this->config = $config;
-		$this->validator = $validator;
 	}
 
 	/**
+	 * Save database configuration
+	 *
 	 * @param array $data Configuration data
 	 */
 	public function saveConfiguration(array $data) {
-		if (!$this->validator->isValidDatabaseSetup($data)) {
-			throw new ValidationException($this->validator->getErrors());
-		}
-
 		$this->config->set('DB_TYPE', $data['database_type']);
 		switch($data['database_type']) {
 			case "mysql":
@@ -47,10 +38,6 @@ class DatabaseConfigService implements DatabaseConfigServiceInterface{
 				$this->saveSqliteConfiguration($data);
 				break;
 		}
-	}
-
-	public function checkConfiguration() {
-
 	}
 
 	/**

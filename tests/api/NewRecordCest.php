@@ -44,7 +44,8 @@ class NewRecordCest
 				"name" => "marek",
 				"admin" => true,
 			],
-			"some_array" => ['value1', 'value2']
+			"some_array" => ['value1', 'value2'],
+			"null" => null
 		];
 		$api->sendRecords('api', 'project1Token', [[
 			'message' => $message,

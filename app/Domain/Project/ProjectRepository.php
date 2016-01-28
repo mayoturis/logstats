@@ -25,7 +25,7 @@ interface ProjectRepository {
 	public function addUserToProject(Project $project, User $user, Role $role);
 
 	/**
-	 * Find project by id
+	 * Finds project by id
 	 *
 	 * @param int $id
 	 * @return Project|null
@@ -33,7 +33,7 @@ interface ProjectRepository {
 	public function findById($id);
 
 	/**
-	 * Find projects by conditions
+	 * Finds projects by conditions
 	 *
 	 * @param array $conditions
 	 * @return Project[]
@@ -41,7 +41,7 @@ interface ProjectRepository {
 	public function findBy(array $conditions);
 
 	/**
-	 * Find project by its token
+	 * Finds project by its token
 	 *
 	 * @param string $token Project token
 	 * @return Project
@@ -49,38 +49,47 @@ interface ProjectRepository {
 	public function findByToken($token);
 
 	/**
-	 * Get all projects
+	 * Gets all projects
 	 *
 	 * @return Project[]
 	 */
 	public function findAll();
 
 	/**
-	 * Return all projects and date of the latest record
+	 * Returns all projects and date of the latest record
 	 *
 	 * @return ProjectLastRecordDTO[]
 	 */
 	public function findAllWithLatestRecord($allowedRoles = null, $userId = null);
 
 	/**
+	 * Finds role for user in project
+	 *
 	 * @param User $user
 	 * @param Project $project
-	 * @return Role[]
+	 * @return Role
 	 */
 	public function findRoleForUserInProject(User $user, Project $project);
 
 
 	/**
+	 * Gets ProjectRoleList for given project
+	 *
 	 * @param Project $project
+	 * @return ProjectRoleList
 	 */
 	public function getProjectRoleList(Project $project);
 
 	/**
+	 * Gets all projects with its ProjectRoleLists
+	 *
 	 * @return ProjectProjectRoleListDTO[]
 	 */
 	public function getAllProjectsWithRoleLists();
 
 	/**
+	 * Gets all projects
+	 *
 	 * @return Project[]
 	 */
 	public function getAll();
@@ -91,14 +100,23 @@ interface ProjectRepository {
 	 */
 	public function saveProjectRoleList(ProjectRoleList $projectRoleList, Project $project);
 
+	/**
+	 * Deletes all roles for given project
+	 *
+	 * @param Project $project
+	 */
 	public function deleteProjectRoles(Project $project);
 
 	/**
+	 * Deletes project
+	 *
 	 * @param Project $project
 	 */
 	public function delete(Project $project);
 
 	/**
+	 * Deletes all roles for user in all projects
+	 *
 	 * @param User $user
 	 */
 	public function deleteProjectRolesForUser(User $user);

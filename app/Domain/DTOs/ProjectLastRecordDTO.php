@@ -8,6 +8,10 @@ class ProjectLastRecordDTO {
 	private $project;
 	private $lastRecordDate;
 
+	/**
+	 * @param Project $project
+	 * @param Carbon $lastRecordDate
+	 */
 	public function __construct(Project $project, Carbon $lastRecordDate = null) {
 		$this->project = $project;
 		$this->lastRecordDate = $lastRecordDate;

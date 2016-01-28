@@ -5,6 +5,8 @@ use Carbon\Carbon;
 class CarbonConvertor implements CarbonConvertorInterface {
 
 	/**
+	 * Creates Carbon instance from unix timestamp
+	 *
 	 * @param int $timestamp
 	 * @return Carbon
 	 */
@@ -16,6 +18,8 @@ class CarbonConvertor implements CarbonConvertorInterface {
 	}
 
 	/**
+	 * Creates Carbon instance from string in GMT timezone
+	 *
 	 * @param $string
 	 * @return Carbon
 	 */
@@ -28,6 +32,8 @@ class CarbonConvertor implements CarbonConvertorInterface {
 	}
 
 	/**
+	 * Creates Carbon instance with GMT timezone
+	 *
 	 * @param Carbon $date
 	 * @return Carbon
 	 */

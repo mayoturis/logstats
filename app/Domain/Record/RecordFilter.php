@@ -10,49 +10,65 @@ class RecordFilter {
 	private $messageFilters = [];
 	private $contextFilters = [];
 
+	/**
+	 * @param TimeFilter $timeFilter
+	 */
 	public function addDateFilter(TimeFilter $timeFilter) {
 		$this->dateFilters[] = $timeFilter;
 	}
 
+	/**
+	 * @param StringFilter $stringFilter
+	 */
 	public function addLevelFilter(StringFilter $stringFilter) {
 		$this->levelFilters[] = $stringFilter;
 	}
 
+	/**
+	 * @param StringFilter $stringFilter
+	 */
 	public function addMessageFilter(StringFilter $stringFilter) {
 		$this->messageFilters[] = $stringFilter;
 	}
 
+	/**
+	 * @param ArrayFilter $arrayFilter
+	 */
 	public function addContextFilter(ArrayFilter $arrayFilter) {
 		$this->contextFilters[] = $arrayFilter;
 	}
 
+	/**
+	 * @param Record $record
+	 * @return bool
+	 */
 	public function match(Record $record) {
 
 	}
 
 	/**
-	 * @return array
+	 * @return StringFilter[]
 	 */
 	public function getDateFilters() {
 		return $this->dateFilters;
 	}
 
 	/**
-	 * @return array
+	 * @return StringFilter[]
 	 */
 	public function getLevelFilters() {
 		return $this->levelFilters;
 	}
 
 	/**
-	 * @return array
+	 * @return StringFilter[]
 	 */
 	public function getMessageFilters() {
 		return $this->messageFilters;
 	}
 
 	/**
-	 * @return array
+	 * @return ArrayFilter[]
 	 */
 	public function getContextFilters() {
 		return $this->contextFilters;

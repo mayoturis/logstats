@@ -18,6 +18,8 @@ class UserService implements UserServiceInterface{
 	}
 
 	/**
+	 * Creates new user
+	 *
 	 * @param string $name
 	 * @param string $password
 	 * @param string|null $email
@@ -31,6 +33,8 @@ class UserService implements UserServiceInterface{
 	}
 
 	/**
+	 * Sets user a new role
+	 *
 	 * @param User $user
 	 * @param Role $role
 	 * @return User
@@ -40,6 +44,11 @@ class UserService implements UserServiceInterface{
 		$this->repository->save($user);
 	}
 
+	/**
+	 * Deletes user
+	 *
+	 * @param User $user
+	 */
 	public function delete(User $user) {
 		$this->projectService->deleteProjectRolesForUser($user);
 		$this->repository->delete($user);

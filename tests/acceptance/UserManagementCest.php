@@ -19,7 +19,6 @@ class UserManagementCest
 		$I->amOnPage(UserManagementPage::$URL);
 		$I->see('admin');
 		$I->see('visitor_user');
-		$I->see('none');
 		$I->see('project1');
 		$I->see('queryProject');
 		$I->seeCheckboxIsChecked(UserManagementPage::allProjectsOption(1).'[value="admin"]');

@@ -34,7 +34,7 @@ class Project {
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getId() {
 		return $this->id;
@@ -43,7 +43,7 @@ class Project {
 
 	/**
 	 * @param int $id
-	 * @throws \BadMethodCallException
+	 * @throws \BadMethodCallException if id was already set
 	 */
 	public function setId($id) {
 		if (!empty($this->id)) {
@@ -89,7 +89,7 @@ class Project {
 
 	/**
 	 * @param \Carbon\Carbon $createdAt
-	 * @throws \BadMethodCallException
+	 * @throws \BadMethodCallException if created at was already set
 	 */
 	public function  setCreatedAt(Carbon $createdAt) {
 		if (!empty($this->createdAt)) {

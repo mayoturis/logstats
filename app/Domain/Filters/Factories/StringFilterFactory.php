@@ -8,8 +8,17 @@ use Logstats\Domain\Filters\StringFilters\LessThanFilter;
 use Logstats\Domain\Filters\StringFilters\NotContainsFilter;
 use Logstats\Domain\Filters\StringFilters\NotEqualToFilter;
 use Logstats\Domain\Filters\StringFilters\StartsWithFilter;
+use Logstats\Domain\Filters\StringFilters\StringFilter;
 
 class StringFilterFactory {
+
+	/**
+	 * @param int $value Value against which will filter filter
+	 * @param string $comparisonType String representation of comparison,
+	 * 								 one of ComparisonTypes contstants
+	 * @throws InvalidArgumentException if given comparison type is not supported
+	 * @return StringFilter
+	 */
 	public function make($value, $comparisonType) {
 		switch ($comparisonType) {
 			case 'equal':

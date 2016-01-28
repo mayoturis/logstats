@@ -4,6 +4,8 @@
 interface UserServiceInterface {
 
 	/**
+	 * Creates new user
+	 *
 	 * @param string $name
 	 * @param string $password
 	 * @param string|null $email
@@ -12,6 +14,8 @@ interface UserServiceInterface {
 	public function createUser($name, $password, $email = null);
 
 	/**
+	 * Sets user a new role
+	 *
 	 * @param User $user
 	 * @param Role $role
 	 * @return User
@@ -19,8 +23,9 @@ interface UserServiceInterface {
 	public function setUserRole(User $user, Role $role);
 
 	/**
+	 * Deletes user
+	 *
 	 * @param User $user
-	 * @return mixed
 	 */
 	public function delete(User $user);
 }

@@ -6,11 +6,9 @@ use Logstats\Domain\Services\Database\DatabaseConfigService;
 class DatabaseConfigServiceTest extends TestCase{
 	public function test_saveConfiguration_can_save_mysql_configuration() {
 		$config = Mockery::mock('Mayoturis\Properties\RepositoryInterface');
-		$validator = Mockery::mock(DatabaseConfigValidator::class);
-		$dcs = new DatabaseConfigService($config, $validator);
+		$dcs = new DatabaseConfigService($config);
 		$data = $this->getMysqlData();
 
-		$validator->shouldReceive('isValidDatabaseSetup')->once()->with($data)->andReturn(true);
 		$config->shouldReceive('set')->with('DB_TYPE', $data['database_type']);
 		$config->shouldReceive('set')->with('DB_HOST', $data['host']);
 		$config->shouldReceive('set')->with('DB_DATABASE', $data['database']);
@@ -27,11 +25,9 @@ class DatabaseConfigServiceTest extends TestCase{
 
 	public function test_saveConfiguration_can_save_sqlite_configuration() {
 		$config = Mockery::mock('Mayoturis\Properties\RepositoryInterface');
-		$validator = Mockery::mock(DatabaseConfigValidator::class);
-		$dcs = new DatabaseConfigService($config, $validator);
+		$dcs = new DatabaseConfigService($config);
 		$data = $this->getSqliteData();
 
-		$validator->shouldReceive('isValidDatabaseSetup')->once()->with($data)->andReturn(true);
 		$config->shouldReceive('set')->with('DB_TYPE', $data['database_type']);
 		$config->shouldReceive('set')->with('DB_PREFIX', '');
 		$config->shouldReceive('set')->with('DB_DATABASE_PATH', $data['database_location']);
@@ -43,11 +39,9 @@ class DatabaseConfigServiceTest extends TestCase{
 
 	public function test_saveConfiguration_can_save_mssql_configution() {
 		$config = Mockery::mock('Mayoturis\Properties\RepositoryInterface');
-		$validator = Mockery::mock(DatabaseConfigValidator::class);
-		$dcs = new DatabaseConfigService($config, $validator);
+		$dcs = new DatabaseConfigService($config);
 		$data = $this->getMssqlData();
 
-		$validator->shouldReceive('isValidDatabaseSetup')->once()->with($data)->andReturn(true);
 		$config->shouldReceive('set')->with('DB_TYPE', $data['database_type']);
 		$config->shouldReceive('set')->with('DB_HOST', $data['host']);
 		$config->shouldReceive('set')->with('DB_DATABASE', $data['database']);
@@ -63,11 +57,9 @@ class DatabaseConfigServiceTest extends TestCase{
 
 	public function test_saveConfiguration_can_save_pgsql_configuration() {
 		$config = Mockery::mock('Mayoturis\Properties\RepositoryInterface');
-		$validator = Mockery::mock(DatabaseConfigValidator::class);
-		$dcs = new DatabaseConfigService($config, $validator);
+		$dcs = new DatabaseConfigService($config);
 		$data = $this->getPgsqlData();
 
-		$validator->shouldReceive('isValidDatabaseSetup')->once()->with($data)->andReturn(true);
 		$config->shouldReceive('set')->with('DB_TYPE', $data['database_type']);
 		$config->shouldReceive('set')->with('DB_HOST', $data['host']);
 		$config->shouldReceive('set')->with('DB_DATABASE', $data['database']);

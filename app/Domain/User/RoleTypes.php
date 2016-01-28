@@ -35,6 +35,10 @@ abstract class RoleTypes {
 		],
 	];
 
+	/**
+	 * @param string $role
+	 * @return string[]
+	 */
 	public static function allSubRoles($role) {
 		if (!array_key_exists($role, self::$allSubRoles)) {
 			return [];
@@ -43,6 +47,10 @@ abstract class RoleTypes {
 		return self::$allSubRoles[$role];
 	}
 
+	/**
+	 * @param string $role
+	 * @return string[]
+	 */
 	public static function allSuperRoles($role) {
 		if (!array_key_exists($role, self::$allSuperRoles)) {
 			return [];

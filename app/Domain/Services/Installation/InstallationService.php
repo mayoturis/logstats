@@ -11,6 +11,12 @@ class InstallationService implements InstallationServiceInterface{
 	private $str;
 	private $steps;
 
+	/**
+	 * @param Repository $laravelConfig
+	 * @param RepositoryInterface $envConfig
+	 * @param Str $str
+	 * @param StepCollection $steps
+	 */
 	public function __construct(Repository $laravelConfig,
 								RepositoryInterface $envConfig,
 								Str $str,
@@ -21,6 +27,9 @@ class InstallationService implements InstallationServiceInterface{
 		$this->steps = $steps;
 	}
 
+	/**
+	 * Sets application key to random string
+	 */
 	public function setRandomAppKey() {
 		$cipher = $this->laravelConfig->get('app.cipher');
 		$key = $this->getRandomKey($cipher);
@@ -35,10 +44,16 @@ class InstallationService implements InstallationServiceInterface{
 		return $this->str->random(32);
 	}
 
+	/**
+	 * @param string $step
+	 */
 	public function setInstallationStep($step) {
 		$this->envConfig->set('INSTALLATION_STEP', $this->steps->getKeyByShort($step));
 	}
 
+	/**
+	 * @param string $currentStep
+	 */
 	public function setNextInstallationStep($currentStep) {
 		$nextStep = $this->steps->nextStepForShort($currentStep);
 		$this->setInstallationStep($nextStep['short']);

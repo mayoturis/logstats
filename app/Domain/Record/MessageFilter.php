@@ -6,23 +6,29 @@ class MessageFilter {
 	private $messageFilters = [];
 	private $levelFilters = [];
 
+	/**
+	 * @param StringFilter $filter
+	 */
 	public function addMessageFilter(StringFilter $filter) {
 		$this->messageFilters[] = $filter;
 	}
 
+	/**
+	 * @param StringFilter $filter
+	 */
 	public function addLevelFilter(StringFilter $filter) {
 		$this->levelFilters[] = $filter;
 	}
 
 	/**
-	 * @return array
+	 * @return StringFilter[]
 	 */
 	public function getMessageFilters() {
 		return $this->messageFilters;
 	}
 
 	/**
-	 * @return array
+	 * @return StringFilter[]
 	 */
 	public function getLevelFilters() {
 		return $this->levelFilters;

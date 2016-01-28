@@ -28,17 +28,23 @@ interface UserRepository {
 	public function findFirstBy(array $conditions);
 
 	/**
+	 * Gets user by id
+	 *
 	 * @param int $id
 	 * @return User
 	 */
 	public function findById($id);
 
 	/**
+	 * Gets all users
+	 *
 	 * @return User[]
 	 */
 	public function getAll();
 
 	/**
+	 * Deletes user
+	 *
 	 * @param User $user
 	 */
 	public function delete(User $user);

@@ -1,4 +1,5 @@
 <?php
+use Logstats\Domain\Alerting\Email\LevelEmailAlertingRepository;
 use Logstats\Domain\Project\Project;
 use Logstats\Domain\Project\ProjectRepository;
 use Logstats\Domain\Project\ProjectService;
@@ -11,8 +12,9 @@ class ProjectServiceTest extends TestCase{
 	public function test_createProject_creates_project_and_adds_admin() {
 		$pr = $this->getProjectRepository();
 		$rs = $this->getRecordService();
+		$lear = $this->getLevelEmailAlertingRepostirory();
 
-		$ps = $this->getMock(ProjectService::class, ['addUserToProject','uniqueTokenForName'], [$pr, $rs]);
+		$ps = $this->getMock(ProjectService::class, ['addUserToProject','uniqueTokenForName'], [$pr, $rs, $lear]);
 		$user = $this->getUser();
 
 		$pr->shouldReceive('save')->once();
@@ -25,8 +27,9 @@ class ProjectServiceTest extends TestCase{
 	public function test_addUserToProject_calls_repository() {
 		$pr = $this->getProjectRepository();
 		$rs = $this->getRecordService();
+		$lear = $this->getLevelEmailAlertingRepostirory();
 
-		$ps = new ProjectService($pr,$rs);
+		$ps = new ProjectService($pr,$rs,$lear);
 		$user = $this->getUser();
 		$project = $this->getProject();
 		$role = $this->getRole();
@@ -37,11 +40,15 @@ class ProjectServiceTest extends TestCase{
 	public function test_deleteProject_calls_record_service_and_repository() {
 		$projectRepository = $this->getProjectRepository();
 		$recordService = $this->getRecordService();
-		$projectService = new ProjectService($projectRepository, $recordService);
+		$lear = $this->getLevelEmailAlertingRepostirory();
+
+		$projectService = new ProjectService($projectRepository, $recordService, $lear);
 		$project = $this->getProject();
 
 		$recordService->shouldReceive('deleteRecordsForProject')->once()->with($project);
 		$projectRepository->shouldReceive('delete')->once()->with($project);
+		$project->shouldReceive('getId')->andReturn('some_id');
+		$lear->shouldReceive('deleteForProject')->once()->with('some_id');
 
 		$projectService->deleteProject($project);
 	}
@@ -53,6 +60,10 @@ class ProjectServiceTest extends TestCase{
 
 	private function getUserRepository() {
 		return Mockery::mock(UserRepository::class);
+	}
+
+	private function getLevelEmailAlertingRepostirory() {
+		return Mockery::mock(LevelEmailAlertingRepository::class);
 	}
 
 	private function getProject() {

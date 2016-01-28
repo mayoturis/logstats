@@ -16,16 +16,16 @@ modules:
     config:
         Db:
             # MYSQL
-            #dsn: 'mysql:host=localhost;dbname=logstats_codeception'
-            #user: 'root'
-            #password: ''
-            #dump: tests/_data/dump.sql
+            dsn: 'mysql:host=localhost;dbname=logstats_codeception'
+            user: 'root'
+            password: ''
+            dump: tests/_data/dump_mysql.sql
 
             # PGSQL
-            dsn: 'pgsql:host=localhost;dbname=logstats_codeception;user=root;password=password'
-            user: 'root'
-            password: 'password'
-            dump: tests/_data/dump_pgsql.sql
+            #dsn: 'pgsql:host=localhost;dbname=logstats_codeception;user=root;password=password'
+            #user: 'root'
+            #password: 'password'
+            #dump: tests/_data/dump_pgsql.sql
 
 
             # SQLITE - doesn't work

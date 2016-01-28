@@ -6,14 +6,14 @@ class Where {
 	private $comparisonType;
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getPropertyName() {
 		return $this->propertyName;
 	}
 
 	/**
-	 * @param mixed $propertyName
+	 * @param string $propertyName
 	 */
 	public function setPropertyName($propertyName) {
 		$this->propertyName = $propertyName;
@@ -34,14 +34,14 @@ class Where {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getComparisonType() {
 		return $this->comparisonType;
 	}
 
 	/**
-	 * @param mixed $comparisonType
+	 * @param string $comparisonType
 	 */
 	public function setComparisonType($comparisonType) {
 		$this->comparisonType = $comparisonType;

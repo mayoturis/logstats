@@ -5,11 +5,18 @@ use Logstats\Domain\Filters\OneValueFilter;
 class FromFilter extends OneValueFilter implements  TimeFilter {
 
 
+	/**
+	 * @param Carbon $date Date against which will filter filter
+	 */
 	public function __construct(Carbon $date) {
 		$this->value = $date;
 	}
 
-	public function match(Carbon $date) {
+	/**
+	 * @param Carbon $time
+	 * @return bool
+	 */
+	public function match(Carbon $time) {
 
 	}
 }

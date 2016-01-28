@@ -8,6 +8,10 @@ class ProjectProjectRoleListDTO {
 	private $project;
 	private $projectRoleList;
 
+	/**
+	 * @param Project $project
+	 * @param ProjectRoleList $projectRoleList
+	 */
 	public function __construct(Project $project, ProjectRoleList $projectRoleList) {
 		$this->project = $project;
 		$this->projectRoleList = $projectRoleList;
