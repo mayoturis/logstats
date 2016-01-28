@@ -1,9 +1,15 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "logstats/logstats",
+    "description": "Open source self-hosted aplication for managing and browsing logs written in PHP.",
+    "keywords": ["logging", "log"],
     "license": "MIT",
     "type": "project",
+	"authors": [
+	  {
+		"name": "Marek Turis",
+		"email": "marek.turis@gmail.com"
+	  }
+	],
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
