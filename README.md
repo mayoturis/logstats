@@ -9,7 +9,7 @@ Open-source self-hosted log management and analytics tool
 - Send data from libraries for supported languages
 
 ## Documentation
-Documentation can be found on the [Logstats website](https://logstats.org).
+Documentation can be found on the [Logstats website](http://logstats.org).
 
 ## Licence
 Logstats is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
