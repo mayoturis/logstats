@@ -88,12 +88,12 @@
 					@endcan
 				@endif
 				<li class="header">General</li>
-				<li class="{{ set_active('projects') }}"><a href="{{ route('projects.index') }}"><i class="fa fa-exchange"></i><span>Projects</span></a></li>
+				<li class="{{ set_active('projects') }} {{ set_active('/') }}"><a href="{{ route('projects.index') }}"><i class="fa fa-exchange"></i><span>Projects</span></a></li>
 				@if($user->isGeneralAdmin())
 					<li class="{{ set_active('user-management') }}"><a href="{{ route('user-management') }}"><i class="fa fa-user"></i><span>Users</span></a></li>
 					<li class="{{ set_active('settings') }}"><a href="{{ route('settings') }}"><i class="fa fa-cog"></i><span>Settings</span></a></li>
 				@endif
-				<li class="{{ set_active('how-to-send-logs') }}"><a href="{{ route('how-to-send-logs') }}"><i class="fa fa-paper-plane"></i><span>How to send logs</span></a></li>
+				<li class="{{ set_active('how-to-send-logs') }}"><a href="http://logstats.org/introduction" target="_blank"><i class="fa fa-question-circle"></i><span>Help</span></a></li>
 			</ul>
 			<!-- /.sidebar-menu -->
 		</section>

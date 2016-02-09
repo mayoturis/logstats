@@ -9,7 +9,7 @@
 	@include('partials.flash_div_message')
 	<form method="POST" action="{{ route('settings-store') }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-		Application timezone:
+		Application timezone (all users):
 		<select name="timezone">
 			@include('partials.timezone_options')
 		</select>

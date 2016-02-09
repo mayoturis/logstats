@@ -169,12 +169,12 @@ class ProjectWithRecordsSeeder extends Seeder
 	}
 
 	private function getRandomName() {
-		return $this->rand_value(['marek', 'tomas', 'ivan', 'jan', 'milan', 'milica', 'ivana',
-		'metod','jozef', 'lubos', 'nikola', 'kristyna']);
+		return $this->rand_value(['John', 'Tom', 'Jake', 'Charlie', 'Megan', 'Berta', 'Penny',
+		'Ted','Alice', 'Marshall', 'Barney', 'Christie']);
 	}
 
 	private function getRandomProduct() {
-		return $this->rand_value(['lopta', 'kopacky', 'topanky', 'kratase', 'dres', 'tricko', 'mikina']);
+		return $this->rand_value(['ball', 'shoes', 'sneakers', 'shorts', 'jersey', 't-shirt', 'pullover']);
 	}
 
 	private function getRandomBrand() {
