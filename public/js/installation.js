@@ -1,1 +1,0 @@
-$(document).ready(function(){$("select[name='database_type']").change(function(){var e=$(this).val();$("tr[data-databases]").hide(),$("tr[data-databases~='"+e+"']").show()}),$("select[name='database_type']").trigger("change"),$("select#timezone").select2()});
