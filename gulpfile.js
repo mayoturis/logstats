@@ -34,5 +34,14 @@ elixir(function(mix) {
 		'userManagement.js',
 		'project.js',
 	], 'public/js/main.js');
+
+	mix.scripts([
+		'LogstatsQuery.js',
+	], 'public/dist/logstatsquery.min.js')
+
+	mix.scripts([
+		'LogstatsDataConverter.js',
+		'LogstatsGraphDrawer.js',
+	], 'public/dist/logstatsgraphdrawer.min.js')
 });
 

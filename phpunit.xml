@@ -37,9 +37,9 @@
         -->
 		<!-- mysql -->
 		<env name="DB_TYPE" value="mysql"/>
-		<env name="DB_PREFIX" value=""/>
+		<env name="DB_PREFIX" value="logstats_"/>
 		<env name="DB_HOST" value="localhost"/>
-		<env name="DB_DATABASE" value="logstats_test"/>
+		<env name="DB_DATABASE" value="logstats_phpunit"/>
 		<env name="DB_PASSWORD" value=""/>
 		<env name="DB_USERNAME" value="root"/>
 		<env name="DB_CHARSET" value="utf8"/>

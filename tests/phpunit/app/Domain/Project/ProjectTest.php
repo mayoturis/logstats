@@ -28,11 +28,18 @@ class ProjectTest extends TestCase{
 		$this->assertEquals('namo', $project->getName());
 	}
 
-	public function test_token_can_be_set_and_get() {
+	public function test_write_token_can_be_set_and_get() {
 		$project = $this->getProject();
-		$project->setToken('token');
+		$project->setWriteToken('token');
 
-		$this->assertEquals('token', $project->getToken());
+		$this->assertEquals('token', $project->getWriteToken());
+	}
+
+	public function test_read_token_can_be_set_and_get() {
+		$project = $this->getProject();
+		$project->setReadToken('token');
+
+		$this->assertEquals('token', $project->getReadToken());
 	}
 
 	public function test_createdAt_can_be_set_and_get_on_new_project() {
@@ -58,6 +65,6 @@ class ProjectTest extends TestCase{
 	}
 
 	private function getProject() {
-		return new Project(null, null);
+		return new Project(null, null, null);
 	}
 }

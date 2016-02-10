@@ -1,12 +1,21 @@
 /**
  * @param selector jquery selector where to draw graph
- * @param options (timezone,enablePointHover,eneableSelectionZooming,enableTimeManipulation)
+ * @param options (
+ * timezone,
+ * enablePointHover,
+ * tooltipSelector
+ * enableSelectionZooming,
+ * enableLineManipulation,
+ * checkboxHolderSelector,
+ * chartColor,
+ * )
  * @constructor
  */
 function LogstatsGraphDrawer(selector, options) {
 	this.selector = selector;
 	this.currentShowedData = [];
-	this.options = typeof options != "undefined" ? options : [];
+	options = typeof options != "undefined" ? options : [];
+	this.options = this.mergeDefaultOptions(options);
 	this.flotLineOptions = this.getFlotLineOptions();
 
 	if (this.options.enablePointHover) {
@@ -16,6 +25,21 @@ function LogstatsGraphDrawer(selector, options) {
 	if (this.options.enableSelectionZooming) {
 		this.enableSelectionZooming();
 	}
+}
+
+LogstatsGraphDrawer.prototype.mergeDefaultOptions = function(options) {
+	var defaultOptions = {
+		timezone: null,
+		chartColor: null
+	}
+
+	$.each(defaultOptions, function(key, defaultValue) {
+		if (typeof options[key] == "undefined") {
+			options[key] = defaultValue;
+		}
+	});
+
+	return options;
 }
 
 /**
@@ -61,7 +85,7 @@ LogstatsGraphDrawer.prototype.draw = function(data, timeframe) {
  * Prepare graph area for new display
  */
 LogstatsGraphDrawer.prototype.clearGraph = function() {
-	$(".graph-checkboxes").html("");
+	$(this.options.checkboxHolderSelector).html("");
 	$(this.selector).removeClass("graph-one-value-container");
 }
 
@@ -103,7 +127,7 @@ LogstatsGraphDrawer.prototype.drawBar = function() {
 }
 
 /**
- * Draw bar chart with one line
+ * Draw chart with one line
  */
 LogstatsGraphDrawer.prototype.drawOneLine = function() {
 	var data = this.getFlotOneLineData();
@@ -195,7 +219,7 @@ LogstatsGraphDrawer.prototype.getFlotOneLineData = function() {
 		clickable: true,
 		hoverable: true,
 		shadowSize: 2,
-		color: $("#data-holder").css('color')
+		color: this.options.chartColor
 	}];
 }
 
@@ -213,7 +237,7 @@ LogstatsGraphDrawer.prototype.getFlotBarData = function() {
 		data: data,
 		clickable: true,
 		hoverable: true,
-		color: $("#data-holder").css('color')
+		color: this.options.chartColor
 	}];
 }
 
@@ -293,11 +317,11 @@ LogstatsGraphDrawer.prototype.enableFlotHover = function() {
 			var value = item.datapoint[1].toFixed(2),
 				label = item.series.label;
 
-			$(".graph-tooltip").html(upper  + label + " : " + value)
+			$(self.options.tooltipSelector).html(upper  + label + " : " + value)
 				.css({top: item.pageY+5, left: item.pageX+5})
 				.show();
 		} else {
-			$(".graph-tooltip").hide();
+			$(self.options.tooltipSelector).hide();
 		}
 	});
 }
@@ -308,19 +332,27 @@ LogstatsGraphDrawer.prototype.enableFlotHover = function() {
  */
 LogstatsGraphDrawer.prototype.getDateInFormat = function(moment) {
 	if (this.interval == "yearly") {
-		return moment.tz(this.options.timezone).format('YYYY');
+		return this.formatedTime(moment, 'YYYY');
 	}
 	if (this.interval == "monthly") {
-		return moment.tz(this.options.timezone).format('MMMM YYYY');
+		return this.formatedTime(moment, 'MMMM YYYY');
 	}
 	if (this.interval == "daily") {
-		return moment.tz(this.options.timezone).format('MMMM Do YYYY');
+		return this.formatedTime(moment, 'MMMM Do YYYY');
 	}
 	if (this.interval == "hourly") {
-		return moment.tz(this.options.timezone).format('MMMM Do YYYY, H:mm');
+		return this.formatedTime(moment, 'MMMM Do YYYY, H:mm');
 	}
 
-	return moment.tz(this.options.timezone).format('MMMM Do YYYY, H:mm');
+	return this.formatedTime(moment, 'MMMM Do YYYY, H:mm');
+}
+
+LogstatsGraphDrawer.prototype.formatedTime = function(moment, format) {
+	if (this.options.timezone == null) {
+		return moment.tz('GMT').format(format);
+	} else {
+		return moment.tz(this.options.timezone).format(format);
+	}
 }
 
 /**
@@ -328,10 +360,10 @@ LogstatsGraphDrawer.prototype.getDateInFormat = function(moment) {
  */
 LogstatsGraphDrawer.prototype.enableLineManipulation = function() {
 	var self = this;
-	$(".graph-checkboxes input").click(function() {
+	$(self.options.checkboxHolderSelector + " input").click(function() {
 		var data = [];
 
-		$(".graph-checkboxes input:checked").each(function () {
+		$(self.options.checkboxHolderSelector + " input:checked").each(function () {
 			var key = $(this).attr("name");
 			if (key !== false && self.currentShowedData[key]) {
 				data.push(self.currentShowedData[key]);
@@ -350,9 +382,10 @@ LogstatsGraphDrawer.prototype.enableLineManipulation = function() {
  * Display checkboxes for line manipulation
  */
 LogstatsGraphDrawer.prototype.showCheckboxes = function() {
-	$(".graph-checkboxes").html("");
+	$(this.options.checkboxHolderSelector).html("");
+	var self = this
 	$.each(this.currentShowedData, function(key, value) {
-		$(".graph-checkboxes").append("<input type='checkbox' name='" + key +
+		$(self.options.checkboxHolderSelector).append("<input type='checkbox' name='" + key +
 		"' checked='checked' id='id" + key + "'></input>" +
 		"<label for='id" + key + "'>"
 		+ value.label + "</label>");

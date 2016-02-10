@@ -17,7 +17,12 @@ class Project {
 	/**
 	 * @var string
 	 */
-	private $token;
+	private $writeToken;
+
+	/**
+	 * @var string
+	 */
+	private $readToken;
 
 	/**
 	 * @var \Carbon\Carbon
@@ -26,11 +31,12 @@ class Project {
 
 	/**
 	 * @param string $name
-	 * @param string $token
+	 * @param string $writeToken
 	 */
-	public function __construct($name, $token) {
+	public function __construct($name, $writeToken, $readToken) {
 		$this->name = $name;
-		$this->token = $token;
+		$this->writeToken = $writeToken;
+		$this->readToken = $readToken;
 	}
 
 	/**
@@ -69,15 +75,15 @@ class Project {
 	/**
 	 * @return string
 	 */
-	public function getToken() {
-		return $this->token;
+	public function getWriteToken() {
+		return $this->writeToken;
 	}
 
 	/**
-	 * @param string $token
+	 * @param string $writeToken
 	 */
-	public function setToken($token) {
-		$this->token = $token;
+	public function setWriteToken($writeToken) {
+		$this->writeToken = $writeToken;
 	}
 
 	/**
@@ -96,5 +102,19 @@ class Project {
 			throw new \BadMethodCallException('createdAt is already set and cannot be changed');
 		}
 		$this->createdAt = $createdAt;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReadToken() {
+		return $this->readToken;
+	}
+
+	/**
+	 * @param string $readToken
+	 */
+	public function setReadToken($readToken) {
+		$this->readToken = $readToken;
 	}
 }

@@ -14,7 +14,7 @@ class ProjectServiceTest extends TestCase{
 		$rs = $this->getRecordService();
 		$lear = $this->getLevelEmailAlertingRepostirory();
 
-		$ps = $this->getMock(ProjectService::class, ['addUserToProject','uniqueTokenForName'], [$pr, $rs, $lear]);
+		$ps = $this->getMock(ProjectService::class, ['addUserToProject','uniqueWriteTokenForName', 'uniqueReadTokenForName', 'uniqueTokenForName'], [$pr, $rs, $lear]);
 		$user = $this->getUser();
 
 		$pr->shouldReceive('save')->once();

@@ -42,8 +42,9 @@ class ProjectService implements ProjectServiceInterface {
 	 * @return Project
 	 */
 	public function createProject($name, User $user) {
-		$token = $this->uniqueTokenForName($name);
-		$project = new Project($name, $token);
+		$writeToken = $this->uniqueWriteTokenForName($name);
+		$readToken = $this->uniqueReadTokenForName($name);
+		$project = new Project($name, $writeToken, $readToken);
 		$project->setCreatedAt(Carbon::now());
 
 		$this->repository->save($project);
@@ -51,6 +52,14 @@ class ProjectService implements ProjectServiceInterface {
 		$this->addUserToProject($project, $user, new Role(RoleTypes::ADMIN));
 
 		return $project;
+	}
+
+	private function uniqueWriteTokenForName($name) {
+		return 'w' . $this->uniqueTokenForName($name);
+	}
+
+	private function uniqueReadTokenForName($name) {
+		return 'r' . $this->uniqueTokenForName($name);
 	}
 
 

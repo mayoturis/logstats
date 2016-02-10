@@ -28,8 +28,10 @@
 				@endcan
 			</div>
 			<div class="box-body">
-				<span style="margin-right:5px">Token:</span>{{ $projectdto->getProject()->getToken() }}<br>
-			    Created at: {{ $projectdto->getProject()->getCreatedAt() }}
+				<span style="margin-right:5px">Write token:</span>{{ $projectdto->getProject()->getWriteToken() }}<br>
+				<span style="margin-right:5px">Read token:</span>{{ $projectdto->getProject()->getReadToken() }}<br>
+
+				Created at: {{ $projectdto->getProject()->getCreatedAt() }}
 				<div class="pull-right">
 					@if($projectdto->getLastRecordDate() === null)
 						No records

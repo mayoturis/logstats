@@ -2,9 +2,11 @@ $(document).ready(function() {
 	if ($('.log').size() > 0) {
 		var graphDrawer = new LogstatsGraphDrawer('.log-graph-area', {
 			enablePointHover: true,
+			tooltipSelector: ".graph-tooltip",
 			enableLineManipulation: false,
 			enableSelectionZooming: false,
-			timezone: $("#data-holder").attr("data-timezone")
+			timezone: $("#data-holder").attr("data-timezone"),
+			chartColor: $("#data-holder").css('color')
 		});
 		function load_records() {
 			show_loader();

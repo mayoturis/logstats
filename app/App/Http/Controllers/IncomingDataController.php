@@ -35,10 +35,10 @@ class IncomingDataController extends Controller {
 		}
 
 		// $data['project'] is already valid here
-		$project = $this->projectRepository->findByToken($data['project']);
+		$project = $this->projectRepository->findByWriteToken($data['project']);
 
 		if ($project == null) {
-			return $this->errorResponse('Invalid project token');
+			return $this->errorResponse('Invalid project write token');
 		}
 
 		$messages = json_decode($data['messages'], true);

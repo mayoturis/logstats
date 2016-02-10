@@ -30,9 +30,9 @@ class QueryController extends Controller {
 	}
 
 	public function get(Request $request) {
-		$project = $this->projectRepository->findByToken($request->get('projectToken'));
+		$project = $this->projectRepository->findByReadToken($request->get('projectToken'));
 		if ($project === null) {
-			return response(['Invalid project token'], 400);
+			return response(['Invalid project read token'], 400);
 		}
 		if(!$this->queryValidator->isValidQuery($request->get('query'))) {
 			$errors = $this->queryValidator->getArrayErrors();

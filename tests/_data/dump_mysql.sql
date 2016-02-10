@@ -79,16 +79,18 @@ DROP TABLE IF EXISTS `logstats_projects`;
 CREATE TABLE `logstats_projects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `write_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `read_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `projects_name_unique` (`name`),
-  UNIQUE KEY `projects_token_unique` (`token`)
+  UNIQUE KEY `projects_write_token_unique` (`write_token`),
+  UNIQUE KEY `projects_read_token_unique` (`read_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `logstats_projects` (`id`, `name`, `token`, `created_at`) VALUES
-(1,	'project1',	'project1Token',	'2016-01-18 23:36:28'),
-(2,	'queryProject',	'queryProjectToken',	'2016-01-20 16:10:57');
+INSERT INTO `logstats_projects` (`id`, `name`, `write_token`, `read_token`, `created_at`) VALUES
+(1,	'project1',	'writeProject1Token', 'readProject1Token', '2016-01-18 23:36:28'),
+(2,	'queryProject',	'writeQueryProjectToken', 'readQueryProjectToken', '2016-01-20 16:10:57');
 
 DROP TABLE IF EXISTS `logstats_project_role_user`;
 CREATE TABLE `logstats_project_role_user` (
