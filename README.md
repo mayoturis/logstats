@@ -13,3 +13,6 @@ Documentation can be found on the [Logstats website](http://logstats.org).
 
 ## Licence
 Logstats is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## Support
+Please support this project with a star
