@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="libraries/jquery/jquery.min.js"></script>
+	<script src="libraries/moment/moment.min.js"></script>
+	<script src="libraries/moment/moment-timezone-with-data.min.js"></script>
+	<script src="dist/logstatsquery.min.js"></script>
+	<script src="dist/logstatsgraphdrawer.min.js"></script>
+	<script src="libraries/flot/jquery.flot.min.js"></script>
+	<script src="libraries/flot/jquery.flot.time.min.js"></script>
+	<script src="libraries/flot/jquery.flot.selection.min.js"></script>
+	<script src="libraries/flot/timezone.js"></script>
+	<title></title>
+</head>
+<body>
+	<div id="ss" style="width: 500px; height: 200px;">
+
+	</div>
+	<div class="graph-tooltip" style="position: absolute"></div>
+	<div class="graph-checkboxes"></div>
+	<div class="checkboxes"></div>
+	<script>
+		// Olson time zone files
+		timezoneJS.timezone.zoneFileBasePath = "libraries/flot/tz";
+		timezoneJS.timezone.defaultZoneFile = [];
+		timezoneJS.timezone.init({async: false});
+
+
+		var query = new LogstatsQuery('http://localhost/logstats/query', 'rDemoproject6e6749ffac');
+		var drawer = new LogstatsGraphDrawer('#ss', {
+			enablePointHover : true,
+			tooltipSelector: ".graph-tooltip",
+			enableSelectionZooming : true,
+			enableLineManipulation: true,
+			checkboxHolderSelector: ".checkboxes",
+			chartColor: '#000000',
+			timezone: 'Europe/Bratislava'
+		});
+		queryData = {
+			event : 'purchase',
+			from : Date.now() / 1000 - 86000,
+			to : Date.now() / 1000,
+			aggregate : 'sum',
+			targetProperty : 'price',
+			interval : 'hourly',
+			groupBy : 'brand',
+			filters : [
+				{
+					propertyName : "brand",
+					comparisonType : "not_equal",
+					propertyValue : "nike"
+				}
+			]
+		}
+		query.get(queryData, function(data) {
+			console.log(data);
+			drawer.draw(data.data, data.timeframe);
+		}, function(error) {
+			console.log(error);
+		});
+	</script>
+</body>
+</html>

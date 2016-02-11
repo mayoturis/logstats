@@ -3,19 +3,18 @@
 namespace Logstats\App\Http\Middleware;
 
 use Closure;
-use Logstats\Domain\Services\Installation\Steps;
+use Logstats\App\Installation\StepCollection;
 use Mayoturis\Properties\RepositoryInterface;
 
 class CorrectInstallationStepMiddleware
 {
 
-	/**
-	 *
-	 */
 	private $config;
+	private $installationSteps;
 
-	public function __construct(RepositoryInterface $config) {
+	public function __construct(RepositoryInterface $config, StepCollection $installationSteps) {
 		$this->config = $config;
+		$this->installationSteps = $installationSteps;
 	}
     /**
      * Handle an incoming request.
@@ -34,7 +33,8 @@ class CorrectInstallationStepMiddleware
 		}
 
 		// if installation is complete
-		if ($expectedStep == Steps::COMPLETE) {
+		$completeInstallationStepKey = $this->installationSteps->getKeyByShort('complete');
+		if ($expectedStep == $completeInstallationStepKey) {
 			return redirect()->route('home');
 		}
 

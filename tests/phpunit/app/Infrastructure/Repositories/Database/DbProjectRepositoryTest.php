@@ -27,7 +27,8 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 
 		$this->assertEquals(1, $project->getId());
 		$this->assertEquals('project1', $project->getName());
-		$this->assertEquals('project1Token', $project->getToken());
+		$this->assertEquals('writeProject1Token', $project->getWriteToken());
+		$this->assertEquals('readProject1Token', $project->getReadToken());
 	}
 
 	public function test_findById_returns_null_if_given_id_doesnt_exist() {
@@ -35,7 +36,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	}
 
 	public function test_save_inserts_project_if_it_doesnt_exists() {
-		$project = new Project('name', 'token');
+		$project = new Project('name', 'writeToken', 'readToken');
 		$project->setCreatedAt(Carbon::now());
 
 		$this->repository->save($project);
@@ -43,7 +44,8 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 		$this->assertNotEmpty($project->getId());
 		$savedProject = $this->repository->findById($project->getId());
 		$this->assertEquals('name', $savedProject->getName());
-		$this->assertEquals('token', $savedProject->getToken());
+		$this->assertEquals('writeToken', $savedProject->getWriteToken());
+		$this->assertEquals('readToken', $savedProject->getReadToken());
 		$this->assertEquals($project->getCreatedAt(), $savedProject->getCreatedAt());
 
 		$this->assertEquals(4, count($this->repository->findAll()));
@@ -52,21 +54,32 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	public function test_save_updates_project_if_it_exists() {
 		$project = $this->repository->findById(2);
 		$project->setName('newName');
-		$project->setToken('newToken');
+		$project->setWriteToken('newWriteToken');
+		$project->setReadToken('newReadToken');
 
 		$this->repository->save($project);
 
 		$updatedProject = $this->repository->findById(2);
 		$this->assertEquals('newName', $updatedProject->getName());
-		$this->assertEquals('newToken', $updatedProject->getToken());
+		$this->assertEquals('newWriteToken', $updatedProject->getWriteToken());
+		$this->assertEquals('newReadToken', $updatedProject->getReadToken());
 	}
 
-	public function test_project_can_be_found_by_token() {
-		$project = $this->repository->findByToken('project2Token');
+	public function test_project_can_be_found_by_write_token() {
+		$project = $this->repository->findByWriteToken('writeProject2Token');
 
 		$this->assertEquals(2, $project->getId());
 		$this->assertEquals('project2', $project->getName());
-		$this->assertEquals('project2Token', $project->getToken());
+		$this->assertEquals('writeProject2Token', $project->getWriteToken());
+	}
+
+	public function test_project_can_be_found_by_read_token() {
+		$project = $this->repository->findByReadToken('readProject2Token');
+
+		$this->assertEquals(2, $project->getId());
+		$this->assertEquals('project2', $project->getName());
+		$this->assertEquals('readProject2Token', $project->getReadToken());
+
 	}
 
 	public function test_all_project_can_be_found() {
@@ -78,7 +91,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 		$user1->setId(1);
 		$user3 = new User('','','');
 		$user3->setId(3);
-		$project = new Project('','');
+		$project = new Project('','','');
 		$project->setId(1);
 
 		$this->assertNull($this->repository->findRoleForUserInProject($user1, $project));
@@ -88,7 +101,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	public function test_user_can_be_added_to_project() {
 		$user = new User('','','');
 		$user->setId(1);
-		$project = new Project('','');
+		$project = new Project('','','');
 		$project->setId(1);
 
 		$this->repository->addUserToProject($project, $user, new Role('datamanager'));
@@ -123,7 +136,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	}
 
 	public function test_projectRoleList_can_be_found() {
-		$project = new Project('','');
+		$project = new Project('','','');
 		$project->setId(1);
 		$projectRoleList = $this->repository->getProjectRoleList($project);
 
@@ -138,7 +151,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	}
 
 	public function test_projectRoleList_can_be_saved() {
-		$project = new Project('','');
+		$project = new Project('','','');
 		$project->setId(1);
 		$projectRoleList = $this->repository->getProjectRoleList($project);
 
@@ -154,7 +167,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	}
 
 	public function test_project_roles_can_be_deleted() {
-		$project = new Project('','');
+		$project = new Project('','','');
 		$project->setId(1);
 
 		$this->repository->deleteProjectRoles($project);
@@ -167,7 +180,7 @@ class DbProjectRepositoryTest extends DatabaseTestCase{
 	public function test_user_roles_in_project_can_be_deleted() {
 		$user = new User('','','');
 		$user->setId(3);
-		$project = new Project('','');
+		$project = new Project('','','');
 		$project->setId(1);
 
 		$this->repository->deleteProjectRolesForUser($user);

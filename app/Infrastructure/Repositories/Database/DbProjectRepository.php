@@ -61,7 +61,8 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 		$now = Carbon::now('GMT');
 		$id = \DB::table($this->table)->insertGetId([
 			"name" => $project->getName(),
-			"token" => $project->getToken(),
+			"write_token" => $project->getWriteToken(),
+			"read_token" => $project->getReadToken(),
 			"created_at" => $this->carbonConvertor->carbonInGMT($project->getCreatedAt())
 		]);
 
@@ -79,7 +80,8 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 		\DB::table($this->table)->where('id', $project->getId())
 			->update([
 				"name" => $project->getName(),
-				"token" => $project->getToken()
+				"write_token" => $project->getWriteToken(),
+				"read_token" => $project->getReadToken(),
 			]);
 
 		return $project;
@@ -123,7 +125,7 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	 * Find first user by conditions
 	 *
 	 * @param array $conditions
-	 * @return User
+	 * @return Project
 	 */
 	public function findFirstBy(array $conditions) {
 		$rawProject = $this->findFirstRawBy($conditions);
@@ -136,13 +138,23 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	}
 
 	/**
-	 * Find project by its token
+	 * Finds project by its writeToken
 	 *
-	 * @param string $token Project token
+	 * @param string $token Project writeToken
 	 * @return Project
 	 */
-	public function findByToken($token) {
-		return $this->findFirstBy(['token' => $token]);
+	public function findByWriteToken($token) {
+		return $this->findFirstBy(['write_token' => $token]);
+	}
+
+	/**
+	 * Finds project by its readToken
+	 *
+	 * @param $token
+	 * @return Project
+	 */
+	public function findByReadToken($token) {
+		return $this->findFirstBy(['read_token' => $token]);
 	}
 
 	/**

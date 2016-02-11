@@ -19,7 +19,8 @@ class StdProjectFactory {
 	public function makeFromStd($stdObject) {
 		$project = new Project(
 			$stdObject->name,
-			$stdObject->token
+			$stdObject->write_token,
+			$stdObject->read_token
 		);
 		$project->setCreatedAt($this->carbonConvertor->carbonFromStandartGMTString($stdObject->created_at));
 		$project->setId($stdObject->id);

@@ -19,7 +19,7 @@ class NewRecordCest
 		$message = 'some_message';
 		$level = 'info';
 		$context = [];
-		$api->sendRecords('api', 'project1Token', [[
+		$api->sendRecords('api', 'writeProject1Token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -47,7 +47,7 @@ class NewRecordCest
 			"some_array" => ['value1', 'value2'],
 			"null" => null
 		];
-		$api->sendRecords('api', 'project1Token', [[
+		$api->sendRecords('api', 'writeProject1Token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -66,7 +66,7 @@ class NewRecordCest
 		$context = [
 			'weird_value' => 'ľ+ščľčžťžťýáííáéäúô\'"§↨7Wš\\/BĎ'
 		];
-		$api->sendRecords('api', 'project1Token', [[
+		$api->sendRecords('api', 'writeProject1Token', [[
 			'message' => $message,
 			'level' => $level,
 			'context' => $context,
@@ -82,7 +82,7 @@ class NewRecordCest
 		$message2 = 'another_message';
 		$level2 = 'debug';
 		$context2 = ['value' => 5];
-		$api->sendRecords('api', 'project1Token', [[
+		$api->sendRecords('api', 'writeProject1Token', [[
 			'message' => $message1,
 			'level' => $level1,
 			'context' => $context1,
@@ -112,7 +112,7 @@ class NewRecordCest
 			'time' => time()
 		]]);
 		$api->seeResponseCodeIs(400);
-		$api->see('invalid project token');
+		$api->see('invalid project write token');
 	}
 
 	public function test_invalid_level_does_not_save_record(ApiTester $api, Admin $I) {
@@ -122,7 +122,7 @@ class NewRecordCest
 		$message2 = 'another_message';
 		$level2 = 'debug';
 		$context2 = ['value' => 5];
-		$api->sendRecords('api', 'project1Token', [[
+		$api->sendRecords('api', 'writeProject1Token', [[
 			'message' => $message1,
 			'level' => $level1,
 			'context' => $context1,

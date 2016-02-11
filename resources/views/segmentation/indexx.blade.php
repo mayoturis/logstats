@@ -7,7 +7,7 @@
 	<div class="segmentation" data-property-names-url="{{ route('ajax-property-names') }}">
 		<form id="query-form">
 			<input type="hidden" id="project-id" name="project-id" value="{{ $project->getId() }}">
-			<input type="hidden" id="project-token" name="project-token" value="{{ $project->getToken() }}">
+			<input type="hidden" id="project-token" name="project-token" value="{{ $project->getReadToken() }}">
 			<input type="hidden" name="query-url" value="{{ route('query') }}">
 			<div class="event-choose">
 				<div class="input-group level">

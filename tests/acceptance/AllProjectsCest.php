@@ -27,7 +27,8 @@ class AllProjectsCest
 		$I->loginAsAdmin();
 		$I->amOnPage(AllProjectsPage::$URL);
 		$I->see('project1');
-		$I->see('Token');
+		$I->see('writeProject1Token');
+		$I->see('readProject1Token');
 		$I->see('Delete project');
 	}
 

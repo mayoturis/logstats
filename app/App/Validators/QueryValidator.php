@@ -62,7 +62,7 @@ class QueryValidator extends AbstractValidator {
 		if(empty($filter['propertyName'])) {
 			$this->addError('When using filter, property name has to be set');
 		}
-		if(empty($filter['propertyValue'])) {
+		if(!isset($filter['propertyValue'])) {
 			$this->addError('When using filter, property value has to be set');
 		}
 		if(empty($filter['comparisonType'])) {

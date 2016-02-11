@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Services\Database;
+<?php  namespace Logstats\App\Installation\Database;
 
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Mayoturis\Properties\RepositoryInterface;

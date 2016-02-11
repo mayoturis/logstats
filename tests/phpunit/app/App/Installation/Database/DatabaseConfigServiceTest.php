@@ -1,7 +1,7 @@
 <?php
 
 use Logstats\App\Validators\DatabaseConfigValidator;
-use Logstats\Domain\Services\Database\DatabaseConfigService;
+use Logstats\App\Installation\Database\DatabaseConfigService;
 
 class DatabaseConfigServiceTest extends TestCase{
 	public function test_saveConfiguration_can_save_mysql_configuration() {

@@ -41,12 +41,20 @@ interface ProjectRepository {
 	public function findBy(array $conditions);
 
 	/**
-	 * Finds project by its token
+	 * Finds project by its writeToken
 	 *
-	 * @param string $token Project token
+	 * @param string $token Project writeToken
 	 * @return Project
 	 */
-	public function findByToken($token);
+	public function findByWriteToken($token);
+
+	/**
+	 * Finds project by its readToken
+	 *
+	 * @param $token
+	 * @return Project
+	 */
+	public function findByReadToken($token);
 
 	/**
 	 * Gets all projects

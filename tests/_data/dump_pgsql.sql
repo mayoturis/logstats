@@ -14,16 +14,18 @@ DROP TABLE IF EXISTS "logstats_migrations";
 CREATE TABLE "logstats_projects" (
   "id" serial NOT NULL,
   "name" varchar(255) NOT NULL,
-  "token" varchar(255) NOT NULL,
+  "write_token" varchar(255) NOT NULL,
+  "read_token" varchar(255) NOT NULL,
   "created_at" timestamp NOT NULL,
   PRIMARY KEY ("id"),
   UNIQUE ("name"),
-  UNIQUE ("token")
+  UNIQUE ("read_token"),
+  UNIQUE ("write_token")
 );
 
-INSERT INTO "logstats_projects" ("name", "token", "created_at") VALUES
-('project1',	'project1Token',	'2016-01-18 23:36:28'),
-('queryProject',	'queryProjectToken',	'2016-01-20 16:10:57');
+INSERT INTO "logstats_projects" ("name", "write_token", "read_token", "created_at") VALUES
+('project1',	'writeProject1Token', 'readProject1Token', '2016-01-18 23:36:28'),
+('queryProject',	'writeQueryProjectToken', 'readQueryProjectToken', '2016-01-20 16:10:57');
 
 CREATE TABLE "logstats_levels" (
   "name" varchar(255) NOT NULL,

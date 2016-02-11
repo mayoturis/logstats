@@ -30,13 +30,15 @@ class QueryController extends Controller {
 	}
 
 	public function get(Request $request) {
-		$project = $this->projectRepository->findByToken($request->get('projectToken'));
+		$project = $this->projectRepository->findByReadToken($request->get('projectToken'));
 		if ($project === null) {
-			return response(['Invalid project token'], 400);
+			return response(['Invalid project read token'], 400);
 		}
 		if(!$this->queryValidator->isValidQuery($request->get('query'))) {
 			$errors = $this->queryValidator->getArrayErrors();
-			return response($errors, 400);
+			return response($errors, 400, [
+				'Access-Control-Allow-Origin' => '*'
+			]);
 		}
 
 		$query = $this->queryFromArrayFactory->make($request->get('query'));
@@ -47,10 +49,15 @@ class QueryController extends Controller {
 		}
 
 		$timeFrame = $query->getTimeFrame();
-
-		return [
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+		header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With');
+		header('Access-Control-Allow-Credentials: true');
+		return response([
 			'timeframe' => $timeFrame,
 			'data' => $data,
-		];
+		], 200, [
+			'Access-Control-Allow-Origin' => '*'
+		]);
 	}
 }

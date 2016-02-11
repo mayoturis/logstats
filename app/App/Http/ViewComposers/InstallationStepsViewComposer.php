@@ -1,6 +1,6 @@
 <?php  namespace Logstats\App\Http\ViewComposers; 
 use Illuminate\Contracts\View\View;
-use Logstats\Domain\Services\Installation\StepCollection;
+use Logstats\App\Installation\StepCollection;
 
 class InstallationStepsViewComposer {
 

@@ -3,10 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Logstats\App\Validators\DatabaseConfigValidator;
-use Logstats\Domain\Services\Database\DatabaseConfigServiceInterface;
-use Logstats\Domain\Services\Installation\InstallationServiceInterface;
-use Logstats\Domain\Services\Installation\StepCollection;
-use Logstats\Domain\Services\Installation\Steps;
+use Logstats\App\Installation\Database\DatabaseConfigServiceInterface;
+use Logstats\App\Installation\InstallationServiceInterface;
+use Logstats\App\Installation\StepCollection;
+use Logstats\App\Installation\Steps;
 use Logstats\App\Validators\ValidationException;
 
 class InstallationConfigurationController extends Controller {

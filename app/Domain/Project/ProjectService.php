@@ -1,6 +1,7 @@
 <?php  namespace Logstats\Domain\Project;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Logstats\Domain\Alerting\Email\LevelEmailAlerting;
 use Logstats\Domain\Alerting\Email\LevelEmailAlertingRepository;
 use Logstats\Domain\Record\RecordServiceInterface;
@@ -42,8 +43,9 @@ class ProjectService implements ProjectServiceInterface {
 	 * @return Project
 	 */
 	public function createProject($name, User $user) {
-		$token = $this->uniqueTokenForName($name);
-		$project = new Project($name, $token);
+		$writeToken = $this->uniqueWriteTokenForName($name);
+		$readToken = $this->uniqueReadTokenForName($name);
+		$project = new Project($name, $writeToken, $readToken);
 		$project->setCreatedAt(Carbon::now());
 
 		$this->repository->save($project);
@@ -51,6 +53,14 @@ class ProjectService implements ProjectServiceInterface {
 		$this->addUserToProject($project, $user, new Role(RoleTypes::ADMIN));
 
 		return $project;
+	}
+
+	private function uniqueWriteTokenForName($name) {
+		return 'w' . $this->uniqueTokenForName($name);
+	}
+
+	private function uniqueReadTokenForName($name) {
+		return 'r' . $this->uniqueTokenForName($name);
 	}
 
 
@@ -61,7 +71,7 @@ class ProjectService implements ProjectServiceInterface {
 	 * @return string
 	 */
 	private function uniqueTokenForName($name) {
-		return preg_replace('/\s+/', '', $name) . substr(md5(microtime(uniqid())), 0, 10);
+		return Str::random(20);
 	}
 
 	/**

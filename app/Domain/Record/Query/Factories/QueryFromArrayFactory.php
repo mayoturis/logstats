@@ -35,10 +35,10 @@ class QueryFromArrayFactory {
 			$query->setInterval($data['interval']);
 		}
 		if(!empty($data['from'])) {
-			$query->setFrom($this->carbonConvertor->carbonFromTimestampUTC($data['from']));
+			$query->setFrom($this->carbonConvertor->carbonFromTimestampUTC((int) $data['from']));
 		}
 		if(!empty($data['to'])) {
-			$query->setTo($this->carbonConvertor->carbonFromTimestampUTC($data['to']));
+			$query->setTo($this->carbonConvertor->carbonFromTimestampUTC((int) $data['to']));
 		}
 
 		if(!empty($data['filters']) && is_array($data['filters'])) {

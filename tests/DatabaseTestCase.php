@@ -76,21 +76,24 @@ class DatabaseTestCase extends TestCase {
 		DB::table('projects')->insert([
 			"id" => 1,
 			'name' => 'project1',
-			'token' => 'project1Token',
+			'write_token' => 'writeProject1Token',
+			'read_token' => 'readProject1Token',
 			'created_at' => Carbon::now()
 		]);
 
 		DB::table('projects')->insert([
 			"id" => 2,
 			'name' => 'project2',
-			'token' => 'project2Token',
+			'write_token' => 'writeProject2Token',
+			'read_token' => 'readProject2Token',
 			'created_at' => Carbon::now()
 		]);
 
 		DB::table('projects')->insert([
 			"id" => 3,
 			'name' => 'query',
-			'token' => 'queryToken',
+			'write_token' => 'writeQueryToken',
+			'read_token' => 'readQueryToken',
 			'created_at' => Carbon::now()
 		]);
 	}
@@ -113,11 +116,11 @@ class DatabaseTestCase extends TestCase {
 
 	private function createRecords() {
 		$recordService = $this->app->make(RecordServiceInterface::class);
-		$project1 = new Project('','');
+		$project1 = new Project('','' ,'');
 		$project1->setId(1);
-		$project2 = new Project('','');
+		$project2 = new Project('','', '');
 		$project2->setId(2);
-		$queryProject = new Project('','');
+		$queryProject = new Project('','', '');
 		$queryProject->setId(3);
 		$recordService->createRecord('info', 'message1', 500000, $project1);
 		$recordService->createRecord('alert', 'message2', 500000, $project1);

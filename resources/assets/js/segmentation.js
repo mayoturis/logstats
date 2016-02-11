@@ -43,7 +43,10 @@ $(document).ready(function() {
 			enablePointHover: true,
 			enableLineManipulation: true,
 			enableSelectionZooming: true,
-			timezone: $("#data-holder").attr("data-timezone")
+			timezone: $("#data-holder").attr("data-timezone"),
+			chartColor: $("#data-holder").css('color'),
+			checkboxHolderSelector: ".graph-checkboxes",
+			tooltipSelector: ".graph-tooltip"
 		});
 		var queryUrl = $("input[name='query-url']").val();
 		var projectToken = $("input[name='project-token']").val();

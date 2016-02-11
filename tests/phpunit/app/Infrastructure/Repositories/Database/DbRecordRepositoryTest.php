@@ -36,10 +36,10 @@ class DbRecordRepositoryTest extends DatabaseTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->project1 = new Project('','');
+		$this->project1 = new Project('','','');
 		$this->project1->setId(1);
 
-		$this->queryProject = new Project('', '');
+		$this->queryProject = new Project('', '', '');
 		$this->queryProject->setId(3);
 
 		$this->repository = $this->getRepository();

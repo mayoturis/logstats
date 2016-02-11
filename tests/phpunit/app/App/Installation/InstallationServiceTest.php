@@ -1,7 +1,7 @@
 <?php
 
-use Logstats\Domain\Services\Installation\InstallationService;
-use Logstats\Domain\Services\Installation\StepCollection;
+use Logstats\App\Installation\InstallationService;
+use Logstats\App\Installation\StepCollection;
 
 class InstallationServiceTest extends TestCase{
 
