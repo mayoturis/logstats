@@ -1,4 +1,4 @@
-<?php  namespace Logstats\Domain\Services\Installation;
+<?php  namespace Logstats\App\Installation;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Str;

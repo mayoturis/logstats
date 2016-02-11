@@ -7,14 +7,15 @@ use Illuminate\Http\Request;
 
 use InvalidArgumentException;
 use Logstats\App\Http\Requests;
+use Logstats\App\Installation\Database\ProjectReadTokenCreatorInterface;
 use Logstats\App\Providers\Project\CurrentProjectProviderInterface;
-use Logstats\Domain\Services\Database\DatabaseConfigServiceInterface;
-use Logstats\Domain\Services\Database\TableCreator;
+use Logstats\App\Installation\Database\DatabaseConfigServiceInterface;
+use Logstats\App\Installation\Database\TableCreator;
 use Logstats\Domain\Project\ProjectServiceInterface;
 use Logstats\Domain\User\UserServiceInterface;
-use Logstats\Domain\Services\Installation\InstallationServiceInterface;
-use Logstats\Domain\Services\Installation\StepCollection;
-use Logstats\Domain\Services\Installation\Steps;
+use Logstats\App\Installation\InstallationServiceInterface;
+use Logstats\App\Installation\StepCollection;
+use Logstats\App\Installation\Steps;
 use Logstats\App\Validators\ProjectValidator;
 use Logstats\App\Validators\TimeZoneValidator;
 use Logstats\App\Validators\UserValidator;
@@ -39,6 +40,7 @@ class InstallationPostConfigurationController extends Controller
 	private $auth;
 	private $installationService;
 	private $currentProjectProvider;
+	private $projectReadTokenCreator;
 
 
 	public function __construct(StepCollection $steps,
@@ -52,7 +54,8 @@ class InstallationPostConfigurationController extends Controller
 								TimeZoneValidator $timeZoneValidator,
 								Guard $auth,
 								InstallationServiceInterface $installationService,
-								CurrentProjectProviderInterface $currentProjectProvider) {
+								CurrentProjectProviderInterface $currentProjectProvider,
+								ProjectReadTokenCreatorInterface $projectReadTokenCreator) {
 		$this->steps = $steps;
 		$this->databaseConfig = $databaseConfig;
 		$this->tableCreator = $tableCreator;
@@ -65,6 +68,7 @@ class InstallationPostConfigurationController extends Controller
 		$this->auth = $auth;
 		$this->installationService = $installationService;
 		$this->currentProjectProvider = $currentProjectProvider;
+		$this->projectReadTokenCreator = $projectReadTokenCreator;
 	}
 
 	public function index(Request $request, $step = 1) {
@@ -186,7 +190,14 @@ class InstallationPostConfigurationController extends Controller
 	}
 
 	public function congratulations(Request $request) {
-		$this->installationService->setInstallationStep(Steps::COMPLETE);
+		$this->installationService->setNextInstallationStep(Steps::CONGRATULATIONS);
 		return view('installation.congratulations');
+	}
+
+	public function addReadKey(Request $request) {
+		$this->projectReadTokenCreator->createReadTokens();
+		$this->installationService->setNextInstallationStep(Steps::ADD_READ_TOKEN);
+		return redirect()
+			->route('installation', ['step' => $this->steps->nextKeyForShort(Steps::ADD_READ_TOKEN)]);
 	}
 }

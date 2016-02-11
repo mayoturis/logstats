@@ -1,6 +1,6 @@
 <?php
 
-use Logstats\Domain\Services\Installation\StepCollection;
+use Logstats\App\Installation\StepCollection;
 
 class StepCollectionTest extends TestCase
 {

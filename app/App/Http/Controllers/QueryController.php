@@ -36,7 +36,9 @@ class QueryController extends Controller {
 		}
 		if(!$this->queryValidator->isValidQuery($request->get('query'))) {
 			$errors = $this->queryValidator->getArrayErrors();
-			return response($errors, 400);
+			return response($errors, 400, [
+				'Access-Control-Allow-Origin' => '*'
+			]);
 		}
 
 		$query = $this->queryFromArrayFactory->make($request->get('query'));
@@ -47,10 +49,15 @@ class QueryController extends Controller {
 		}
 
 		$timeFrame = $query->getTimeFrame();
-
-		return [
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+		header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With');
+		header('Access-Control-Allow-Credentials: true');
+		return response([
 			'timeframe' => $timeFrame,
 			'data' => $data,
-		];
+		], 200, [
+			'Access-Control-Allow-Origin' => '*'
+		]);
 	}
 }

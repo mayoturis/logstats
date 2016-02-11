@@ -8,9 +8,6 @@
 	<script src="libraries/moment/moment-timezone-with-data.min.js"></script>
 	<script src="dist/logstatsquery.min.js"></script>
 	<script src="dist/logstatsgraphdrawer.min.js"></script>
-	<!--<script src="temp/LogstatsQuery.js"></script>
-	<script src="temp/LogstatsDataConverter.js"></script>
-	<script src="temp/LogstatsGraphDrawer.js"></script>-->
 	<script src="libraries/flot/jquery.flot.min.js"></script>
 	<script src="libraries/flot/jquery.flot.time.min.js"></script>
 	<script src="libraries/flot/jquery.flot.selection.min.js"></script>
@@ -21,16 +18,17 @@
 	<div id="ss" style="width: 500px; height: 200px;">
 
 	</div>
-	<div class="graph-tooltip"></div>
+	<div class="graph-tooltip" style="position: absolute"></div>
 	<div class="graph-checkboxes"></div>
 	<div class="checkboxes"></div>
 	<script>
+		// Olson time zone files
 		timezoneJS.timezone.zoneFileBasePath = "libraries/flot/tz";
 		timezoneJS.timezone.defaultZoneFile = [];
 		timezoneJS.timezone.init({async: false});
 
 
-		var query = new LogstatsQuery('http://localhost/logstats/query', 'rDemoproject2e4304776b');
+		var query = new LogstatsQuery('http://localhost/logstats/query', 'rDemoproject6e6749ffac');
 		var drawer = new LogstatsGraphDrawer('#ss', {
 			enablePointHover : true,
 			tooltipSelector: ".graph-tooltip",
@@ -44,13 +42,23 @@
 			event : 'purchase',
 			from : Date.now() / 1000 - 86000,
 			to : Date.now() / 1000,
-			aggregate : 'count',
+			aggregate : 'sum',
+			targetProperty : 'price',
 			interval : 'hourly',
-			groupBy : 'brand'
+			groupBy : 'brand',
+			filters : [
+				{
+					propertyName : "brand",
+					comparisonType : "not_equal",
+					propertyValue : "nike"
+				}
+			]
 		}
 		query.get(queryData, function(data) {
 			console.log(data);
 			drawer.draw(data.data, data.timeframe);
+		}, function(error) {
+			console.log(error);
 		});
 	</script>
 </body>

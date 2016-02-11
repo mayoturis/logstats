@@ -1,4 +1,4 @@
-<?php namespace Logstats\Domain\Services\Installation;
+<?php namespace Logstats\App\Installation;
 
 
 class StepCollection {

@@ -3,10 +3,10 @@
 namespace Logstats\App\Providers\Services;
 
 use Illuminate\Support\ServiceProvider;
-use Logstats\Domain\Services\Installation\InstallationService;
-use Logstats\Domain\Services\Installation\InstallationServiceInterface;
-use Logstats\Domain\Services\Installation\StepCollection;
-use Logstats\Domain\Services\Installation\Steps;
+use Logstats\App\Installation\InstallationService;
+use Logstats\App\Installation\InstallationServiceInterface;
+use Logstats\App\Installation\StepCollection;
+use Logstats\App\Installation\Steps;
 
 class InstallationProvider extends ServiceProvider
 {
@@ -38,9 +38,8 @@ class InstallationProvider extends ServiceProvider
 					  	3 => ['short' => Steps::CREATE_TABLES, 'menu' => 'Create tables',],
 					  	4 => ['short' => Steps::GENERAL_SETUP, 'menu' => 'General Setup',],
 					  	5 => ['short' => Steps::CONGRATULATIONS, 'menu' => 'Congratulations',],
-						'complete' => ['short' => Steps::COMPLETE, 'notShow' => true]
-
-
+						6 => ['short' => Steps::ADD_READ_TOKEN, 'notShow' => true],
+						7 => ['short' => Steps::COMPLETE, 'notShow' => true]
 			];
 			return new StepCollection($steps);
 		});

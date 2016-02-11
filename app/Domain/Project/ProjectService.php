@@ -1,6 +1,7 @@
 <?php  namespace Logstats\Domain\Project;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Logstats\Domain\Alerting\Email\LevelEmailAlerting;
 use Logstats\Domain\Alerting\Email\LevelEmailAlertingRepository;
 use Logstats\Domain\Record\RecordServiceInterface;
@@ -70,7 +71,7 @@ class ProjectService implements ProjectServiceInterface {
 	 * @return string
 	 */
 	private function uniqueTokenForName($name) {
-		return preg_replace('/\s+/', '', $name) . substr(md5(microtime(uniqid())), 0, 10);
+		return Str::random(20);
 	}
 
 	/**
