@@ -7,7 +7,5 @@ class EqualToFilter extends OneValueFilter implements BooleanFilter{
 	 * @param bool $boolean
 	 * @return bool
 	 */
-	public function match($boolean) {
-
-	}
+	//public function match($boolean) {}
 }

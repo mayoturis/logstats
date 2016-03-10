@@ -17,7 +17,5 @@ class ToFilter extends OneValueFilter implements TimeFilter {
 	 * @param Carbon $time
 	 * @return bool
 	 */
-	public function match(Carbon $time) {
-
-	}
+	//public function match(Carbon $time) {}
 }

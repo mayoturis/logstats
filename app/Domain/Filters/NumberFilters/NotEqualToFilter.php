@@ -8,7 +8,5 @@ class NotEqualToFilter extends OneValueFilter implements NumberFilter{
 	 * @param int|float $number
 	 * @return bool
 	 */
-	public function match($number) {
-
-	}
+	//public function match($number) {}
 }

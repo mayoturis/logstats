@@ -8,5 +8,5 @@ interface TimeFilter {
 	 * @param Carbon $time
 	 * @return bool
 	 */
-	public function match(Carbon $time);
+	//public function match(Carbon $time);
 }

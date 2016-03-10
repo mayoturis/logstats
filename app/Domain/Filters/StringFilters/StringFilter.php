@@ -6,5 +6,5 @@ interface StringFilter {
 	 * @param string $string
 	 * @return bool
 	 */
-	public function match($string);
+	//public function match($string);
 }

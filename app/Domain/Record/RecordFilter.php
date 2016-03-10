@@ -42,9 +42,9 @@ class RecordFilter {
 	 * @param Record $record
 	 * @return bool
 	 */
-	public function match(Record $record) {
+	/*public function match(Record $record) {
 
-	}
+	}*/
 
 	/**
 	 * @return StringFilter[]

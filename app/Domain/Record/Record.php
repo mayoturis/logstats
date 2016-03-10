@@ -37,9 +37,9 @@ class Record {
 	 * @param array $context
 	 */
 	public function __construct($level, $message, Carbon $date, $projectId, array $context = []) {
+		$this->level = $level;
 		$this->message = $message;
 		$this->date = $date;
-		$this->level = $level;
 		$this->projectId = $projectId;
 		$this->context = $context;
 	}

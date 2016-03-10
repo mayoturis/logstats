@@ -5,5 +5,5 @@ interface ArrayFilter {
 	 * @param array $array
 	 * @return bool
 	 */
-	public function match(array $array);
+	//public function match(array $array);
 }

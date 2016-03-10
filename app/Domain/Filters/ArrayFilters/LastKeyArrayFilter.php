@@ -18,9 +18,7 @@ class LastKeyArrayFilter implements ArrayFilter {
 		$this->filter = $filter;
 	}
 
-	public function match(array $array) {
-
-	}
+    //public function match(array $array) {}
 
 	/**
 	 * @return mixed
