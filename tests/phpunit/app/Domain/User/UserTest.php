@@ -116,6 +116,11 @@ class UserTest extends TestCase {
 		$this->assertFalse($none->isGeneralAdmin());
 	}
 
+	public function test_remember_token_column_name_can_be_get() {
+		$user = new User('sdf','sdf','sdf');
+		$this->assertEquals('remember_token', $user->getRememberTokenName());
+	}
+
 	private function getUser() {
 		return new User(null, null, null, null);
 	}

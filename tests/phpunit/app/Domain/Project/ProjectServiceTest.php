@@ -53,6 +53,18 @@ class ProjectServiceTest extends TestCase{
 		$projectService->deleteProject($project);
 	}
 
+	public function test_deleteProjectRolesForUser_calls_repository() {
+		$projectRepository = $this->getProjectRepository();
+		$recordService = $this->getRecordService();
+		$lear = $this->getLevelEmailAlertingRepostirory();
+
+		$projectService = new ProjectService($projectRepository, $recordService, $lear);
+		$user = $this->getUser();
+
+		$projectRepository->shouldReceive('deleteProjectRolesForUser')->once()->with($user);
+		$projectService->deleteProjectRolesForUser($user);
+	}
+
 
 	private function getProjectRepository() {
 		return Mockery::mock(ProjectRepository::class);

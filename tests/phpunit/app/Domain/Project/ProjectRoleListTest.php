@@ -92,4 +92,13 @@ class ProjectRoleListTest extends TestCase {
 		$this->assertTrue(in_array($user1, $users));
 		$this->assertTrue(in_array($user2, $users));
 	}
+
+	public function test_false_is_returned_when_user_is_not_in_list() {
+		$user = UserFactory::randomUser();
+		$projectRoleList = new ProjectRoleList();
+
+		$this->assertFalse($projectRoleList->isAdmin($user));
+		$this->assertFalse($projectRoleList->isDataManager($user));
+		$this->assertFalse($projectRoleList->isVisitor($user));
+	}
 }
