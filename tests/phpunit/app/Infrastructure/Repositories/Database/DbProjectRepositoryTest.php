@@ -9,7 +9,7 @@ use Logstats\Infrastructure\Repositories\Database\Factories\StdProjectFactory;
 use Logstats\Infrastructure\Repositories\Database\Factories\StdUserFactory;
 use Logstats\Support\Date\CarbonConvertor;
 
-class DbProjectRepositoryTest extends DatabaseTestCase{
+class DbProjectRepositoryTest extends DatabaseTestCase {
 
 	/**
 	 * @var DbProjectRepository

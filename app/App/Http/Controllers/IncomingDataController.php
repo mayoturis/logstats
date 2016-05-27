@@ -46,6 +46,8 @@ class IncomingDataController extends Controller {
 		foreach ($messages as $message) {
 			$this->newRecord($message, $project);
 		}
+
+		header('Access-Control-Allow-Origin: *');
 	}
 
 	private function newRecord($message, Project $project) {

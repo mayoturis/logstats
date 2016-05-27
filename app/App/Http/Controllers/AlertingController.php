@@ -13,7 +13,7 @@ use Logstats\Domain\Project\ProjectRepository;
 class AlertingController extends Controller{
 
 	private $currentProjectProvider;
-	private $guard;
+	private $authGuard;
 	private $projectRepository;
 	private $alertingValidator;
 	private $levelEmailAlertingRepository;
@@ -24,7 +24,7 @@ class AlertingController extends Controller{
 								AlertingValidator $alertingValidator,
 								LevelEmailAlertingRepository $levelEmailAlertingRepository) {
 		$this->currentProjectProvider = $currentProjectProvider;
-		$this->guard = $guard;
+		$this->authGuard = $guard;
 		$this->projectRepository = $projectRepository;
 		$this->alertingValidator = $alertingValidator;
 		$this->levelEmailAlertingRepository = $levelEmailAlertingRepository;
@@ -32,7 +32,7 @@ class AlertingController extends Controller{
 
 	public function index() {
 		$project = $this->currentProjectProvider->get();
-		if (! $this->guard->check('manageAlerting', [$project])) {
+		if (! $this->authGuard->check('manageAlerting', [$project])) {
 			throw new UnauthorizedException('Access denied');
 		}
 
@@ -47,7 +47,7 @@ class AlertingController extends Controller{
 		}
 
 		$project = $this->projectRepository->findById($request->get('project_id'));
-		if (! $this->guard->check('manageAlerting', [$project])) {
+		if (! $this->authGuard->check('manageAlerting', [$project])) {
 			throw new UnauthorizedException('Access denied');
 		}
 
@@ -62,7 +62,7 @@ class AlertingController extends Controller{
 
 	public function destroy($id) {
 		$project = $this->currentProjectProvider->get();
-		if (! $this->guard->check('manageAlerting', [$project])) {
+		if (! $this->authGuard->check('manageAlerting', [$project])) {
 			throw new UnauthorizedException('Access denied');
 		}
 

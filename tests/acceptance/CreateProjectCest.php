@@ -19,9 +19,10 @@ class CreateProjectCest
 		$I->loginAsAdmin();
 		$I->amOnPage(CreateProjectPage::$URL);
 		$page = new CreateProjectPage($I);
-		$page->createProject('new_project');
+		$projectName = 'new_project';
+		$page->createProject($projectName);
 		$I->seeIAmOnAllProjectsPage();
-		$I->see('new_project');
+		$I->see($projectName);
 		$I->see('successfully created');
 	}
 

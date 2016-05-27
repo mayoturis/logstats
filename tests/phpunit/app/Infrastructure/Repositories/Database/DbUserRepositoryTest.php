@@ -55,13 +55,14 @@ class DbUserRepositoryTest extends DatabaseTestCase {
 
 	public function test_save_updates_user_if_one_exists() {
 		$user = $this->dbUserRepository->findById(1);
-		$user->setName('newName');
+		$newName = 'someNewName';
+		$user->setName($newName);
 		$user->setRole(null);
+
 		$this->dbUserRepository->save($user);
 
 		$updatedUser = $this->dbUserRepository->findById(1);
-
-		$this->assertEquals('newName', $updatedUser->getName());
+		$this->assertEquals($newName, $updatedUser->getName());
 		$this->assertNull($updatedUser->getRole());
 		$this->assertEquals($user->getEmail(), $updatedUser->getEmail());
 	}

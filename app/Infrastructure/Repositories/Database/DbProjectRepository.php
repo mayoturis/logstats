@@ -44,10 +44,12 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	 */
 	public function save(Project $project) {
 		if ($project->getId() == null) {
-			return $this->insertProject($project);
+			$this->insertProject($project);
 		} else {
-			return $this->updateProject($project);
+			$this->updateProject($project);
 		}
+
+		return $project;
 	}
 
 
@@ -77,14 +79,13 @@ class DbProjectRepository extends DbBaseRepository implements ProjectRepository 
 	 * @return Project
 	 */
 	private function updateProject(Project $project) {
-		\DB::table($this->table)->where('id', $project->getId())
+		DB::table($this->table)
+			->where('id', $project->getId())
 			->update([
 				"name" => $project->getName(),
 				"write_token" => $project->getWriteToken(),
 				"read_token" => $project->getReadToken(),
 			]);
-
-		return $project;
 	}
 
 	/**
